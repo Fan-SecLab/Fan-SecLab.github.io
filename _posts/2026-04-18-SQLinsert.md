@@ -501,19 +501,19 @@ xxx%27+or+1%3D1+%23
 select * from menmber union select *from users;
 ```
 会报错，因为前面有7列，后面有4列
-![alt text](image-31.png)
+![alt text](/assets/images/05/image-31.png)
 ```
 select 1,2,3;
 ```
 效果如下  
-![alt text](image-29.png)
+![alt text](/assets/images/05/image-29.png)
 
 你单独执行这个语句会多出三行，又因为后面那个表列数比前面少3个所以
 ```
 select * from menmber union select *,1,2,3 from users;
 ```
 然后就对应上了  
-![alt text](image-30.png)
+![alt text](/assets/images/05/image-30.png)
 
 你执行了这个代码，可能也不会把所有的7列全部展示出来，因为可能服务端那边做了相应的限制，假设服务端只显示了username和email列，那么显示的union联合查询的表的列也是相对应的username和3
 
@@ -534,7 +534,7 @@ select * from member union select 1,2,3,4····;
 
 ### 11.1加密注入 
 js加密流程
-![alt text](image-32.png)
+![alt text](/assets/images/05/image-32.png)
 
 是为了防止中间人抓包看到密码
 
@@ -562,9 +562,9 @@ select * from users;insert into xssblind values(1,'2026',"xxx",""xiaoming")
 mysql有些AIP(函数)是支持的  
 sqlserver都支持  
 oracle都不支持  
-![alt text](image-33.png)
+![alt text](/assets/images/05/image-33.png)
 
-![alt text](image-34.png)
+![alt text](/assets/images/05/image-34.png)
 
 ### 11.3二次注入
 
@@ -575,11 +575,11 @@ oracle都不支持
 
 二次注入的原理，以php代码来举例，在第一次进行数据库插入数据的时候，仅仅只是使用了addslashes 或者是借助 **get_magic_quotes_gpc** 对其中的特殊字符进行了转义，在写入数据库的时候还是保留了原来的数据，比如单引号数据，虽然直接注入时效了，但是数据写入到了数据库，数据库中存的这个数据本身还是脏数据。在将数据存入到了数据库中之后，很多开发者都会认为数据是可信的。在下一次进行需要进行查询的时候，直接从数据库中取出了脏数据，没有进行进一步的检验和处理，这样就会造成SQL的二次注入。比如在第一次插入数据的时候，数据中带有单引号，直接插入到了数据库中；然后在下一次使用中在拼凑的过程中，就形成了二次注入。
 
-![alt text](image-35.png)
+![alt text](/assets/images/05/image-35.png)
 
 示例：
-![alt text](image-36.png)
-![alt text](image-37.png)
+![alt text](/assets/images/05/image-36.png)
+![alt text](/assets/images/05/image-37.png)
 你注册了一个用户：admin'#，密码：123
 脏数据admin'#被写入了数据库，数据库默认这个数据是安全的
 当你更新密码时，把123，改为666
@@ -601,7 +601,7 @@ update users set password='666' where username='admin'#' and password='123'
 可以自己学一下什么是伪静态网站，简单来说就是把动态网站伪装成静态网站，在url界面是可以进行数据交互的
 
 
-![alt text](image-38.png)
+![alt text](/assets/images/05/image-38.png)
 
 静态显示的：http://192.168.61.149/thread-1-1-1.html  
 
