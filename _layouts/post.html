@@ -1,0 +1,202 @@
+---
+layout: default
+---
+
+<head>
+<link rel="stylesheet" href="{{ "/css/post.css" | prepend: site.baseurl }}">
+</head>
+
+<article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title">{{ page.title }}</h1>
+    <div class="post-meta">
+      <time datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished" class="post-meta__date">
+        {{ page.date | date: "%F" }}
+      </time>
+      <span id="busuanzi_container_page_pv"> | 阅读：<span id="busuanzi_value_page_pv"></span>次</span>
+    </div>
+  </header>
+
+  <section class="post">
+    {{ content }}
+
+    <div style="margin:40px 0;padding:15px 20px;background:#f8f9fa;border-left:4px solid #007bff;border-radius:4px;">
+      <strong>📌 本文原创声明</strong><br>
+      文章作者：Fan-SecLab<br>
+      版权声明:本文为原创文章，版权归 <strong>Fan-SecLab</strong> 所有，未经允许禁止转载，侵权必究！
+    </div>
+
+    <section class="comments" style="width:100%;margin:60px 0 0;">
+      <script src="https://giscus.app/client.js"
+              data-repo="Fan-SecLab/Fan-SecLab.github.io"
+              data-repo-id="R_kgDOKyKWfQ"
+              data-category="Announcements"
+              data-category-id="DIC_kwDOKyKWfc4CYPgQ"
+              data-mapping="pathname"
+              data-strict="0"
+              data-reactions-enabled="1"
+              data-emit-metadata="0"
+              data-input-position="bottom"
+              data-theme="light"
+              data-lang="zh-CN"
+              crossorigin="anonymous" async>
+      </script>
+    </section>
+  </section>
+</article>
+
+<!-- 右侧悬浮目录按钮 -->
+<div id="tocBtn">目录</div>
+<div id="tocPanel">
+  <div id="tocClose">×</div>
+  <div id="tocList"></div>
+</div>
+
+<style>
+/* 目录按钮垂直居中对齐回到顶部 */
+#tocBtn {
+  position: fixed;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: #007bff;
+  color: #fff;
+  font-size: 12px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  z-index: 998;
+}
+
+/* 弹出目录面板 */
+#tocPanel {
+  display: none;
+  position: fixed;
+  right: 80px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 260px;
+  max-height: 65vh;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  padding: 15px;
+  z-index: 999;
+  overflow-y: auto;
+}
+#tocPanel.show { display: block; }
+
+#tocClose {
+  text-align: right;
+  font-size: 20px;
+  cursor: pointer;
+  color: #666;
+  margin-bottom:10px;
+}
+
+/* 目录样式 */
+#tocList ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+#tocList li {
+  margin: 6px 0;
+  font-size:14px;
+}
+#tocList a {
+  color: #222;
+  text-decoration: none;
+  display: block;
+  padding: 2px 0;
+}
+#tocList a:hover {
+  color: #007bff;
+}
+
+/* 层级缩进 */
+#tocList .h2 { font-weight: bold; cursor: pointer; }
+#tocList .h3 { padding-left:16px; font-size:13px; }
+#tocList .h4 { padding-left:32px; font-size:12px; color:#555; }
+
+/* 折叠功能 */
+#tocList .child { display: none; }
+#tocList .h2.open > .child { display: block; }
+
+/* 手机隐藏 */
+@media (max-width: 768px) {
+  #tocBtn,#tocPanel { display: none !important; }
+}
+</style>
+
+<!-- 绝对不白屏 · 点击跳转 + 折叠 -->
+<script>
+try {
+  setTimeout(function(){
+    const btn = document.getElementById('tocBtn');
+    const panel = document.getElementById('tocPanel');
+    const close = document.getElementById('tocClose');
+    const list = document.getElementById('tocList');
+    const post = document.querySelector('.post');
+
+    if(!btn || !panel || !list || !post) return;
+
+    const hs = post.querySelectorAll('h2,h3,h4');
+    if(hs.length === 0) return;
+
+    btn.style.display = 'flex';
+    const root = document.createElement('ul');
+    list.appendChild(root);
+
+    let lastH2 = null;
+    let lastH3 = null;
+
+    hs.forEach((h, i) => {
+      if(!h.id) h.id = 'toc-' + i;
+      const tag = h.tagName.toLowerCase();
+      const li = document.createElement('li');
+      li.className = tag;
+      const a = document.createElement('a');
+      a.href = '#' + h.id;
+      a.textContent = h.textContent.trim();
+      li.appendChild(a);
+
+      if(tag === 'h2'){
+        const child = document.createElement('ul');
+        child.className = 'child';
+        li.appendChild(child);
+        root.appendChild(li);
+        lastH2 = li;
+        lastH3 = null;
+      } else if(tag === 'h3' && lastH2){
+        const child = document.createElement('ul');
+        child.className = 'child';
+        li.appendChild(child);
+        lastH2.querySelector('.child').appendChild(li);
+        lastH3 = li;
+      } else if(tag === 'h4' && lastH3){
+        lastH3.querySelector('.child').appendChild(li);
+      }
+    });
+
+    // 点击 H2 折叠
+    list.addEventListener('click', function(e){
+      const h2 = e.target.closest('.h2');
+      if(h2 && e.target.tagName === 'A'){
+        h2.classList.toggle('open');
+      }
+    });
+
+    btn.onclick = () => panel.classList.add('show');
+    close.onclick = () => panel.classList.remove('show');
+  }, 600);
+} catch(e) {}
+</script>
+
+{% include new-old.html %}
+{% include comments.html %}
