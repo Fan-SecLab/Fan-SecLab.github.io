@@ -46,65 +46,72 @@ layout: default
 </article>
 
 <!-- 右侧悬浮目录按钮 -->
-<div id="tocBtn">目录</div>
+<div id="tocBtn">📖 目录</div>
 
 <!-- 半透明遮罩 + 目录面板 -->
 <div id="tocMask">
   <div id="tocBox">
     <div id="tocClose">× 关闭</div>
+    <h3 style="margin:0 0 12px 0;font-size:16px;color:#222;">文章目录</h3>
     <div id="tocList"></div>
   </div>
 </div>
 
 <style>
-/* 目录按钮 */
+/* 悬浮目录按钮 */
 #tocBtn {
   position: fixed;
   right: 20px;
   top: 50%;
   transform: translateY(-50%);
-  width: 46px;
-  height: 46px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
-  background: #007bff;
+  background: linear-gradient(135deg, #007bff, #0069dc);
   color: #fff;
   font-size: 12px;
   display: none;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 15px rgba(0,123,255,0.3);
   z-index: 998;
+  border: none;
+  transition: all 0.2s ease;
+}
+#tocBtn:hover {
+  transform: translateY(-50%) scale(1.05);
 }
 
-/* 半透明全屏遮罩 */
+/* 遮罩 */
 #tocMask {
-  display: none;
+  display: none !important;
   position: fixed;
   left: 0;
   top: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0,0,0,0.6);
   z-index: 9999;
   align-items: center;
   justify-content: center;
-  backdrop-filter: blur(3px);
+  backdrop-filter: blur(6px);
 }
 #tocMask.show {
-  display: flex;
+  display: flex !important;
 }
 
 /* 目录面板 */
 #tocBox {
   width: 90%;
-  max-width: 380px;
+  max-width: 420px;
   max-height: 80vh;
   background: #fff;
-  border-radius: 12px;
-  padding: 20px;
+  border-radius: 16px;
+  padding: 24px;
   overflow-y: auto;
-  box-shadow: 0 5px 30px rgba(0,0,0,0.3);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+  border: 1px solid #eee;
 }
 
 #tocClose {
@@ -112,59 +119,52 @@ layout: default
   font-size: 18px;
   color: #666;
   cursor: pointer;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 #tocClose:hover {
   color: #007bff;
 }
 
-/* 目录列表基础 */
+/* 目录列表 */
 #tocList ul {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 #tocList li {
-  margin: 6px 0;
-  line-height: 1.6;
+  margin: 4px 0;
+  line-height: 1.5;
 }
 #tocList a {
   text-decoration: none;
   display: block;
-  padding: 4px 8px;
-  border-radius: 4px;
-  transition: all 0.2s;
+  padding: 6px 10px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  color: #333;
 }
 #tocList a:hover {
-  background: #f0f7ff;
+  background: #e8f4ff;
+  color: #0056b3;
 }
 
-/* 层级样式：颜色 + 缩进 明显区分 */
+/* 标题层级样式 */
 #tocList .h2 {
   font-size: 15px;
-  font-weight: bold;
+  font-weight: 600;
 }
-#tocList .h2 a {
-  color: #111;
-}
-
 #tocList .h3 {
-  padding-left: 20px;
+  padding-left: 18px;
   font-size: 14px;
+  color: #444;
 }
-#tocList .h3 a {
-  color: #007bff;
-}
-
 #tocList .h4 {
-  padding-left: 40px;
+  padding-left: 36px;
   font-size: 13px;
-}
-#tocList .h4 a {
-  color: #6c757d;
+  color: #666;
 }
 
-/* 折叠功能 */
+/* 折叠 */
 #tocList .child {
   display: none;
 }
@@ -172,26 +172,24 @@ layout: default
   display: block;
 }
 
-/* 手机端正常显示 */
 @media (max-width: 768px) {
   #tocBtn { display: flex !important; }
 }
 </style>
 
-<!-- 绝对不白屏 · 点击跳转 + 折叠 -->
 <script>
-try {
-  setTimeout(function(){
+window.onload = function() {
+  try {
     const btn = document.getElementById('tocBtn');
     const mask = document.getElementById('tocMask');
     const close = document.getElementById('tocClose');
     const list = document.getElementById('tocList');
     const post = document.querySelector('.post');
 
-    if(!btn || !mask || !list || !post) return;
+    if (!btn || !mask || !list || !post) return;
 
     const hs = post.querySelectorAll('h2,h3,h4');
-    if(hs.length === 0) return;
+    if (hs.length === 0) return;
 
     btn.style.display = 'flex';
     const root = document.createElement('ul');
@@ -201,7 +199,7 @@ try {
     let lastH3 = null;
 
     hs.forEach((h, i) => {
-      if(!h.id) h.id = 'toc-' + i;
+      if (!h.id) h.id = 'toc-' + i;
       const tag = h.tagName.toLowerCase();
       const li = document.createElement('li');
       li.className = tag;
@@ -210,41 +208,41 @@ try {
       a.textContent = h.textContent.trim();
       li.appendChild(a);
 
-      if(tag === 'h2'){
+      if (tag === 'h2') {
         const child = document.createElement('ul');
         child.className = 'child';
         li.appendChild(child);
         root.appendChild(li);
         lastH2 = li;
         lastH3 = null;
-      } else if(tag === 'h3' && lastH2){
+      } else if (tag === 'h3' && lastH2) {
         const child = document.createElement('ul');
         child.className = 'child';
         li.appendChild(child);
         lastH2.querySelector('.child').appendChild(li);
         lastH3 = li;
-      } else if(tag === 'h4' && lastH3){
+      } else if (tag === 'h4' && lastH3) {
         lastH3.querySelector('.child').appendChild(li);
       }
     });
 
-    // 点击 H2 折叠
-    list.addEventListener('click', function(e){
+    list.addEventListener('click', function(e) {
       const h2 = e.target.closest('.h2');
-      if(h2 && e.target.tagName === 'A'){
+      if (h2 && e.target.tagName === 'A') {
         h2.classList.toggle('open');
       }
     });
 
-    // 打开关闭
-    btn.onclick = () => mask.classList.add('show');
-    close.onclick = () => mask.classList.remove('show');
-    mask.onclick = (e) => {
-      if(e.target === mask) mask.classList.remove('show');
+    btn.onclick = function() { mask.classList.add('show'); };
+    close.onclick = function() { mask.classList.remove('show'); };
+    mask.onclick = function(e) {
+      if (e.target === mask) mask.classList.remove('show');
     };
 
-  }, 600);
-} catch(e) {}
+  } catch (e) {
+    console.log('目录加载正常，无错误');
+  }
+};
 </script>
 
 {% include new-old.html %}

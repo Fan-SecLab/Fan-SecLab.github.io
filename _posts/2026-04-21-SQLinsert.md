@@ -1,8 +1,8 @@
 ---
 layout: post
-title: SQL注入全面指南
+title: SQL注入基本原理
 date: 2026-04-21
-tags: [SQL注入, 网络安全, Web安全]
+tags: [手工SQL注入，sqlmap]
 ---
 
 # SQL注入全面指南
