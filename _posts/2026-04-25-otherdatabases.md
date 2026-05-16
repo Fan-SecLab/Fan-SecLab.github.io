@@ -1,8 +1,8 @@
 ---
 layout: post
-title: 其他数据库 — Access 与 MSSQL 注入学习笔记
-date: 2026-04-25
-tags: [access, sqlserver, 其他版本sql注入]
+title: 其他数据库的注入
+date: 2026-04-29
+tags: [access, sqlserver, 其他版本的mysql]
 ---
 
 ## 一、Access 数据库
