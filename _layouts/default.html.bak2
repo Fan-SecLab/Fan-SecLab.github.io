@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+
+  {% include head.html %}
+
+  <!-- 顶部阅读进度条 → 放在最前面，保证显示 -->
+  <div id="progress-bar"></div>
+
+  <!-- 星空动态背景 → 安全不白屏 -->
+  <canvas id="stars-bg" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:-2;background:#f8f9fa;pointer-events:none;"></canvas>
+
+  <body>
+
+    <span class="mobile btn-mobile-menu">        
+      <div class="nav_container">
+         <nav class="nav-menu-item" style = "float:right">
+            <i class="nav-menu-item">
+              <a href="/#blog" title="{{site.blog_button.description}}" class="blog-button">  {{site.blog_button.title}}
+              </a>
+            </i>
+            {% for item in site.nav %}
+                <i class="nav-menu-item">
+                  <a href="{{item.url}}" title="{{item.description}}" class="btn-mobile-menu__icon">
+                      {{item.title}}
+                  </a>
+                </i>
+            {% endfor %}
+          </nav>
+      </div>
+    </span>
+    
+    {% include side-panel.html %}
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            {{ content }}
+            {% include footer.html %}
+        </div>
+    </div>
+    
+    {% include external.html %}
+
+<!-- 代码块美化 + 复制按钮 -->
+<style>
+pre {
+  position: relative;
+  background: #1d1f21;
+  color: #c5c8c6;
+  border-radius: 8px;
+  padding: 16px;
+  overflow-x: auto;
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 20px 0;
+}
+code {
+  font-family: Consolas, "Courier New", monospace;
+}
+.copy-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: #444;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 12px;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+.copy-btn:hover {
+  opacity: 1;
+}
+.copy-btn.copied {
+  background: #00d864;
+}
+</style>
+
+<script>
+// 代码复制功能
+try {
+  document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('pre').forEach(block => {
+      const btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = '复制';
+      block.appendChild(btn);
+      btn.addEventListener('click', async () => {
+        const text = block.innerText.replace('复制', '').trim();
+        await navigator.clipboard.writeText(text);
+        btn.textContent = '已复制';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = '复制';
+          btn.classList.remove('copied');
+        }, 1200);
+      });
+    });
+  });
+} catch(e){}
+
+// 进度条功能
+try {
+  window.addEventListener('scroll', function() {
+    const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const scrolled = (winScroll / height) * 100;
+    document.getElementById("progress-bar").style.width = scrolled + "%";
+  });
+} catch(e){}
+
+// 星空背景
+try{
+  const canvas=document.getElementById('stars-bg');
+  const ctx=canvas.getContext('2d');
+  function resize(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;}
+  window.addEventListener('resize',resize);
+  resize();
+  const stars=[];
+  for(let i=0;i<100;i++)stars.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*1.5+0.3,v:Math.random()*0.2+0.03});
+  function draw(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle='#fff';
+    stars.forEach(s=>{ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fill();s.y+=s.v;if(s.y>canvas.height)s.y=0;});
+    requestAnimationFrame(draw);
+  }
+  draw();
+}catch(e){}
+</script>
+    
+  </body>
+
+</html>
