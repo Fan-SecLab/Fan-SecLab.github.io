@@ -8,6 +8,7 @@
 #    - desc: 简短描述
 #    - link: 官网或下载链接（可选，不填则不显示）
 #    - tags: [标签1, 标签2]（可选）
+#    - path: 工具在本机的存放位置（可选，填了就在卡片上显示）
 # ============================================
 
 - category: "信息收集"
@@ -17,41 +18,49 @@
       desc: "网络端口扫描、服务探测、OS识别，渗透测试必备"
       link: "https://nmap.org"
       tags: ["端口扫描", "资产发现"]
+      path: ""
 
     - name: "Masscan"
       desc: "超高速端口扫描器，号称全互联网5分钟扫完"
       link: "https://github.com/robertdavidgraham/masscan"
       tags: ["端口扫描", "大规模扫描"]
+      path: ""
 
     - name: "Fscan"
       desc: "内网扫描工具，一键弱口令/漏洞探测"
       link: "https://github.com/shadow1ng/fscan"
       tags: ["内网", "弱口令", "漏洞扫描"]
+      path: ""
 
     - name: "EHole"
       desc: "棱洞 - 资产探测与指纹识别"
       link: "https://github.com/EdgeSecurityTeam/EHole"
       tags: ["指纹识别", "资产发现"]
+      path: ""
 
     - name: "OneForAll"
       desc: "子域名收集神器，支持多种爆破/枚举/API"
       link: "https://github.com/shmilylty/OneForAll"
       tags: ["子域名", "信息收集"]
+      path: ""
 
     - name: "Subfinder"
       desc: "被动子域名枚举工具"
       link: "https://github.com/projectdiscovery/subfinder"
       tags: ["子域名", "被动收集"]
+      path: ""
 
     - name: "Httpx"
       desc: "HTTP服务探活与指纹识别"
       link: "https://github.com/projectdiscovery/httpx"
       tags: ["指纹识别", "HTTP探测"]
+      path: ""
 
     - name: "WhatWeb"
       desc: "网站指纹识别工具"
       link: "https://github.com/urbanadventurer/WhatWeb"
       tags: ["指纹识别", "CMS检测"]
+      path: ""
 
 - category: "漏洞扫描"
   icon: "🛡️"
@@ -60,25 +69,30 @@
       desc: "基于YAML模板的漏洞扫描器，社区模板海量"
       link: "https://github.com/projectdiscovery/nuclei"
       tags: ["漏洞扫描", "自动化", "模板化"]
+      path: ""
 
     - name: "Xray"
       desc: "安全评估工具，支持主动/被动扫描"
       link: "https://github.com/chaitin/xray"
       tags: ["漏洞扫描", "被动扫描", "主动扫描"]
+      path: ""
 
     - name: "Goby"
       desc: "网络资产扫描与漏洞利用"
       link: "https://gobysec.net"
       tags: ["资产扫描", "漏洞利用", "图形化"]
+      path: ""
 
     - name: "AWVS"
       desc: "商业级Web漏洞扫描器"
       link: "https://www.acunetix.com"
       tags: ["Web扫描", "商业", "爬虫"]
+      path: ""
 
     - name: "AppScan"
       desc: "IBM出品的Web应用安全扫描器"
       tags: ["Web扫描", "商业"]
+      path: ""
 
 - category: "Web漏洞利用"
   icon: "⚡"
@@ -87,30 +101,36 @@
       desc: "Web抓包改包神器，渗透测试标配"
       link: "https://portswigger.net/burp"
       tags: ["抓包", "改包", "Web测试"]
+      path: ""
 
     - name: "SQLMap"
       desc: "自动化SQL注入检测与利用"
       link: "https://sqlmap.org"
       tags: ["SQL注入", "自动化", "数据库"]
+      path: ""
 
     - name: "BeFF"
       desc: "浏览器漏洞利用框架"
       link: "https://beefproject.com"
       tags: ["XSS", "浏览器", "Hook"]
+      path: ""
 
     - name: "Cknife / Chopper"
       desc: "Webshell管理工具（中国菜刀系）"
       tags: ["Webshell", "管理工具"]
+      path: ""
 
     - name: "AntSword"
       desc: "开源跨平台Webshell管理工具"
       link: "https://github.com/AntSwordProject/antSword"
       tags: ["Webshell", "管理工具", "开源"]
+      path: ""
 
     - name: "Godzilla"
       desc: "哥斯拉 - Webshell管理工具"
       link: "https://github.com/BeichenDream/Godzilla"
       tags: ["Webshell", "管理工具", "加密"]
+      path: ""
 
 - category: "密码爆破"
   icon: "🔑"
@@ -119,21 +139,25 @@
       desc: "暴力破解神器，支持多协议"
       link: "https://github.com/vanhauser-thc/thc-hydra"
       tags: ["爆破", "多协议"]
+      path: ""
 
     - name: "Hashcat"
       desc: "GPU加速的密码哈希破解"
       link: "https://hashcat.net/hashcat/"
       tags: ["哈希破解", "GPU", "密码恢复"]
+      path: ""
 
     - name: "John the Ripper"
       desc: "经典密码破解工具"
       link: "https://www.openwall.com/john/"
       tags: ["哈希破解", "CPU"]
+      path: ""
 
     - name: "Medusa"
       desc: "并行网络登录暴力破解器"
       link: "https://github.com/jmk-foofus/medusa"
       tags: ["爆破", "多协议"]
+      path: ""
 
 - category: "内网渗透"
   icon: "🌐"
@@ -142,35 +166,42 @@
       desc: "渗透测试框架，漏洞利用/后渗透"
       link: "https://www.metasploit.com"
       tags: ["漏洞利用", "后渗透", "框架"]
+      path: ""
 
     - name: "Cobalt Strike"
       desc: "CS - 红队C2框架"
       tags: ["C2", "后渗透", "红队"]
+      path: ""
 
     - name: "Mimikatz"
       desc: "Windows密码提取神器"
       link: "https://github.com/gentilkiwi/mimikatz"
       tags: ["密码提取", "Windows", "凭证窃取"]
+      path: ""
 
     - name: "BloodHound"
       desc: "域环境攻击路径分析"
       link: "https://github.com/BloodHoundAD/BloodHound"
       tags: ["域环境", "权限提升", "攻击路径"]
+      path: ""
 
     - name: "Frp"
       desc: "内网穿透代理工具"
       link: "https://github.com/fatedier/frp"
       tags: ["内网穿透", "代理", "隧道"]
+      path: ""
 
     - name: "Ngrok"
       desc: "内网穿透，暴露本地服务到公网"
       link: "https://ngrok.com"
       tags: ["内网穿透", "隧道", "Webhook"]
+      path: ""
 
     - name: "Nps"
       desc: "轻量级内网穿透代理服务器"
       link: "https://github.com/ehang-io/nps"
       tags: ["内网穿透", "代理", "隧道"]
+      path: ""
 
 - category: "逆向与二进制"
   icon: "🔬"
@@ -179,21 +210,25 @@
       desc: "交互式反汇编器，二进制分析标杆"
       link: "https://hex-rays.com/ida-pro/"
       tags: ["反汇编", "逆向", "商业"]
+      path: ""
 
     - name: "Ghidra"
       desc: "NSA开源的逆向工程框架"
       link: "https://ghidra-sre.org"
       tags: ["反汇编", "逆向", "开源"]
+      path: ""
 
     - name: "x64dbg"
       desc: "Windows下的开源调试器"
       link: "https://x64dbg.com"
       tags: ["调试", "Windows", "逆向"]
+      path: ""
 
     - name: "OllyDbg"
       desc: "经典的32位用户态调试器"
       link: "https://www.ollydbg.de"
       tags: ["调试", "逆向"]
+      path: ""
 
 - category: "编码/加解密"
   icon: "📦"
@@ -202,14 +237,17 @@
       desc: "瑞士军刀 - 编解码/加解密/格式转换"
       link: "https://gchq.github.io/CyberChef/"
       tags: ["编解码", "加解密", "在线工具"]
+      path: ""
 
     - name: "Base64 / Hex"
       desc: "常见的编码方式，用于数据传输和混淆"
       tags: ["编码", "基础"]
+      path: ""
 
     - name: "Hash Identifier"
       desc: "哈希类型识别工具（hashid / hash-identifier）"
       tags: ["哈希识别", "密码分析"]
+      path: ""
 
 - category: "其他"
   icon: "🧰"
@@ -218,13 +256,16 @@
       desc: "脚本语言，POC/EXP快速开发首选"
       link: "https://www.python.org"
       tags: ["脚本", "开发", "POC"]
+      path: ""
 
     - name: "Docker"
       desc: "容器化部署，快速搭建漏洞环境"
       link: "https://www.docker.com"
       tags: ["容器", "环境搭建"]
+      path: ""
 
     - name: "Postman"
       desc: "API调试与HTTP请求测试"
       link: "https://www.postman.com"
       tags: ["API测试", "HTTP", "调试"]
+      path: ""
