@@ -15,6 +15,10 @@ layout: default
             <img src="/images/calendar.png" width="18px" height="18px" />
             {{ post.date | date: "%F"}}
           </time>
+          <span class="post-list__meta-tags">
+            <img src="/images/tag-icon.svg" width="18px" height="18px" />
+            <a href="/tags">{{ post.tags }}</a>
+          </span>
         </div>
         <div class="post-list__meta-right">
           <a class="btn-border-small" href="{{ post.url }}">阅读全文 »</a>
