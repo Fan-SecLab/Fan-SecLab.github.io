@@ -16,121 +16,132 @@
   tools:
     - name: "Nmap"
       desc: "网络端口扫描、服务探测、OS识别，渗透测试必备"
-      link: "https://nmap.org"
+      link: "http://blog.sina.com.cn/s/blog_811d9fdd0101ey07.html"
       tags: ["端口扫描", "资产发现"]
-      path: ""
+      path: 'C:\信息收集\Nmap'
 
-    - name: "Masscan"
-      desc: "超高速端口扫描器，号称全互联网5分钟扫完"
-      link: "https://github.com/robertdavidgraham/masscan"
-      tags: ["端口扫描", "大规模扫描"]
-      path: ""
+    - name: "JSFinder"
+      desc: "爬取单页面所有JS链接，从中发现URL和子域名"
+      link: "https://github.com/Threezh1/JSFinder"
+      tags: ["子域名收集"]
+      path: 'C:\信息收集\子域名收集'
 
-    - name: "Fscan"
-      desc: "内网扫描工具，一键弱口令/漏洞探测"
-      link: "https://github.com/shadow1ng/fscan"
-      tags: ["内网", "弱口令", "漏洞扫描"]
-      path: ""
-
-    - name: "EHole"
-      desc: "棱洞 - 资产探测与指纹识别"
-      link: "https://github.com/EdgeSecurityTeam/EHole"
-      tags: ["指纹识别", "资产发现"]
-      path: ""
+    - name: "subDomainsBrute"
+      desc: "高并发DNS暴力枚举工具"
+      link: "https://github.com/lijiejie/subDomainsBrute"
+      tags: ["子域名收集"]
+      path: 'C:\信息收集\子域名收集'
 
     - name: "OneForAll"
-      desc: "子域名收集神器，支持多种爆破/枚举/API"
+      desc: "执行时间长，搜索到的子域名多"
       link: "https://github.com/shmilylty/OneForAll"
-      tags: ["子域名", "信息收集"]
-      path: ""
+      tags: ["子域名收集"]
+      path: 'C:\信息收集\子域名收集'
 
-    - name: "Subfinder"
-      desc: "被动子域名枚举工具"
-      link: "https://github.com/projectdiscovery/subfinder"
-      tags: ["子域名", "被动收集"]
-      path: ""
+    - name: "ENScan GO"
+      desc: "默认收集公司信息（备案、微博、微信公众号、App）"
+      link: "https://github.com/wgpsec/ENScan_GO"
+      tags: ["综合信息收集"]
+      path: 'C:\信息收集\综合信息收集'
 
-    - name: "Httpx"
-      desc: "HTTP服务探活与指纹识别"
-      link: "https://github.com/projectdiscovery/httpx"
-      tags: ["指纹识别", "HTTP探测"]
-      path: ""
+    - name: "superSearchPlus"
+      desc: "谷歌信息收集插件"
+      link: "https://github.com/dark-kingA/superSearchPlus"
+      tags: ["综合信息收集"]
+      path: 'C:\信息收集\谷歌插件'
 
-    - name: "WhatWeb"
-      desc: "网站指纹识别工具"
-      link: "https://github.com/urbanadventurer/WhatWeb"
-      tags: ["指纹识别", "CMS检测"]
-      path: ""
+    - name: "Bypass_cdn"
+      desc: "CDN绕过查询真实ip"
+      link: "https://github.com/Pluto-123/Bypass_cdn"
+      tags: ["CDN绕过"]
+      path: 'C:\信息收集\CDN绕过查询真实ip工具'
 
-- category: "漏洞扫描"
-  icon: "🛡️"
-  tools:
-    - name: "Nuclei"
-      desc: "基于YAML模板的漏洞扫描器，社区模板海量"
-      link: "https://github.com/projectdiscovery/nuclei"
-      tags: ["漏洞扫描", "自动化", "模板化"]
-      path: ""
-
-    - name: "Xray"
-      desc: "安全评估工具，支持主动/被动扫描"
-      link: "https://github.com/chaitin/xray"
-      tags: ["漏洞扫描", "被动扫描", "主动扫描"]
-      path: ""
+    - name: "IISPutScanner"
+      desc: "收集旁站和C段IP"
+      link: "https://fan-seclab.github.io/2026/04/information_gathering/#%E4%B8%89%E6%94%B6%E9%9B%86%E6%97%81%E7%AB%99%E5%92%8C-c-%E6%AE%B5-ip"
+      tags: ["收集旁站和C段IP"]
+      path: 'C:\信息收集\旁站'
 
     - name: "Goby"
-      desc: "网络资产扫描与漏洞利用"
-      link: "https://gobysec.net"
-      tags: ["资产扫描", "漏洞利用", "图形化"]
-      path: ""
+      desc: "资产扫描工具"
+      link: "https://gobysec.net/"
+      tags: ["综合信息收集"]
+      path: 'C:\信息收集\旁站'
 
-    - name: "AWVS"
-      desc: "商业级Web漏洞扫描器"
-      link: "https://www.acunetix.com"
-      tags: ["Web扫描", "商业", "爬虫"]
-      path: ""
+    - name: "Wappaly"
+      desc: "浏览器插件，一键分析网站技术栈（架构、语言、框架、服务器等）"
+      link: "https://www.wappalyzer.com/"
+      tags: ["收集网站指纹信息"]
+      path: 'C:\信息收集\浏览器插件'
 
-    - name: "AppScan"
-      desc: "IBM出品的Web应用安全扫描器"
-      tags: ["Web扫描", "商业"]
-      path: ""
+    - name: "御剑WEB指纹识别"
+      desc: "收集网站指纹信息"
+      link: "https://fan-seclab.github.io/2026/04/information_gathering/#63-%E5%B7%A5%E5%85%B7"
+      tags: ["收集网站指纹信息"]
+      path: 'C:\信息收集\网站指纹信息收集'
 
-- category: "Web漏洞利用"
+    - name: "Ehole"
+      desc: "收集网站指纹信息"
+      link: "https://github.com/EdgeSecurityTeam/Ehole"
+      tags: ["收集网站指纹信息"]
+      path: 'C:\信息收集\网站指纹信息收集'
+
+    - name: "7kbscan"
+      desc: "目录扫描（图形化界面）"
+      link: "https://fan-seclab.github.io/2026/04/information_gathering/#71-%E7%9B%AE%E5%BD%95%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86"
+      tags: ["目录信息收集"]
+      path: 'C:\信息收集\目录信息收集'
+
+    - name: "dirsearch"
+      desc: "Python 目录扫描工具"
+      link: "https://fan-seclab.github.io/2026/04/information_gathering/#71-%E7%9B%AE%E5%BD%95%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86"
+      tags: ["目录信息收集"]
+      path: 'C:\信息收集\目录信息收集'
+
+    - name: "Google Hack"
+      desc: "谷歌高级搜索"
+      link: "https://fan-seclab.github.io/2026/04/information-gathering-supplement/#11-%E5%B8%B8%E7%94%A8%E6%90%9C%E7%B4%A2%E8%AF%AD%E6%B3%95"
+      tags: ["信息收集综合利用该工具"]
+      path: 'C:\信息收集\GoogleHack'
+
+    - name: "Shodan"
+      desc: "Shodan 是用于搜索互联网连接设备的搜索引擎，它可以让你探索互联网、发现联网设备及其位置、网络服务，监视网络安全性，进行全球性统计等。"
+      link: "https://www.shodan.io/"
+      tags: ["黑暗搜索引擎"]
+      path: 'C:\信息收集\Shodan'
+
+    - name: "FOFA"
+      desc: "可用于探索全球互联网资产信息、进行资产及漏洞影响范围分析、应用分布统计、应用流行度态势感知等。号称能够把你想要的真实内容都搜索出来。"
+      link: "https://fofa.so/"
+      tags: ["黑暗搜索引擎"]
+      path: 'C:\信息收集\FOFA'
+
+    - name: "ZoomEye"
+      desc: "钟馗之眼"
+      link: "https://www.zoomeye.org/"
+      tags: ["黑暗搜索引擎"]
+      path: 'C:\信息收集\ZoomEye'
+
+    - name: "Proxifier"
+      desc: "一款功能强大的移动端的代理客户端，。"
+      link: "https://fan-seclab.github.io/2026/04/information-gathering-mobile/#23-proxifier-%E9%85%8D%E7%BD%AE%E6%AD%A5%E9%AA%A4"
+      tags: ["移动端代理"]
+      path: 'C:\信息收集\移动端信息收集'
+
+- category: "渗透测试工具"
   icon: "⚡"
   tools:
     - name: "Burp Suite"
       desc: "Web抓包改包神器，渗透测试标配"
       link: "https://portswigger.net/burp"
       tags: ["抓包", "改包", "Web测试"]
-      path: ""
+      path: 'C:\渗透测试工具\BurpSuite'
 
-    - name: "SQLMap"
-      desc: "自动化SQL注入检测与利用"
-      link: "https://sqlmap.org"
-      tags: ["SQL注入", "自动化", "数据库"]
-      path: ""
-
-    - name: "BeFF"
-      desc: "浏览器漏洞利用框架"
-      link: "https://beefproject.com"
-      tags: ["XSS", "浏览器", "Hook"]
-      path: ""
-
-    - name: "Cknife / Chopper"
-      desc: "Webshell管理工具（中国菜刀系）"
-      tags: ["Webshell", "管理工具"]
-      path: ""
-
-    - name: "AntSword"
-      desc: "开源跨平台Webshell管理工具"
-      link: "https://github.com/AntSwordProject/antSword"
-      tags: ["Webshell", "管理工具", "开源"]
-      path: ""
-
-    - name: "Godzilla"
-      desc: "哥斯拉 - Webshell管理工具"
-      link: "https://github.com/BeichenDream/Godzilla"
-      tags: ["Webshell", "管理工具", "加密"]
-      path: ""
+    - name: "Hackbar插件"
+      desc: "直接修改url参数，表单post数据，绕过前端js表单校验"
+      link: ""
+      tags: ["Hackbar插件"]
+      path: 'C:\渗透测试工具\Hackbar'
 
 - category: "密码爆破"
   icon: "🔑"
@@ -139,133 +150,49 @@
       desc: "暴力破解神器，支持多协议"
       link: "https://github.com/vanhauser-thc/thc-hydra"
       tags: ["爆破", "多协议"]
-      path: ""
+      path: 'C:\密码爆破\Hydra'
 
-    - name: "Hashcat"
-      desc: "GPU加速的密码哈希破解"
-      link: "https://hashcat.net/hashcat/"
-      tags: ["哈希破解", "GPU", "密码恢复"]
-      path: ""
-
-    - name: "John the Ripper"
-      desc: "经典密码破解工具"
-      link: "https://www.openwall.com/john/"
-      tags: ["哈希破解", "CPU"]
-      path: ""
-
-    - name: "Medusa"
-      desc: "并行网络登录暴力破解器"
-      link: "https://github.com/jmk-foofus/medusa"
-      tags: ["爆破", "多协议"]
-      path: ""
-
-- category: "内网渗透"
-  icon: "🌐"
+- category: "漏洞利用工具"
+  icon: "⚡"
   tools:
-    - name: "Metasploit"
-      desc: "渗透测试框架，漏洞利用/后渗透"
-      link: "https://www.metasploit.com"
-      tags: ["漏洞利用", "后渗透", "框架"]
-      path: ""
+    - name: "ds_store_exp"
+      desc: "利用 .DS_Store 文件泄露获取目录结构"
+      link: "https://github.com/lijiejie/ds_store_exp"
+      tags: ["DS_Store文件泄露"]
+      path: 'C:\信息收集\SVN信息泄露'
 
-    - name: "Cobalt Strike"
-      desc: "CS - 红队C2框架"
-      tags: ["C2", "后渗透", "红队"]
-      path: ""
+    - name: "AntSword"
+      desc: "一句话木马"
+      link: "https://fan-seclab.github.io/2026/04/use_of_the_SQL/#%E4%B8%89getshell"
+      tags: ["一句话木马getshell"]
+      path: 'C:\蚁剑'
 
-    - name: "Mimikatz"
-      desc: "Windows密码提取神器"
-      link: "https://github.com/gentilkiwi/mimikatz"
-      tags: ["密码提取", "Windows", "凭证窃取"]
-      path: ""
+    - name: "SQLMap"
+      desc: "可自动化检测和利用SQL注入缺陷以及接管数据库服务器。"
+      link: "https://sqlmap.org"
+      tags: ["SQL注入", "自动化", "数据库"]
+      path: 'C:\漏洞利用工具\SQLMap'
 
-    - name: "BloodHound"
-      desc: "域环境攻击路径分析"
-      link: "https://github.com/BloodHoundAD/BloodHound"
-      tags: ["域环境", "权限提升", "攻击路径"]
-      path: ""
+    - name: "短链接"
+      desc: "短链接生成"
+      link: "https://www.ft12.com/"
+      tags: ["https://www.ft12.com/"]
+      path: 'C:\漏洞利用工具\短链接'
 
-    - name: "Frp"
-      desc: "内网穿透代理工具"
-      link: "https://github.com/fatedier/frp"
-      tags: ["内网穿透", "代理", "隧道"]
-      path: ""
+    - name: "cookie-editor"
+      desc: "获取，导入，导出当前的cookie信息的浏览器插件"
+      link: ""
+      tags: ["获取cookie"]
+      path: 'C:\漏洞利用工具\cookie-editor'
 
-    - name: "Ngrok"
-      desc: "内网穿透，暴露本地服务到公网"
-      link: "https://ngrok.com"
-      tags: ["内网穿透", "隧道", "Webhook"]
-      path: ""
+    - name: "Edjpgcom"
+      desc: "将jpg图片制作成木马图片"
+      link: "https://fan-seclab.github.io/2026/06/upload/#33-getimagesize-%E5%87%BD%E6%95%B0%E6%A0%A1%E9%AA%8C%E7%BB%95%E8%BF%87"
+      tags: ["木马图片"]
+      path: 'C:\文件上传\edjpgcom图片插入一句话工具'
 
-    - name: "Nps"
-      desc: "轻量级内网穿透代理服务器"
-      link: "https://github.com/ehang-io/nps"
-      tags: ["内网穿透", "代理", "隧道"]
-      path: ""
-
-- category: "逆向与二进制"
-  icon: "🔬"
-  tools:
-    - name: "IDA Pro"
-      desc: "交互式反汇编器，二进制分析标杆"
-      link: "https://hex-rays.com/ida-pro/"
-      tags: ["反汇编", "逆向", "商业"]
-      path: ""
-
-    - name: "Ghidra"
-      desc: "NSA开源的逆向工程框架"
-      link: "https://ghidra-sre.org"
-      tags: ["反汇编", "逆向", "开源"]
-      path: ""
-
-    - name: "x64dbg"
-      desc: "Windows下的开源调试器"
-      link: "https://x64dbg.com"
-      tags: ["调试", "Windows", "逆向"]
-      path: ""
-
-    - name: "OllyDbg"
-      desc: "经典的32位用户态调试器"
-      link: "https://www.ollydbg.de"
-      tags: ["调试", "逆向"]
-      path: ""
-
-- category: "编码/加解密"
-  icon: "📦"
-  tools:
-    - name: "CyberChef"
-      desc: "瑞士军刀 - 编解码/加解密/格式转换"
-      link: "https://gchq.github.io/CyberChef/"
-      tags: ["编解码", "加解密", "在线工具"]
-      path: ""
-
-    - name: "Base64 / Hex"
-      desc: "常见的编码方式，用于数据传输和混淆"
-      tags: ["编码", "基础"]
-      path: ""
-
-    - name: "Hash Identifier"
-      desc: "哈希类型识别工具（hashid / hash-identifier）"
-      tags: ["哈希识别", "密码分析"]
-      path: ""
-
-- category: "其他"
-  icon: "🧰"
-  tools:
-    - name: "Python"
-      desc: "脚本语言，POC/EXP快速开发首选"
-      link: "https://www.python.org"
-      tags: ["脚本", "开发", "POC"]
-      path: ""
-
-    - name: "Docker"
-      desc: "容器化部署，快速搭建漏洞环境"
-      link: "https://www.docker.com"
-      tags: ["容器", "环境搭建"]
-      path: ""
-
-    - name: "Postman"
-      desc: "API调试与HTTP请求测试"
-      link: "https://www.postman.com"
-      tags: ["API测试", "HTTP", "调试"]
-      path: ""
+    - name: "010editor"
+      desc: "对比上传前后的图片文件，找到没有被修改的字节"
+      link: ""
+      tags: ["图片对比"]
+      path: 'C:\文件上传\010EditorWin64Portable15.0.2.v2'
