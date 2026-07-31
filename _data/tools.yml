@@ -150,7 +150,19 @@
       desc: "暴力破解神器，支持多协议"
       link: "https://github.com/vanhauser-thc/thc-hydra"
       tags: ["爆破", "多协议"]
-      path: 'C:\密码爆破\Hydra'
+      path: 'kali'
+      
+    - name: "Bruter"
+      desc: "暴力破解神器，支持多协议"
+      link: "https://fan-seclab.github.io/2026/07/Brute-Force/#bruter"
+      tags: ["爆破", "多协议"]
+      path: 'C:\Bruter_1.1\Bruter_1.1'
+      
+    - name: "pkav"
+      desc: "图片识别提取工具，识别图片中的验证码"
+      link: ""
+      tags: ["识别图片中验证码"]
+      path: 'C:\pkav\pkav'
 
 - category: "漏洞利用工具"
   icon: "⚡"
@@ -196,3 +208,17 @@
       link: ""
       tags: ["图片对比"]
       path: 'C:\文件上传\010EditorWin64Portable15.0.2.v2'
+
+    - name: "CSRFTester"
+      desc: "专门用于CSRF漏洞检测与POC生成"
+      link: ""
+      tags: ["图片对比"]
+      path: 'D:\BaiduNetdiskDownload\学习工具\8第八阶段渗透测试阶段工具\day52CSRF漏洞\CSRFTester-1.0\CSRFTester-1.0'
+      
+    - name: "java反序列化利用程序UI版Beta1.1"
+      desc: "java反序列化利用程序"
+      link: "https://fan-seclab.github.io/2026/07/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/#%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8%E5%B7%A5%E5%85%B7"
+      tags: ["java反序列化利用程序"]
+      path: 'C:\反序列化\java反序列化利用程序UI版Beta1.1\java反序列化利用程序UI版Beta1.1'
+      
+      
