@@ -1,0 +1,347 @@
+---
+layout: page
+title: 🔧 工具库
+description: 渗透测试常用工具分类整理
+group: navigation
+---
+
+<!-- ===== 工具库页面 ===== -->
+<div class="tools-page">
+
+  <!-- 页面介绍 -->
+  <div class="tools-hero">
+    <h1 class="tools-hero__title">🧰 工具库</h1>
+    <p class="tools-hero__desc">
+      渗透测试中常用的工具，按分类整理。点击工具名称可跳转官网/项目地址。
+      <br>想添加工具？直接编辑 <code>_data/tools.yml</code> 即可。
+    </p>
+  </div>
+
+  <!-- 分类索引 -->
+  <div class="tools-index">
+    {% for category in site.data.tools %}
+    <a href="#cat-{{ category.category | slugify }}" class="tools-index__item">
+      <span class="tools-index__icon">{{ category.icon }}</span>
+      <span class="tools-index__name">{{ category.category }}</span>
+      <span class="tools-index__count">{{ category.tools | size }}</span>
+    </a>
+    {% endfor %}
+  </div>
+
+  <!-- 每个分类的工具卡片区 -->
+  {% for category in site.data.tools %}
+  {% assign cat_id = category.category | slugify %}
+  <div id="cat-{{ cat_id }}" class="tool-category">
+    <div class="tool-category__header">
+      <span class="tool-category__icon">{{ category.icon }}</span>
+      <h2 class="tool-category__title">{{ category.category }}</h2>
+      <span class="tool-category__count">{{ category.tools | size }} 个工具</span>
+    </div>
+
+    <div class="tool-category__grid">
+      {% for tool in category.tools %}
+      <div class="tool-card">
+        <div class="tool-card__body">
+          <h3 class="tool-card__name">
+            {% if tool.link %}
+            <a href="{{ tool.link }}" target="_blank" rel="noopener">{{ tool.name }}</a>
+            {% else %}
+            {{ tool.name }}
+            {% endif %}
+          </h3>
+          <p class="tool-card__desc">{{ tool.desc }}</p>
+          {% if tool.tags %}
+          <div class="tool-card__tags">
+            {% for tag in tool.tags %}
+            <span class="tool-card__tag">{{ tag }}</span>
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+        {% if tool.link %}
+        <div class="tool-card__footer">
+          <a href="{{ tool.link }}" target="_blank" rel="noopener" class="tool-card__link">
+            访问官网 →
+          </a>
+        </div>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endfor %}
+
+  <!-- 底部提示 -->
+  <div class="tools-footer">
+    <p>📝 提示：想要添加或修改工具？编辑 <code>_data/tools.yml</code> 文件即可自动更新此页面。</p>
+  </div>
+</div>
+
+<!-- ===== 样式 ===== -->
+<style>
+/* ---- 工具页面整体 ---- */
+.tools-page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1rem 0;
+}
+
+/* ---- 顶部 hero ---- */
+.tools-hero {
+  text-align: center;
+  padding: 2.5rem 1rem 2rem;
+}
+
+.tools-hero__title {
+  font-size: 2rem;
+  margin: 0 0 0.6rem;
+  color: #1a202c;
+}
+
+.tools-hero__desc {
+  color: #64748b;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  margin: 0;
+}
+
+.tools-hero__desc code {
+  background: #edf2f7;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.85em;
+}
+
+/* ---- 分类索引 ---- */
+.tools-index {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin: 1.8rem 0 2.5rem;
+  padding: 0;
+}
+
+.tools-index__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 30px;
+  text-decoration: none;
+  color: #334155;
+  font-size: 0.88rem;
+  transition: all 0.2s ease;
+}
+
+.tools-index__item:hover {
+  background: #2c3e50;
+  color: #fff;
+  border-color: #2c3e50;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(44, 62, 80, 0.15);
+}
+
+.tools-index__icon {
+  font-size: 1rem;
+}
+
+.tools-index__name {
+  font-weight: 500;
+}
+
+.tools-index__count {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  background: #fff;
+  border-radius: 10px;
+  padding: 1px 7px;
+  min-width: 18px;
+  text-align: center;
+  transition: inherit;
+}
+
+.tools-index__item:hover .tools-index__count {
+  color: #2c3e50;
+  background: rgba(255,255,255,0.85);
+}
+
+/* ---- 分类区块 ---- */
+.tool-category {
+  margin-bottom: 2.5rem;
+}
+
+.tool-category__header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 1.2rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 2px solid #edf2f7;
+}
+
+.tool-category__icon {
+  font-size: 1.5rem;
+}
+
+.tool-category__title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin: 0;
+  color: #1a202c;
+}
+
+.tool-category__count {
+  margin-left: auto;
+  font-size: 0.8rem;
+  color: #94a3b8;
+  background: #f1f5f9;
+  padding: 2px 10px;
+  border-radius: 12px;
+}
+
+/* ---- 工具网格 ---- */
+.tool-category__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
+}
+
+/* ---- 工具卡片 ---- */
+.tool-card {
+  background: #ffffff;
+  border: 1px solid #eef2f6;
+  border-radius: 14px;
+  padding: 0;
+  transition: all 0.25s ease;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.tool-card:hover {
+  border-color: #d0d9e6;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+  transform: translateY(-2px);
+}
+
+.tool-card__body {
+  padding: 18px 18px 12px;
+  flex: 1;
+}
+
+.tool-card__name {
+  margin: 0 0 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.tool-card__name a {
+  color: #1a56db;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.tool-card__name a:hover {
+  color: #1341a8;
+  text-decoration: underline;
+}
+
+.tool-card__desc {
+  color: #475569;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  margin: 0 0 10px;
+}
+
+/* ---- 标签 ---- */
+.tool-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.tool-card__tag {
+  display: inline-block;
+  font-size: 0.7rem;
+  color: #4a6fa5;
+  background: #eef4ff;
+  border-radius: 4px;
+  padding: 2px 8px;
+  letter-spacing: 0.01em;
+}
+
+/* ---- 卡片底部链接 ---- */
+.tool-card__footer {
+  border-top: 1px solid #f1f5f9;
+  padding: 10px 18px;
+}
+
+.tool-card__link {
+  font-size: 0.82rem;
+  color: #64748b;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: color 0.2s;
+}
+
+.tool-card__link:hover {
+  color: #1a56db;
+}
+
+/* ---- 底部提示 ---- */
+.tools-footer {
+  text-align: center;
+  margin: 3rem 0 1rem;
+  padding: 1.2rem;
+  background: #f8fafc;
+  border-radius: 12px;
+  border: 1px solid #eef2f6;
+}
+
+.tools-footer p {
+  margin: 0;
+  color: #64748b;
+  font-size: 0.88rem;
+}
+
+.tools-footer code {
+  background: #edf2f7;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.85em;
+}
+
+/* ---- 暗色模式适配（如果博客有） ---- */
+@media (prefers-color-scheme: dark) {
+  .tool-card { background: #1e293b; border-color: #334155; }
+  .tool-card:hover { border-color: #475569; }
+  .tool-card__name a { color: #60a5fa; }
+  .tool-card__name a:hover { color: #93bbfc; }
+  .tool-card__desc { color: #cbd5e1; }
+  .tool-card__tag { background: #1e3a5f; color: #93c5fd; }
+  .tool-card__footer { border-color: #334155; }
+  .tool-card__link { color: #94a3b8; }
+  .tool-card__link:hover { color: #60a5fa; }
+  .tools-index__item { background: #1e293b; border-color: #334155; color: #cbd5e1; }
+  .tools-index__item:hover { background: #2c3e50; color: #fff; }
+  .tools-index__count { background: #334155; color: #94a3b8; }
+  .tools-footer { background: #1e293b; border-color: #334155; }
+  .tools-footer p { color: #94a3b8; }
+  .tools-footer code { background: #334155; }
+  .tools-hero__title { color: #f1f5f9; }
+  .tool-category__title { color: #f1f5f9; }
+}
+
+/* ---- 移动端 ---- */
+@media (max-width: 600px) {
+  .tool-category__grid {
+    grid-template-columns: 1fr;
+  }
+  .tools-hero__title { font-size: 1.5rem; }
+}
+</style>
