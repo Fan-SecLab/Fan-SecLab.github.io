@@ -1,10 +1,9 @@
 ---
-
 layout: post
 title: "信息收集"
 date: 2026-04-15
-tags: JSFinder subDomainsBrute subfinder OneForAll ENScan superSearchPlus谷歌插件 Bypass_cdn Nmap Wappalyzer浏览器插件 御剑WEB指纹识
-别 EHole（棱洞）7kbscan dirsearch GitHack dds_store_expis
+tags: JSFinder subDomainsBrute subfinder OneForAll ENScan superSearchPlus谷歌插件 Bypass_cdn Nmap Wappalyzer浏览器插件 御剑WEB指纹识别 EHole（棱洞）7kbscan dirsearch GitHack dds_store_expis
+description: 渗透测试第一步——信息收集全攻略。从域名、IP、端口、指纹到敏感信息泄露，覆盖 JSFinder、subDomainsBrute、subfinder、OneForAll、Nmap、EHole、dirsearch、GitHack 等工具的实战用法。
 ---
 
 # 🔍 信息收集
@@ -24,6 +23,7 @@ tags: JSFinder subDomainsBrute subfinder OneForAll ENScan superSearchPlus谷歌�
 | 站长之家 | <https://whois.chinaz.com/> |
 
 **Kali 指令：**
+
 ```bash
 whois baidu.com
 ```
@@ -91,11 +91,12 @@ whois baidu.com
 | **[superSearchPlus](https://github.com/dark-kingA/superSearchPlus)** | 谷歌浏览器插件 |
 
 **ENScan 用法：**
+
 ```bash
 # 单个公司查询
 ./enscan -n 小米
 
-# 批量查询（文本按行分割）
+# 批量查询（文本按行分割，一行一个目标）
 ./enscan -f f.txt
 ```
 
@@ -109,7 +110,13 @@ whois baidu.com
 
 **国外 CDN 服务商：** CloudFlare、StackPath、Fastly、Akamai、CloudFront、Edgecast、CDNetworks、Google Cloud CDN
 
+> 🎯 **核心思路：CDN 的本质是流量分发，总有子域名或历史记录指向真实源站。**
+
+---
+
 ### 2.1 方法一：通过未加 CDN 的子域名查找真实 IP
+
+---
 
 ### 2.2 方法二：超级 Ping 判断 CDN
 
@@ -121,24 +128,32 @@ whois baidu.com
 | 站长之家 Ping | <https://Ping.chinaz.com> |
 | 17CE | <https://www.17ce.com/> |
 
+---
+
 ### 2.3 方法三：基础命令
 
 ```bash
-# Ping 测试
+# Ping 测试，检测连通性和 IP
 ping www.baidu.com
 
 # DNS 查询记录，诊断网络问题
 nslookup baidu.com
 
-# Linux 下详细 DNS 查询
+# Linux 下详细 DNS 查询，获取更多解析信息
 dig www.baidu.com
 ```
+
+---
 
 ### 2.4 方法四：通过邮箱服务器 IP
 
 > 进入邮箱 → 更多 → 查看信头，获取发件服务器真实 IP
 
+---
+
 ### 2.5 方法五：通过系统漏洞或中间件漏洞直接获取 IP
+
+---
 
 ### 2.6 方法六：CDN 绕过工具
 
@@ -149,8 +164,11 @@ dig www.baidu.com
 | **Bypass_cdn** | Python 3 | <https://github.com/Pluto-123/Bypass_cdn> |
 
 ```bash
+# Bypass_cdn 使用示例
 python3 scan.py https://www.mi.com
 ```
+
+---
 
 ### 2.7 方法七：历史 DNS 解析
 
@@ -164,6 +182,8 @@ python3 scan.py https://www.mi.com
 | ViewDNS | <http://viewdns.info/> |
 | IPIP CDN查询 | <https://tools.ipip.net/cdn.php> |
 | SecurityTrails | <https://securitytrails.com/domain/wulaoban.top/dns> |
+
+---
 
 ### 2.8 方法八：子域名法
 
@@ -187,6 +207,8 @@ python3 scan.py https://www.mi.com
 - <https://www.webscan.cc/>
 - <https://chapangzhan.com/>
 - vstart50 → tools → IISPutScanner
+
+---
 
 ### 3.2 C 段
 
@@ -222,6 +244,8 @@ python3 scan.py https://www.mi.com
 | 27017 | MongoDB | 非关系型数据库 |
 | 3389 | RDP | Windows 远程桌面（内网穿透常用） |
 | 5900 | VNC | 远程控制工具 |
+
+> 💡 **端口即攻击面。扫描结果出来后，每个开放端口都可以对照这个表找到对应的攻击方向。**
 
 ---
 
@@ -265,6 +289,8 @@ python3 scan.py https://www.mi.com
 | `-n` | 不进行 DNS 解析（加速扫描） | `nmap -sn -n 192.168.1.0/24` |
 | `--traceroute` | 追踪路由节点 | `nmap -sn --traceroute 192.168.1.1` |
 | `--dns-servers` | 指定 DNS 服务器 | `nmap --dns-servers 8.8.8.8,1.1.1.1 baidu.com` |
+
+> 💡 **实战小技巧：内网扫描时加 `-n` 跳过 DNS 解析可以大幅提速；不确定目标是否在线时用 `-Pn` 跳过主机发现直接扫端口。**
 
 ---
 
@@ -324,12 +350,16 @@ python3 scan.py https://www.mi.com
 #### 使用演示
 
 ```bash
-# 内网扫描
+# 内网扫描：SYN半开 + UDP，速度T4，扫描前300端口
 nmap -sS -sU -T4 --top-ports 300 192.168.0.22
 
-# 外网扫描
+# 外网扫描：同上配置
 nmap -sS -sU -T4 --top-ports 300 152.136.221.160
 ```
+
+> 🎯 **实战经验：先 `--top-ports 300` 快速摸底，发现有价值的目标再 `-p 1-65535` 全端口扫描。别一上来就全端口，慢且容易被发现。**
+
+---
 
 #### -T 时间模板
 
@@ -341,6 +371,8 @@ nmap -sS -sU -T4 --top-ports 300 152.136.221.160
 | `-T3` | Normal | ⭐ 默认模式，无优化 |
 | `-T4` | Aggressive | ⭐ 假设网络可靠，加速扫描 |
 | `-T5` | Insane | 极速，牺牲准确性 |
+
+> 💡 **大多数情况 `-T4` 就够用。`-T5` 太快容易丢包漏端口，`-T2` 以下慢得折磨人。**
 
 ---
 
@@ -365,6 +397,7 @@ nmap -sS -sU -T4 --top-ports 300 152.136.221.160
 | `--version-trace` | 显示详细侦测过程 |
 
 ```bash
+# 版本侦测示例
 nmap -sV 192.168.111.131
 ```
 
@@ -381,6 +414,7 @@ nmap -sV 192.168.111.131
 | `--osscan-guess` | 大胆猜测，降低准确性但提供更多候选 |
 
 ```bash
+# OS 侦测示例
 nmap -O 152.136.221.160
 ```
 
@@ -391,10 +425,10 @@ nmap -O 152.136.221.160
 > Nmap 漏洞库较小，实际工作中多用专业漏洞扫描工具。以下为基本用法：
 
 ```bash
-# 常见漏洞扫描
+# 常见漏洞扫描：auth认证 + vuln漏洞
 nmap 192.168.111.131 --script=auth,vuln
 
-# 精确指定漏洞类型
+# 精确指定漏洞脚本：DNS域传送 + FTP匿名 + 备份文件探测 + ShellShock + robots.txt + MS17-010
 nmap 192.168.111.131 --script=dns-zone-transfer,ftp-anon,http-backup-finder,http-shellshock,http-robots.txt,smb-vuln-ms17-010
 ```
 
@@ -411,10 +445,10 @@ nmap 192.168.111.131 --script=dns-zone-transfer,ftp-anon,http-backup-finder,http
 - 🛡️ 躲避防火墙、IDS 的识别与封禁
 
 ```bash
-# -D 选项：使用诱饵 IP 进行扫描
+# -D 选项：使用诱饵 IP 进行扫描，在日志中混入假IP
 nmap -D 111.111.111.111,222.222.222.222,333.333.333.333 192.168.188.111
 
-# RND 随机生成诱饵地址
+# RND 随机生成5个诱饵地址
 nmap -D RND:5 192.168.188.111
 ```
 
@@ -424,7 +458,9 @@ nmap -D RND:5 192.168.188.111
 
 ## 六、收集网站指纹信息
 
-> **网站指纹**是指网站的技术架构、服务类型等独特可识别特征，如同人类指纹。
+> **网站指纹**是指网站的技术架构、服务类型等独特可识别特征，如同人类指纹。识别指纹后可以针对性地查找对应版本的漏洞。
+
+---
 
 ### 6.1 在线指纹识别
 
@@ -432,6 +468,8 @@ nmap -D RND:5 192.168.188.111
 |------|------|
 | 云悉 | <https://www.yunsee.cn/> |
 | 潮汐 | <http://finger.tidesec.com/> |
+
+---
 
 ### 6.2 CMS 识别
 
@@ -444,6 +482,8 @@ nmap -D RND:5 192.168.188.111
 | .NET | EoyooCMS |
 | 国外 | Joomla、WordPress、Magento、Drupal、Mambo |
 
+---
+
 ### 6.3 工具
 
 | 工具 | 说明 |
@@ -453,6 +493,8 @@ nmap -D RND:5 192.168.188.111
 
 > 💡 发现 Web 应用技术版本后，可搜索对应历史漏洞进行攻击。
 
+---
+
 ### 6.4 Ehole 工具
 
 > **EHole（棱洞）** — 帮助红队从大量杂乱资产中精准定位易被攻击的系统
@@ -461,9 +503,14 @@ nmap -D RND:5 192.168.188.111
 - 支持本地识别和 FOFA API 批量识别
 
 ```bash
-EHole_windows_amd64.exe finger -l 1.txt          # 指纹识别
-EHole_windows_amd64.exe finger -l 1.txt -o 1.xls # 结果输出到 Excel
+# 本地指纹识别
+EHole_windows_amd64.exe finger -l 1.txt
+
+# 识别后将结果输出到 Excel
+EHole_windows_amd64.exe finger -l 1.txt -o 1.xls
 ```
+
+---
 
 ### 6.5 源码指纹
 
@@ -487,7 +534,7 @@ EHole_windows_amd64.exe finger -l 1.txt -o 1.xls # 结果输出到 Excel
 | **dirsearch** | Python 目录扫描工具 | `python3 dirsearch.py -u http://192.168.188.129:80` |
 
 ```bash
-# dirsearch 安装依赖
+# dirsearch 安装依赖（使用清华镜像加速）
 pip3 install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 ```
 
@@ -511,9 +558,12 @@ pip3 install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 > Web 项目使用 Git 同步静态文件到服务器时，若未删除 `.git` 隐藏目录，可通过其恢复全部源代码
 
 **工具 — GitHack：**
+
 ```bash
+# 利用 GitHack 从 .git 目录恢复源码
 python3 GitHack.py http://192.168.111.128/.git
-# 若扫不出来，尝试子目录
+
+# 若根目录扫不出来，尝试子目录路径
 python3 GitHack.py http://192.168.111.128/test/.git/
 ```
 
@@ -526,30 +576,31 @@ python3 GitHack.py http://192.168.111.128/test/.git/
 > SVN 发布代码时会生成 `.svn` 隐藏目录，其中 `wc.db` 文件可下载并用 Navicat 分析 `NODES` 和 `REPOSITORY` 表获取源码
 
 **快速搭建 SVN 环境（CentOS）：**
+
 ```bash
-# 安装
+# 安装 SVN
 yum install subversion -y
 
-# 创建仓库
+# 创建仓库并开放权限
 cd /tmp && mkdir svn && chmod -R 777 /tmp/svn
 svnadmin create /tmp/svn
 
-# 配置（去掉注释）
+# 配置 SVN 权限（去掉以下文件的注释）
 cd /tmp/svn/conf
 # vim svnserve.conf → anon-access=read, auth-access=write, password-db=passwd, authz-db=authz
 # vim passwd → admin = admin
 # vim authz → [group] admins=admin, [/] @admins=rw, *=rw
 
-# 启动
+# 启动 SVN 服务（-d 后台运行，-r 指定根目录）
 svnserve -d -r /tmp/svn
 
-# 创建项目并提交
+# 创建测试项目并提交
 mkdir test && svn checkout svn://192.168.111.128 test
 cp -r /var/www/html/* /tmp/svn/test/
 svn add * && svn commit -m "first blood" *
 ```
 
-> ⚠️ **运维人员务必删除 `.svn` 和 `.git` 目录！**
+> ⚠️ **运维人员务必删除 `.svn` 和 `.git` 目录！这两个目录一旦暴露，等同于源码裸奔。**
 
 ---
 
@@ -558,7 +609,9 @@ svn add * && svn commit -m "first blood" *
 > Mac 下 Finder 自动生成的 `.DS_Store` 文件记录了文件夹展示方式，可能导致目录结构和源码泄露
 
 **工具 — ds_store_exp：**
+
 ```bash
+# 利用 .DS_Store 文件泄露获取目录结构
 python3 ds_store_exp.py http://192.168.111.131/pikachu/.DS_Store
 ```
 
