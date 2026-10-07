@@ -1,0 +1,92 @@
+---
+layout: page
+title:
+header: 根据快速导航到相应的文章
+group: navigation
+---
+{% include JB/setup %}
+
+<!-- 标签胶囊布局 -->
+<div style="margin-top: 2rem; display: flex; flex-wrap: wrap; gap: 10px;">
+{% for tag in site.tags %}
+  {% assign tag_name = tag[0] | escape %}
+  {% assign tag_id = tag_name | slugify %}
+
+  <!-- 小巧胶囊标签 -->
+  <div style="
+     background: #f4f7ff;
+     border-radius: 30px;
+     padding: 8px 16px;
+     cursor: pointer;
+     transition: all 0.2s ease;
+     font-size: 14px;
+     color: #007bff;
+     display: inline-flex;
+     align-items: center;
+     gap: 8px;
+  " onclick="toggleTag('{{ tag_id }}')">
+
+    <span># {{ tag_name }}</span>
+    <span style="font-size:12px; color:#999; background:#fff; border-radius:10px; padding:2px 6px;">
+      {{ tag[1] | size }}
+    </span>
+  </div>
+
+  <!-- 点击展开的文章列表 -->
+  <div id="{{ tag_id }}-list" style="
+    width: 100%;
+    display: none;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  ">
+    <ul class="tag-articles" style="
+        list-style: none;
+        padding: 14px 18px;
+        margin: 0;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    ">
+      {% assign pages_list = tag[1] %}
+      {% include JB/pages_list %}
+    </ul>
+  </div>
+{% endfor %}
+</div>
+
+<style>
+/* 文章列表样式 */
+.tag-articles li {
+  margin: 8px 0;
+}
+.tag-articles a {
+  color: #333;
+  text-decoration: none;
+  font-size: 14px;
+}
+.tag-articles a:hover {
+  color: #007bff;
+}
+
+/* 标签 hover */
+div[onclick]:hover {
+  background: #007bff !important;
+  color: white !important;
+}
+div[onclick]:hover span {
+  color: white !important;
+  background: rgba(255,255,255,0.2) !important;
+}
+</style>
+
+<script>
+// 标签展开/收起功能（修复版，一定生效）
+function toggleTag(id) {
+  const el = document.getElementById(id + '-list');
+  if (el.style.display === 'none' || el.style.display === '') {
+    el.style.display = 'block';
+  } else {
+    el.style.display = 'none';
+  }
+}
+</script>
