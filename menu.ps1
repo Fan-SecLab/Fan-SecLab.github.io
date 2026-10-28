@@ -104,6 +104,7 @@ function Show-Menu {
     Write-Host '   [4] 构建静态站 → dist\'
     Write-Host '   [5] 构建 + 打包 zip → release\'
     Write-Host '   [6] 预览构建产物（端口 4173）'
+    Write-Host '   [13] 一键部署到 GitHub（提交 + 推送，自动上线）' -ForegroundColor Green
     Write-Host ''
     Write-Host '  ─────────────── 查看 / 维护 ─────────' -ForegroundColor DarkGray
     Write-Host '   [7] 查看文章与分类清单'
@@ -214,6 +215,154 @@ function Open-Site {
     }
 }
 
+# ---------------------------------------------------------------- 一键部署
+# 从 git remote 推断 owner / repo，进而算出仓库地址、Actions 地址、网站地址，
+# 这样仓库改名或换远端都不用改脚本。
+function Get-RemoteInfo {
+    $url = $null
+    try { $url = (git remote get-url origin 2>$null) } catch {}
+    if (-not $url) { return $null }
+    $clean = ($url.Trim() -replace '\.git$', '')
+    if ($clean -match 'github\.com[:/](?<owner>[^/]+)/(?<repo>[^/]+)$') {
+        $owner = $Matches['owner']
+        $repo = $Matches['repo']
+        # 仓库名 == <owner>.github.io 时是根域名站点，否则是 /<repo>/ 项目页
+        $isRoot = $false
+        if ($repo -ieq ($owner + '.github.io')) { $isRoot = $true }
+
+        # GitHub Pages 域名惯用全小写
+        $siteHost = $owner.ToLower()
+        $site = 'https://{0}.github.io/' -f $siteHost
+        if (-not $isRoot) { $site = 'https://{0}.github.io/{1}/' -f $siteHost, $repo }
+
+        return [pscustomobject]@{
+            Owner      = $owner
+            Repo       = $repo
+            IsRoot     = $isRoot
+            RepoUrl    = ('https://github.com/{0}/{1}' -f $owner, $repo)
+            ActionsUrl = ('https://github.com/{0}/{1}/actions/workflows/deploy.yml' -f $owner, $repo)
+            SiteUrl    = $site
+        }
+    }
+    return $null
+}
+
+function Deploy-ToGitHub {
+    Write-Host ''
+    Write-Host '  ── 一键部署到 GitHub ──' -ForegroundColor Cyan
+
+    if (-not (Test-Path (Join-Path $ProjectRoot '.git'))) {
+        Write-Host '  ✗ 当前目录不是 git 仓库（找不到 .git）' -ForegroundColor Red
+        Write-Host '    先执行：git init; git branch -M main' -ForegroundColor DarkGray
+        Write-Log '部署失败：不是 git 仓库'
+        return
+    }
+
+    $info = Get-RemoteInfo
+    if (-not $info) {
+        Write-Host '  ✗ 没有可用的 origin 远端' -ForegroundColor Red
+        Write-Host '    先执行：git remote add origin https://github.com/<用户名>/<仓库>.git' -ForegroundColor DarkGray
+        Write-Log '部署失败：无 origin'
+        return
+    }
+
+    # 1) 先同步内容，保证 docs\posts 与 content\ 一致
+    Write-Host '  [1/4] 同步内容（content → docs/posts）…' -ForegroundColor Yellow
+    Invoke-Step -Label '同步内容' -Action { npm.cmd run sync } | Out-Null
+
+    # 2) 检查改动
+    Write-Host ''
+    Write-Host '  [2/4] 检查改动…' -ForegroundColor Yellow
+    $status = @()
+    try { $status = @(git status --porcelain 2>$null) } catch {}
+    $changed = @($status | Where-Object { $_.Trim() })
+
+    $emptyCommit = $false
+    if ($changed.Count -eq 0) {
+        Write-Host '  没有未提交的改动（线上已是最新）。' -ForegroundColor DarkGray
+        $ans = Read-Host '  要发一个空提交、强制重新部署一次吗？(y/N)'
+        if ($ans -ne 'y' -and $ans -ne 'Y') {
+            Write-Host '  已取消。' -ForegroundColor DarkGray
+            Write-Log '部署取消：无改动'
+            return
+        }
+        $emptyCommit = $true
+    } else {
+        Write-Host ("  共 {0} 项有改动：" -f $changed.Count) -ForegroundColor Cyan
+        $changed | Select-Object -First 15 | ForEach-Object { Write-Host ("    {0}" -f $_) -ForegroundColor DarkGray }
+        if ($changed.Count -gt 15) {
+            Write-Host ("    … 其余 {0} 项" -f ($changed.Count - 15)) -ForegroundColor DarkGray
+        }
+    }
+
+    # 3) 提交说明
+    Write-Host ''
+    $defaultMsg = '更新博客 {0}' -f (Get-Date -Format 'yyyy-MM-dd HH:mm')
+    $msg = Read-Host ("  [3/4] 提交说明（回车用默认：{0}）" -f $defaultMsg)
+    if (-not $msg) { $msg = $defaultMsg }
+
+    # 3.5) git 身份兜底：没配过会导致 commit 直接失败（报错还很晦涩）
+    $uname = ''
+    $uemail = ''
+    try { $uname = (git config user.name 2>$null) } catch {}
+    try { $uemail = (git config user.email 2>$null) } catch {}
+    if (-not $uname -or -not $uemail) {
+        $nv = $info.Owner
+        $ev = '{0}@users.noreply.github.com' -f $info.Owner
+        Write-Host '  未配置 git 身份，已自动设置（仅本仓库）：' -ForegroundColor Yellow
+        try { git config user.name $nv } catch {}
+        try { git config user.email $ev } catch {}
+        Write-Host ("    user.name  = {0}" -f $nv) -ForegroundColor DarkGray
+        Write-Host ("    user.email = {0}" -f $ev) -ForegroundColor DarkGray
+        Write-Host '    想换成自己的，执行：git config user.email "你的邮箱"' -ForegroundColor DarkGray
+    }
+
+    # 4) 提交 + 推送
+    Write-Host ''
+    Write-Host '  [4/4] 提交并推送…' -ForegroundColor Yellow
+
+    if ($emptyCommit) {
+        $ok = Invoke-Step -Label '提交（空提交）' -Action { git commit --allow-empty -m $msg } `
+            -KeepPattern @('changed', 'files? changed', 'insertion', 'create mode', '\[main')
+    } else {
+        $ok = Invoke-Step -Label '暂存 + 提交' -Action { git add -A; git commit -m $msg } `
+            -KeepPattern @('changed', 'files? changed', 'insertion', 'deletion', 'create mode', 'rename', '\[main')
+    }
+
+    if (-not $ok) {
+        Write-Host '  ✗ 提交失败，已中止（没有推送）。' -ForegroundColor Red
+        Write-Log '部署失败：提交失败'
+        return
+    }
+
+    $pushed = Invoke-Step -Label '推送到 GitHub' -Action { git push origin HEAD } `
+        -KeepPattern @('^To ', '->', 'up-to-date', 'Enumerating', 'Writing objects', 'Total', 'remote:')
+
+    if (-not $pushed) {
+        Write-Host ''
+        Write-Host '  ✗ 推送失败，常见原因：' -ForegroundColor Red
+        Write-Host '    · 没登录 → 推送时会弹浏览器，直接点授权' -ForegroundColor DarkGray
+        Write-Host '    · 要输密码 → GitHub 登录密码无效，要用 Token' -ForegroundColor DarkGray
+        Write-Host '      生成：https://github.com/settings/tokens （勾选 repo）' -ForegroundColor DarkGray
+        Write-Host '    · 远端有新提交 → 先 git pull --rebase 再试' -ForegroundColor DarkGray
+        Write-Log '部署失败：推送失败'
+        return
+    }
+
+    Write-Host ''
+    Write-Host '  ┌────────────── 部署已触发 ──────────────' -ForegroundColor Green
+    Write-Host ("  │ 仓库   {0}" -f $info.RepoUrl) -ForegroundColor Green
+    Write-Host ("  │ 进度   {0}" -f $info.ActionsUrl) -ForegroundColor Green
+    Write-Host ("  │ 网站   {0}" -f $info.SiteUrl) -ForegroundColor Green
+    Write-Host '  └────────────────────────────────────────' -ForegroundColor Green
+    Write-Host '  GitHub 会在 1~2 分钟内自动构建并发布；去「进度」看 build / deploy 变绿。' -ForegroundColor DarkGray
+
+    $open = Read-Host '  现在打开 Actions 页面看进度吗？(y/N)'
+    if ($open -eq 'y' -or $open -eq 'Y') { Start-Process $info.ActionsUrl }
+
+    Write-Log ("部署已触发：{0} | {1}" -f $msg, $info.ActionsUrl)
+}
+
 function Show-PostList {
     $posts = @(Get-Posts)
     if (-not $posts.Count) {
@@ -305,6 +454,7 @@ while ($true) {
                 Write-Log '预览 dist'
             }
         }
+        '13' { Deploy-ToGitHub }
         '7' { Show-PostList }
         '8' { Show-Missing }
         '9' {
@@ -334,7 +484,7 @@ while ($true) {
         }
         '0' { break }
         default {
-            Write-Host ("  ✗ 没有这个选项：{0}（请输入 0-12）" -f $choice) -ForegroundColor Red
+            Write-Host ("  ✗ 没有这个选项：{0}（请输入 0-13）" -f $choice) -ForegroundColor Red
         }
     }
 

@@ -48,6 +48,27 @@ export const posts: Post[] = [
     "images": 25
   },
   {
+    "url": "/posts/linux",
+    "slug": "linux",
+    "title": "linux",
+    "date": "2026-10-01",
+    "categories": [
+      "linux"
+    ],
+    "categoryColors": [
+      "#c2410c"
+    ],
+    "tags": [
+      "linux"
+    ],
+    "description": "了解就行不用理解",
+    "author": "Fan-SecLab",
+    "words": 1657,
+    "cjk": 1479,
+    "source": "2026-10-07-linux",
+    "images": 4
+  },
+  {
     "url": "/posts/waf绕过",
     "slug": "waf绕过",
     "title": "WAF绕过",
@@ -613,6 +634,12 @@ export const categories: Category[] = [
   {
     "name": "ctf",
     "color": "#b45309",
+    "desc": "",
+    "count": 1
+  },
+  {
+    "name": "linux",
+    "color": "#c2410c",
     "desc": "",
     "count": 1
   }
