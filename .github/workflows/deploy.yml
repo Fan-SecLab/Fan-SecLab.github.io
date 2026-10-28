@@ -1,0 +1,76 @@
+name: 部署到 GitHub Pages
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch: # 也可以在 Actions 页面手动点运行
+
+# GitHub Pages 部署所需的最小权限
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 同一时间只跑一个部署，新的推上来就取消旧的
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 安装 Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      # 仓库名以 .github.io 结尾 → 站点在域名根目录，base = /
+      # 其它仓库名（项目页）      → 站点在 /<仓库名>/ 下，base 要带上
+      - name: 计算 base 路径
+        id: base
+        run: |
+          REPO="${{ github.event.repository.name }}"
+          if [[ "$REPO" == *.github.io ]]; then
+            echo "value=/" >> "$GITHUB_OUTPUT"
+          else
+            echo "value=/$REPO/" >> "$GITHUB_OUTPUT"
+          fi
+          echo "base = $(cat "$GITHUB_OUTPUT" | tail -n1)"
+
+      - name: 安装依赖
+        run: npm ci
+
+      - name: 构建（同步内容 + 生成静态站）
+        env:
+          VITEPRESS_BASE: ${{ steps.base.outputs.value }}
+        run: npm run build
+
+      - name: 检查构建产物
+        run: |
+          test -f dist/index.html || { echo "dist/index.html 不存在，构建失败"; exit 1; }
+          echo "产物文件数：$(find dist -type f | wc -l)"
+          du -sh dist
+
+      - name: 配置 Pages
+        uses: actions/configure-pages@v5
+
+      - name: 上传产物
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: 发布到 GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,16 @@
+# 统一用 LF，避免 Windows 检出时反复出现「整个文件都改了」的噪音
+* text=auto eol=lf
+
+# 二进制文件不做换行转换
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.bmp binary
+*.ico binary
+*.zip binary
+
+# 脚本保持原样
+*.cmd text eol=crlf
+*.ps1 text eol=crlf

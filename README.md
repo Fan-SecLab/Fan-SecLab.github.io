@@ -1,0 +1,200 @@
+# Fan-SecLab 安全笔记博客
+
+本地部署的静态博客，基于 **VitePress 1.6 + Vue 3**。纯静态输出，不需要后端、不需要数据库。
+
+> 📖 **想看完整使用说明（启动、写文章、分类、部署、常见问题）→ [`使用说明.md`](./使用说明.md)**
+
+> 📌 **当前状态：24 篇文章、534 张图、约 6.6 万字；分类待你逐篇指定（现在全部「未分类」）。**
+> 内容来自 `blog-export-20261018`，已复制进 `content\`（一篇一个目录，md 和图片在一起）。
+> 新文章同样按这个结构放进 `content\`，跑一次 `npm run sync` 就会上站。
+
+## 快速开始
+
+```powershell
+cd "D:\blog"
+
+npm install      # 首次运行，安装依赖
+npm run dev      # 启动本地站点 → http://localhost:5173/  （Ctrl+C 停止）
+```
+
+也可以直接双击 **桌面上的「启动博客」快捷方式**（或项目里的 `启动博客.cmd`）：
+
+会打开一个**数字交互控制台**，输数字回车执行，跑完显示结果块：
+
+```
+  [1] 启动网站（没跑就启动，跑了就开浏览器）
+  [2] 只同步内容（加完文章 / 图片后用）
+  [3] 打开网站（服务需已运行）
+  [4] 构建静态站 → dist\
+  [5] 构建 + 打包 zip → release\
+  [6] 预览构建产物（4173）
+  [7] 查看文章与分类清单
+  [8] 检查图片缺失
+  [9] 清理重建   [10] 安装依赖   [11] 打开项目文件夹   [12] 打开使用说明   [0] 退出
+```
+
+选项 `1` 的行为：没在跑就新开窗口启动服务并打开浏览器；已经在跑就先 `sync` 再打开浏览器，不会重复启动。
+首次运行若没有 `node_modules`，会先自动 `npm install`。所有操作记在 `logs\menu-<日期>.log`。
+
+## 命令
+
+| 命令 | 作用 |
+| --- | --- |
+| `npm run sync` | 扫描内容目录 → 规整 front-matter → 修正图片路径 → 复制图片 → 重建文章索引 |
+| `npm run dev` | 先 `sync`，再启动开发服务器（热更新），默认 <http://localhost:5173/> |
+| `npm run build` | 先 `sync`，再构建静态站点到 **`dist/`** |
+| `npm run pack` | 先 `build`，再把 `dist/` 打成一个 zip 放到 `release/` |
+| `npm run preview` | 用内置静态服务器预览 `dist/`（4173，重建后刷新即可，不用重启） |
+
+`sync` 的可选参数：
+
+| 参数 | 说明 |
+| --- | --- |
+| `--src <目录>` | 指定 md 源目录（默认 `content`） |
+| `--img <目录>` | 指定图片目录（默认 `content/images`） |
+| `--clean` | 先清空 `docs/posts` 与已复制的图片再重建 |
+| `--remap-images` | 目标路径不存在、但**同名图片全盘唯一**时，自动改指到那个文件 |
+
+构建完成后 `dist/` 是纯静态文件，可以直接丢给 Nginx / GitHub Pages / Cloudflare Pages，
+或者用任意静态服务器打开：
+
+```powershell
+npx serve dist          # 或 python -m http.server -d dist 8000
+```
+
+## 目录结构
+
+```
+D:\blog\
+├─ content/                   # ★ 内容源目录（你只管往这里放东西）
+│  ├─ 放文章到这里.txt
+│  └─ images/                 # 可选：文章配图，按 <章节号>/文件名.png 放
+├─ scripts/
+│  ├─ sync-posts.mjs          # 内容同步脚本（md → 站点）
+│  ├─ categories.mjs          # 分类的颜色 / 描述 / 顺序
+│  ├─ pack.mjs                # 把 dist/ 打成 zip
+│  ├─ serve-dist.mjs          # 本地预览 dist 的静态服务器（不缓存文件清单）
+│  └─ missing-images.json     # 【自动生成】图片缺失清单
+├─ docs/
+│  ├─ .vitepress/
+│  │  ├─ config.mts           # 站点配置（导航、侧边栏、搜索、主题）
+│  │  └─ theme/
+│  │     ├─ index.ts          # 主题入口
+│  │     ├─ Layout.vue        # 布局增强：图片放大 / 缺失占位
+│  │     ├─ BlogHome.vue      # 首页（分类导航）、归档页、标签页、分类页
+│  │     ├─ PostMeta.vue      # 文章页脚（日期 / 字数 / 标签 / 源文件）
+│  │     ├─ custom.css        # 自定义样式
+│  │     └─ posts.ts          # 【自动生成】文章索引，勿手改
+│  ├─ posts/                  # 【自动生成】文章 Markdown
+│  ├─ public/
+│  │  ├─ logo.svg
+│  │  └─ assets/images/       # 【自动复制】来自 content/images
+│  ├─ index.md                # 首页
+│  ├─ archive.md              # 全部文章
+│  ├─ tags.md                 # 标签
+│  └─ about.md                # 关于
+├─ menu.ps1                    # 数字交互控制台（UTF-8 带 BOM）
+├─ 启动博客.cmd                # 双击入口 → 调 menu.ps1（桌面快捷方式指向它）
+├─ 构建静态站点.cmd            # 一键构建 dist
+├─ logo.ico                   # 快捷方式图标
+├─ dist/                      # 构建产物（可部署）
+└─ package.json
+```
+
+## 内容怎么进来
+
+当前内容来自 `blog-export-20261018` 导出包：**24 篇文章 / 534 张图 / 约 6.6 万字**，
+已复制进 `content\`，原导出目录可以随时删掉。
+
+**推荐布局：一篇一目录**（md 和它的图片放在同一个文件夹里）：
+
+```
+content\
+├─ 2026-05-16-xss\
+│  ├─ 2026-05-16-xss.md
+│  ├─ image-1.png
+│  └─ image-2.png
+└─ 2026-07-12-File_Inclusion\
+   ├─ 2026-07-12-File_Inclusion.md
+   └─ image.png
+```
+
+md 里图片**直接写文件名**就行：`![截图](image-1.png)`。
+同步时会自动复制到 `docs/public/assets/images/<slug>/` 并把引用改成 `/assets/images/<slug>/image-1.png`，
+所以不同文章里同名的 `image-1.png` 不会互相覆盖。
+
+也支持扁平布局（`content\*.md` + `content\images\<章节号>\`），两种可以混用。
+
+| 内容 | 默认路径 | 覆盖参数 |
+| --- | --- | --- |
+| Markdown 文章 | `content\`（目录或文件都认） | `--src <目录>` |
+| 图片 | 文章同目录，或 `content\images\` | `--img <目录>` |
+
+同步规则：
+
+1. 跳过 `模板.md`、`artifact.md`（写作模板/脚手架）
+2. 同时存在 `xxx` 与 `xxx-排版` 时，**优先用排版版**
+3. `title` / `date` / `tags` / `description` 缺了会自动补（描述取正文首段，日期取文件名或文件时间）
+4. 图片引用支持 `![](image-1.png)` 和 `<img src="image-1.png">` 两种写法；
+   **代码块 / 行内代码里的 `<img src="x">` 不会被改**（XSS 文章里的 payload 示例必须原样保留）
+5. 目录名 / 文件名去掉日期前缀和 `-排版` 后缀作为 URL slug
+6. 源目录里删掉的文章，`sync` 会自动从 `docs\posts\` 里清掉，不会残留
+
+## 文章怎么分类
+
+**分类由你写在文章 front-matter 里**，脚本不猜：
+
+```markdown
+---
+title: 文件包含漏洞
+category: 文件类漏洞              # 单分类
+---
+```
+
+```markdown
+---
+title: 文件包含漏洞
+categories: [文件类漏洞, CTF 实战]   # 多分类
+---
+```
+
+不写就归入「未分类」；改完跑 `npm run sync`（或菜单选 `2`）即可。
+
+分类名是自由的。**颜色 / 描述 / 显示顺序**在 `scripts/categories.mjs` 的 `CATEGORY_META` 里维护：
+
+```js
+export const CATEGORY_META = [
+  { name: '信息收集', color: '#2c5f94', desc: '域名 / 子域、端口、指纹…' },
+  // 没登记的：按名字从 PALETTE 自动取色，排在已登记的后面
+]
+```
+
+站点里对应 `/categories.html` 分类总览页、卡片上的彩色分类徽章、文章页脚的分类徽章；
+多分类的文章会同时出现在多个分类下。
+
+> 当前 24 篇按你的要求**全部处于「未分类」**，等逐篇指定。
+> 菜单 `7` 会列出每篇的 `content\...\` 源路径，照着改 front-matter 即可。
+
+> ⚠️ `docs/posts/` 是**生成目录**，`sync` 会覆盖它。
+> 想长期保留的修改请改 `content\` 里的 md，或者改完后不要再跑 `sync`。
+
+## 之前那批内容的情况（旧记录）
+
+更早那批（从桌面 `博客\` 同步的 25 篇）已经清掉，相关经验记在这里备查：
+
+| 问题 | 说明 |
+| --- | --- |
+| 截图缺失 | 那批 md 的图片引用和 `图片\` 目录命名对不上（385 处只有 85 处能命中）。本次新导出已经把图片和文章放在一起，**535 处引用全部命中，0 缺失**。 |
+| 《权限问题》 | 之前缺 md，本次导出里已经有了（`2026-07-30-permission-optimized`，front-matter 日期 2026-08-13）。 |
+
+## 自定义
+
+- 站点标题/描述/导航/社交链接 → `docs/.vitepress/config.mts`
+- 配色、字体、卡片样式 → `docs/.vitepress/theme/custom.css`（改了会热更新）
+- 首页文案、统计信息 → `docs/.vitepress/theme/BlogHome.vue`
+- 「关于」页正文 → `docs/about.md`；页上的统计与分类分布是 `SiteStats.vue` / `CategoryList.vue`（跟着文章自动变）
+- 分类的颜色 / 描述 / 显示顺序 → `scripts/categories.mjs`
+
+## 免责声明
+
+本站内容仅用于个人学习、技术研究与**授权范围内**的测试。

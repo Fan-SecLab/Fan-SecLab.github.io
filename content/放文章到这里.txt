@@ -1,0 +1,50 @@
+把博客 Markdown 放进本目录，然后运行：
+
+    npm run sync      只重新同步内容
+    npm run dev       同步并启动本地站点
+
+【推荐结构】一篇一个目录，md 和它的图片放在一起：
+
+    content\
+    ├─ 2026-05-16-xss\
+    │  ├─ 2026-05-16-xss.md
+    │  ├─ image-1.png
+    │  └─ image-2.png
+    └─ 2026-07-12-File_Inclusion\
+       ├─ 2026-07-12-File_Inclusion.md
+       └─ image.png
+
+md 里图片直接写文件名即可：
+
+    ![截图](image-1.png)
+
+同步时会自动复制到 docs\public\assets\images\<slug>\ 并改好引用，
+不同文章里同名的 image-1.png 不会互相覆盖。
+
+【也支持】扁平布局：content\*.md + content\images\<章节号>\*.png
+
+【分类】由你自己在文章的 front-matter 里写，脚本不再猜：
+
+    ---
+    title: 文件包含漏洞
+    category: 文件类漏洞                 # 单分类
+    ---
+
+    ---
+    title: 文件包含漏洞
+    categories: [文件类漏洞, CTF 实战]    # 多分类（一篇可以属于多个）
+    ---
+
+  不写 → 自动归入「未分类」。
+  分类的颜色 / 描述 / 显示顺序在 scripts\categories.mjs 的 CATEGORY_META 里调；
+  没登记的分类会按名字自动配色。
+  改完选菜单 [2] 同步内容即可。
+
+【也可以】指向任意目录：
+
+    npm run sync -- --src "D:\某个目录" --img "D:\某个图片目录"
+
+同步会自动：
+  - 规整 front-matter（title / date / tags / description / category）
+  - 复制图片、修正图片路径（含 <img src="...">，代码块里的不动）
+  - 重建文章索引（首页 / 分类 / 标签页都靠它）

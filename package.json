@@ -1,0 +1,18 @@
+{
+  "name": "fanseclab-blog",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Fan-SecLab 安全笔记博客（VitePress 本地/静态部署）",
+  "scripts": {
+    "sync": "node scripts/sync-posts.mjs",
+    "dev": "node scripts/sync-posts.mjs && vitepress dev docs",
+    "build": "node scripts/sync-posts.mjs && vitepress build docs",
+    "pack": "node scripts/sync-posts.mjs && vitepress build docs && node scripts/pack.mjs",
+    "preview": "node scripts/serve-dist.mjs"
+  },
+  "devDependencies": {
+    "vitepress": "^1.6.3",
+    "vue": "^3.5.13"
+  }
+}
