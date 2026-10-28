@@ -1,5 +1,8 @@
 # 部署到 GitHub Pages（公网访问）
 
+> 📖 **文档导航**
+> [README.md](README.md)（博客内容介绍）· [使用说明.md](使用说明.md)（日常操作）· [开发与部署说明.md](开发与部署说明.md)（项目内部细节）· **部署到GitHub Pages.md**（本文件）
+
 本站是纯静态站，`npm run build` 生成的 `dist\` 就是完整站点，可以直接放到任何静态托管。
 下面用 **GitHub Actions 自动构建 + 自动发布**，以后 push 一次就自动上线。
 
