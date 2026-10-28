@@ -29,16 +29,21 @@ jobs:
           node-version: 22
           cache: npm
 
-      # 仓库名以 .github.io 结尾 → 站点在域名根目录，base = /
-      # 其它仓库名（项目页）      → 站点在 /<仓库名>/ 下，base 要带上
+      # 只有「仓库名 = 所有者名.github.io」才是根域名站点（base=/）
+      # 其它情况都是项目页，挂在 /<仓库名>/ 下
+      # 注意：不能只看仓库名是否以 .github.io 结尾 —— 例如所有者是 Fan-SecLab、
+      # 仓库叫 fan.github.io 时，它其实是项目页 /fan.github.io/，不是根站点。
       - name: 计算 base 路径
         id: base
         run: |
-          REPO="${{ github.event.repository.name }}"
-          if [[ "$REPO" == *.github.io ]]; then
+          OWNER="$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')"
+          REPO="$(echo '${{ github.event.repository.name }}' | tr '[:upper:]' '[:lower:]')"
+          if [ "$REPO" = "$OWNER.github.io" ]; then
             echo "value=/" >> "$GITHUB_OUTPUT"
+            echo "根域名站点：base = /"
           else
             echo "value=/$REPO/" >> "$GITHUB_OUTPUT"
+            echo "项目页站点：base = /$REPO/"
           fi
           echo "base = $(cat "$GITHUB_OUTPUT" | tail -n1)"
 
