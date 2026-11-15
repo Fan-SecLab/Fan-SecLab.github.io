@@ -142,3 +142,46 @@ Settings → Pages 里确认 Source 是 **GitHub Actions**；
 不推荐（每次都要重新上传 60 MB）。真要用：本地 `npm run build`，
 把 `dist\` 里的内容推到 `gh-pages` 分支，Pages 的 Source 改成该分支。
 注意这样需要把 `base` 手动写死成正确的值。
+
+### `git push` 卡住不动 / `Connection was reset` / `Connection timed out`
+
+先看是不是 **DNS 被污染**（国内网络很常见，**和有没有开 VPN 无关**）：
+
+```powershell
+(Resolve-DnsName github.com -Type A).IPAddress
+```
+
+正常应该是 `20.205.243.166`、`140.82.112.x`、`140.82.114.x` 这类；
+如果返回 `57.155.x.x`、`0.0.0.0` 或者别的陌生地址，就是被污染了 —— 域名解析错了，
+TCP 自然连不上，表现就是一直卡到超时。
+
+**确认网络本身是通的**（这一步能通就说明只是解析问题）：
+
+```powershell
+Test-NetConnection 20.205.243.166 -Port 443 -InformationLevel Quiet   # 应该返回 True
+```
+
+**解决办法：用仓库自带的本地代理**（不是 VPN，也不转发给第三方，只是把域名换成一个
+已知可用的 GitHub 真实 IP 直连，TLS 证书照常校验）：
+
+```powershell
+# 终端 1：启动代理（前台运行，用完 Ctrl+C）
+python D:\tools\DSH\博客工具\gh_connect_proxy.py
+
+# 终端 2：走代理推送
+cd D:\blog
+git -c http.proxy=http://127.0.0.1:8899 push
+```
+
+验证代理是否可用：
+
+```powershell
+curl.exe -x http://127.0.0.1:8899 -sS -o NUL -w "%{http_code}`n" https://github.com/
+# 输出 200 就说明通了
+```
+
+代理里的 IP 表会过期（GitHub 偶尔换段），失效时把 `gh_connect_proxy.py`
+顶部的 `GH_IPS` 换成当时 `Test-NetConnection` 能通的那些即可。
+
+> 网速慢不用管：git 会自动续传，几 MB 的提交慢慢推就行，别中途 Ctrl+C。
+
