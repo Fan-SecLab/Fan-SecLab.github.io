@@ -114,7 +114,7 @@ export const posts: Post[] = [
     "tags": [
       "linux"
     ],
-    "description": "了解就行不用理解",
+    "description": "Unix，现在的操作系统的鼻祖，windows、mac、linux都是由它发展而来，1969年诞生于贝尔实验室，作者主要有两个，其中一个大佬叫肯尼斯·蓝·汤普森，当初为了玩游戏发明了Unix操作系统，1970年正式发布，所以1970年称为操作系统元年，所有操作系统都以这个时间来计时…",
     "author": "Fan-SecLab",
     "words": 1657,
     "cjk": 1479,
@@ -185,11 +185,16 @@ export const posts: Post[] = [
     "categoryColors": [
       "#94a3b8"
     ],
-    "tags": [],
-    "description": "浏览器F12检查源代码",
+    "tags": [
+      "SQL注入",
+      "CTF",
+      "WAF",
+      "RCE"
+    ],
+    "description": "遇见需要查找某个特定文件内容的时候，用dirsearch网站目录扫描工具",
     "author": "Fan-SecLab",
-    "words": 7088,
-    "cjk": 6364,
+    "words": 7130,
+    "cjk": 6404,
     "source": "2026-09-11-php+sql",
     "images": 64
   },
@@ -214,8 +219,8 @@ export const posts: Post[] = [
     ],
     "description": "权限安全笔记：旁站查询与入侵、目录越权、SQL 跨库查询、CDN 识别与绕过、越权漏洞分类与 pikachu 实战演示。",
     "author": "Fan-SecLab",
-    "words": 1833,
-    "cjk": 1690,
+    "words": 1874,
+    "cjk": 1730,
     "source": "2026-07-30-permission-optimized",
     "images": 14
   },
@@ -230,11 +235,15 @@ export const posts: Post[] = [
     "categoryColors": [
       "#94a3b8"
     ],
-    "tags": [],
+    "tags": [
+      "Docker",
+      "进程管理",
+      "压缩打包"
+    ],
     "description": "搜索镜像(只搜索官方仓库的，官方仓库地址：hub.docker.com)",
     "author": "Fan-SecLab",
-    "words": 556,
-    "cjk": 501,
+    "words": 590,
+    "cjk": 521,
     "source": "2026-08-12-docker",
     "images": 1
   },
@@ -255,10 +264,10 @@ export const posts: Post[] = [
       "Hydra",
       "pkav"
     ],
-    "description": "---",
+    "description": "随便找到一个网站，我们来看一下它注册时有没有密码复杂度的要求，比如有长度要求，8位以上，那么我们设置密码字典的时候就要搞8位以上的密码，所以我们可以找找一个密码字典生成器来搞。",
     "author": "Fan-SecLab",
-    "words": 2544,
-    "cjk": 2221,
+    "words": 2626,
+    "cjk": 2299,
     "source": "2026-07-28-Brute Force",
     "images": 11
   },
@@ -276,10 +285,10 @@ export const posts: Post[] = [
     "tags": [
       "SSRF"
     ],
-    "description": "---",
+    "description": "CSRF：跨站请求伪造，客户端请求伪造",
     "author": "Fan-SecLab",
-    "words": 5181,
-    "cjk": 4530,
+    "words": 5267,
+    "cjk": 4608,
     "source": "2026-07-22-SSRF",
     "images": 23
   },
@@ -297,10 +306,10 @@ export const posts: Post[] = [
     "tags": [
       "反序列化漏洞"
     ],
-    "description": "---",
+    "description": "把内存中的对象，转换成可存储、可传输的字符串的过程。",
     "author": "Fan-SecLab",
-    "words": 3276,
-    "cjk": 2969,
+    "words": 3342,
+    "cjk": 3035,
     "source": "2026-07-20-反序列化",
     "images": 22
   },
@@ -320,8 +329,8 @@ export const posts: Post[] = [
     ],
     "description": "命令执行漏洞，英文 remote command/code execute，简称 RCE，包含远程命令执行和远程代码执行。",
     "author": "Fan-SecLab",
-    "words": 2214,
-    "cjk": 1937,
+    "words": 2281,
+    "cjk": 1998,
     "source": "2026-07-18-RCE",
     "images": 38
   },
@@ -341,8 +350,8 @@ export const posts: Post[] = [
     ],
     "description": "XXE：XML External Entity 即外部实体，攻击者通过向服务器注入指定的 XML 实体内容，从而让服务器按照指定的配置进行执行，导致问题。",
     "author": "Fan-SecLab",
-    "words": 1364,
-    "cjk": 1203,
+    "words": 1438,
+    "cjk": 1269,
     "source": "2026-07-27-xxe",
     "images": 4
   },
@@ -363,8 +372,8 @@ export const posts: Post[] = [
     ],
     "description": "CSRF是Web应用程序的一种常见漏洞，其攻击特性是危害性大但非常隐蔽，尤其是在大量Web 2.0技术的应用背景下，攻击者完全可以在用户毫无察觉的情况下发起CSRF攻击。",
     "author": "Fan-SecLab",
-    "words": 5882,
-    "cjk": 5440,
+    "words": 5944,
+    "cjk": 5495,
     "source": "2026-07-15-CSRF",
     "images": 45
   },
@@ -384,8 +393,8 @@ export const posts: Post[] = [
     ],
     "description": "深入剖析PHP文件包含漏洞，从LFI/RFI到日志包含、伪协议利用、截断绕过与防御，覆盖DVWA全等级实战。",
     "author": "Fan-SecLab",
-    "words": 2737,
-    "cjk": 2369,
+    "words": 2803,
+    "cjk": 2429,
     "source": "2026-07-12-File_Inclusion",
     "images": 16
   },
@@ -410,8 +419,8 @@ export const posts: Post[] = [
     ],
     "description": "系统性梳理 IIS、Apache、Nginx 三大主流 Web 服务器的文件解析漏洞原理、利用方式和修复方案。",
     "author": "Fan-SecLab",
-    "words": 1748,
-    "cjk": 1347,
+    "words": 1811,
+    "cjk": 1393,
     "source": "2026-07-11-Web_File_Parsing_Vulnerability",
     "images": 12
   },
@@ -431,8 +440,8 @@ export const posts: Post[] = [
     ],
     "description": "文件上传功能几乎是每个网站的标配——头像上传、附件提交、图片分享，处处都有上传入口。但问题在于，如果后端在处理用户上传的文件时缺乏安全意识，或者使用了有缺陷的校验逻辑，攻击者就可能通过一系列绕过手段，把恶意文件送进服务器。",
     "author": "Fan-SecLab",
-    "words": 3016,
-    "cjk": 2662,
+    "words": 2810,
+    "cjk": 2466,
     "source": "2026-07-10-upload",
     "images": 41
   },
@@ -452,8 +461,8 @@ export const posts: Post[] = [
     ],
     "description": "一些网站由于业务需求，往往需要提供文件查看或文件下载功能，但若对用户查看或下载的文件不做限制，则恶意用户就能够查看或下载任意敏感文件，这就是文件查看与下载漏洞。属于owasp top10 的失效的访问控制类型了。",
     "author": "Fan-SecLab",
-    "words": 1308,
-    "cjk": 1122,
+    "words": 1356,
+    "cjk": 1170,
     "source": "2026-05-20-Arbitrary_File_Download",
     "images": 4
   },
@@ -471,7 +480,7 @@ export const posts: Post[] = [
     "tags": [
       "xss练习"
     ],
-    "description": "网页源代码",
+    "description": "界面上没有任何输入框，在源代码里面有三个type=hidden的隐藏输入框，那么我们就需要尝试能否给这三个输入框传入输数据",
     "author": "Fan-SecLab",
     "words": 663,
     "cjk": 600,
@@ -494,8 +503,8 @@ export const posts: Post[] = [
     ],
     "description": "XSS 全称 Cross Site Scripting（跨站脚本攻击），为了避免与 CSS 层叠样式表名称冲突，故缩写为 XSS。",
     "author": "Fan-SecLab",
-    "words": 4617,
-    "cjk": 4127,
+    "words": 4681,
+    "cjk": 4172,
     "source": "2026-05-16-xss",
     "images": 74
   },
@@ -517,8 +526,8 @@ export const posts: Post[] = [
     ],
     "description": "Access 数据库采用单文件管理单数据库的架构，类似于 Excel 的工作簿。一个 .mdb 文件就是一个数据库，这一点与 MySQL 可以同时管理多个数据库截然不同。",
     "author": "Fan-SecLab",
-    "words": 2005,
-    "cjk": 1737,
+    "words": 2072,
+    "cjk": 1787,
     "source": "2026-04-25-otherdatabases",
     "images": 40
   },
@@ -536,10 +545,10 @@ export const posts: Post[] = [
     "tags": [
       "SQL注入点的利用"
     ],
-    "description": "---",
+    "description": "通过SQL注入的 LOAD_FILE() 函数可以直接读取服务器上的文件内容。",
     "author": "Fan-SecLab",
-    "words": 1186,
-    "cjk": 1051,
+    "words": 1258,
+    "cjk": 1114,
     "source": "2026-04-24-use_of_the_SQL",
     "images": 13
   },
@@ -555,12 +564,13 @@ export const posts: Post[] = [
       "#94a3b8"
     ],
     "tags": [
-      "手工SQL注入，sqlmap"
+      "手工SQL注入",
+      "sqlmap"
     ],
-    "description": "---",
+    "description": "核心一句话： 服务端没有对用户提交的数据进行过滤，黑客控制了你拼接的语句。",
     "author": "Fan-SecLab",
-    "words": 5120,
-    "cjk": 4480,
+    "words": 5183,
+    "cjk": 4540,
     "source": "2026-04-21-SQLinsert",
     "images": 60
   },
@@ -582,8 +592,8 @@ export const posts: Post[] = [
     ],
     "description": "OWASP（开放式 Web 应用程序安全项目）是一个开放的社区，由非营利组织 OWASP 基金会支持。对所有致力于改进应用程序安全的人士开放，旨在提高对应用程序安全性的认识。",
     "author": "Fan-SecLab",
-    "words": 1367,
-    "cjk": 1233,
+    "words": 1417,
+    "cjk": 1267,
     "source": "2026-04-17-webbug_introduction",
     "images": 2
   },
@@ -603,10 +613,10 @@ export const posts: Post[] = [
       "移动端安全",
       "溯源"
     ],
-    "description": "一款 APP（抖音、快手之类的）或者一个电脑软件，都是由开发语言编写出来的。开发完成之后，想要做成可供用户下载安装的软件，需要对程序代码和运行环境等进行编译和打包。而我们下载安装 APP 到手机或电脑上的过程，其实就是解包——软件的代码程序…",
+    "description": "一款 APP（抖音、快手之类的）或者一个电脑软件，都是由开发语言编写出来的。开发完成之后，想要做成可供用户下载安装的软件，需要对程序代码和运行环境等进行编译和打包。而我们下载安装 APP 到手机或电脑上的过程，其实就是解包——软件的代码程序就解压到了你的设备上。",
     "author": "Fan-SecLab",
-    "words": 1159,
-    "cjk": 1077,
+    "words": 1236,
+    "cjk": 1141,
     "source": "2026-04-17-information-gathering-mobile",
     "images": 4
   },
@@ -623,15 +633,16 @@ export const posts: Post[] = [
     ],
     "tags": [
       "信息收集",
-      "Google Hack",
+      "Google",
+      "Hack",
       "Shodan",
       "FOFA",
       "钟馗之眼"
     ],
     "description": "使用 Google 等搜索引擎对某些特定的网络主机漏洞（通常是服务器上的脚本漏洞）进行搜索，以达到快速找到漏洞主机或特定主机漏洞的目的。",
     "author": "Fan-SecLab",
-    "words": 1940,
-    "cjk": 1643,
+    "words": 2014,
+    "cjk": 1699,
     "source": "2026-04-16-information-gathering-supplement",
     "images": 8
   },
@@ -664,8 +675,8 @@ export const posts: Post[] = [
     ],
     "description": "渗透测试第一步——信息收集全攻略。从域名、IP、端口、指纹到敏感信息泄露，覆盖 JSFinder、subDomainsBrute、subfinder、OneForAll、Nmap、EHole、dirsearch、GitHack 等工具的实战用法。",
     "author": "Fan-SecLab",
-    "words": 3769,
-    "cjk": 2974,
+    "words": 3845,
+    "cjk": 3035,
     "source": "2026-04-15-information_gathering",
     "images": 0
   }

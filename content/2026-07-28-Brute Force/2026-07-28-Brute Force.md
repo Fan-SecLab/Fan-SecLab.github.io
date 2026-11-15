@@ -1,11 +1,14 @@
 ---
 layout: post
-title: 暴力破解
+title: "暴力破解"
 date: 2026-07-28
 tags: 暴力破解 Bruter Hydra pkav
+description: 随便找到一个网站，我们来看一下它注册时有没有密码复杂度的要求，比如有长度要求，8位以上，那么我们设置密码字典的时候就要搞8位以上的密码，所以我们可以找找一个密码字典生成器来搞。
 ---
 
 # 暴力破解
+
+> 🎯 本文按「考虑的因素 → 准备字典 → 判断用户是否设置了复杂的密码 → 网站是否有验证码 → 尝试登录的行为次数是否有限制 → 网站是否有双因素认证、Token值等等 → C/S 架构暴力破解 → Bruter」的顺序整理，便于对照速查。
 
 ---
 
@@ -53,7 +56,7 @@ C/S 即客户端/服务器，基于 C/S 架构的应用程序，如 `ssh`、`ftp
 
 > ⚠️ 路径中不能出现中文或者空格。
 
-工具路径：`D:\BaiduNetdiskDownload\学习工具\8第八阶段渗透测试阶段工具\day55暴力破解\Bruter_1.1\Bruter_1.1`
+**工具路径**：`D:\BaiduNetdiskDownload\学习工具\8第八阶段渗透测试阶段工具\day55暴力破解\Bruter_1.1\Bruter_1.1`
 
 #### 破解 Windows 2003 的主机用户密码
 
@@ -67,7 +70,7 @@ C/S 即客户端/服务器，基于 C/S 架构的应用程序，如 `ssh`、`ftp
 
 > ⚠️ 一般 MySQL 默认是没有开启远程连接的。先用 `telnet` 测试一下是否开启了。如果测试不成功，说明 MySQL 的 `root` 用户没有远程连接的权限。
 
-端口：MySQL `3306`，其余操作相同。
+**端口**：MySQL `3306`，其余操作相同。
 
 ---
 
@@ -75,7 +78,7 @@ C/S 即客户端/服务器，基于 C/S 架构的应用程序，如 `ssh`、`ftp
 
 > ⚠️ `root` 用户默认没有远程连接权限。
 
-端口：SSH `22`，其余操作相同。
+**端口**：SSH `22`，其余操作相同。
 
 ---
 
@@ -93,32 +96,32 @@ Hydra 也叫九头蛇，是著名黑客组织 THC 的一款开源的暴力密码
 
 ```bash
 hydra [[[-l LOGIN|-L FILE] [-p PASS|-P FILE]] | [-C FILE]] [-e ns]
-[-o FILE] [-t TASKS] [-M FILE [-T TASKS]] [-w TIME] [-f] [-s PORT] [-S] [-vV] 
+[-o FILE] [-t TASKS] [-M FILE [-T TASKS]] [-w TIME] [-f] [-s PORT] [-S] [-vV]
 server service [OPT]
 ```
 
 **参数说明：**
 
-| 参数 | 说明 |
-|------|------|
-| `-R` | 继续从上一次进度接着破解 |
-| `-S` | 采用 SSL 链接 |
-| `-s PORT` | 可通过这个参数指定非默认端口 |
-| `-l LOGIN` | 指定破解的用户，对特定用户破解 |
-| `-L FILE` | 指定用户名字典 |
-| `-p PASS` | 小写，指定密码破解，少用，一般是采用密码字典 |
-| `-P FILE` | 大写，指定密码字典 |
-| `-e ns` | 可选选项，`n`：空密码试探，`s`：使用指定用户和密码试探 |
-| `-C FILE` | 使用冒号分割格式，例如 `登录名:密码` 来代替 `-L`/`-P` 参数 |
-| `-M FILE` | 指定目标列表文件，一行一条 |
-| `-o FILE` | 指定结果输出文件 |
-| `-f` | 在使用 `-M` 参数以后，找到第一对登录名或者密码的时候中止破解 |
-| `-t TASKS` | 同时运行的线程数，默认为 16 |
-| `-w TIME` | 设置最大超时的时间，单位秒，默认是 30s |
-| `-v` / `-V` | 显示详细过程 |
-| `server` | 目标 IP |
-| `service` | 指定服务名，支持 telnet ftp pop3[-ntlm] imap[-ntlm] smb smbnt http-{head\|get} http-{get\|post}-form http-proxy cisco cisco-enable vnc ldap2 ldap3 mssql mysql oracle-listener postgres nntp socks5 rexec rlogin pcnfs snmp rsh cvs svn icq sapr3 ssh smtp-auth[-ntlm] pcanywhere teamspeak sip vmauthd firebird ncp afp 等等 |
-| `OPT` | 可选项 |
+| 参数        | 说明                                                         |
+|-------------|--------------------------------------------------------------|
+| `-R`        | 继续从上一次进度接着破解                                     |
+| `-S`        | 采用 SSL 链接                                                |
+| `-s PORT`   | 可通过这个参数指定非默认端口                                 |
+| `-l LOGIN`  | 指定破解的用户，对特定用户破解                               |
+| `-L FILE`   | 指定用户名字典                                               |
+| `-p PASS`   | 小写，指定密码破解，少用，一般是采用密码字典                 |
+| `-P FILE`   | 大写，指定密码字典                                           |
+| `-e ns`     | 可选选项，`n`：空密码试探，`s`：使用指定用户和密码试探       |
+| `-C FILE`   | 使用冒号分割格式，例如 `登录名:密码` 来代替 `-L`/`-P` 参数   |
+| `-M FILE`   | 指定目标列表文件，一行一条                                   |
+| `-o FILE`   | 指定结果输出文件                                             |
+| `-f`        | 在使用 `-M` 参数以后，找到第一对登录名或者密码的时候中止破解 |
+| `-t TASKS`  | 同时运行的线程数，默认为 16                                  |
+| `-w TIME`   | 设置最大超时的时间，单位秒，默认是 30s                       |
+| `-v` / `-V` | 显示详细过程                                                 |
+| `server`    | 目标 IP                                                      |
+| `service`   | 指定服务名，支持 telnet ftp pop3[-ntlm] imap[-ntlm] smb smbnt http-{head\|get} http-{get\|post}-form http-proxy cisco cisco-enable vnc ldap2 ldap3 mssql mysql oracle-listener postgres nntp socks5 rexec rlogin pcnfs snmp rsh cvs svn icq sapr3 ssh smtp-auth[-ntlm] pcanywhere teamspeak sip vmauthd firebird ncp afp 等等 |
+| `OPT`       | 可选项                                                       |
 
 **示例 — `user.txt` 内容：**
 
@@ -313,7 +316,7 @@ http://192.168.239.134:81/admin/safecode.asp?
 
 我们需要一个图片识别提取工具——它只有识别功能，没有抓包功能，我们需要用 Burp 去抓包，然后复制过来。
 
-工具路径：`D:\BaiduNetdiskDownload\学习工具\8第八阶段渗透测试阶段工具\day55暴力破解\pkav\pkav`
+**工具路径**：`D:\BaiduNetdiskDownload\学习工具\8第八阶段渗透测试阶段工具\day55暴力破解\pkav\pkav`
 
 ![pkav工具界面](image-20260729232723900.png)
 
@@ -375,10 +378,10 @@ http://192.168.239.134:81/admin/safecode.asp?
 
 ### 防护措施汇总
 
-| 防护手段 | 具体措施 | 说明 |
-|---------|---------|------|
-| 验证码 | 强制输入 + 一次性使用 + 高复杂度 | 扭曲、变形、干扰线、滑动验证等 |
-| IP 策略 | 5 次失败封 IP | 配合代理池可绕过，但仍是最基础的防线 |
-| 密码策略 | 8-16 位 + 大小写 + 数字 + 特殊字符 | 最低层的防线，杜绝弱口令 |
-| 登录日志 | 记录失败次数 + 延时惩罚 | 连续失败后逐次增加等待时间 |
-| 双因素认证 | 手机验证码 / 加密狗 | 暴力破解直接失效 |
+| 防护手段   | 具体措施                           | 说明                                 |
+|------------|------------------------------------|--------------------------------------|
+| 验证码     | 强制输入 + 一次性使用 + 高复杂度   | 扭曲、变形、干扰线、滑动验证等       |
+| IP 策略    | 5 次失败封 IP                      | 配合代理池可绕过，但仍是最基础的防线 |
+| 密码策略   | 8-16 位 + 大小写 + 数字 + 特殊字符 | 最低层的防线，杜绝弱口令             |
+| 登录日志   | 记录失败次数 + 延时惩罚            | 连续失败后逐次增加等待时间           |
+| 双因素认证 | 手机验证码 / 加密狗                | 暴力破解直接失效                     |

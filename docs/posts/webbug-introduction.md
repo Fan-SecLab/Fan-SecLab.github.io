@@ -11,6 +11,8 @@ outline: [2, 3]
 
 # 漏洞介绍
 
+> 🎯 本文按「一、渗透工作流程说明 → 二、Web 十大漏洞（OWASP Top 10） → 2.1 OWASP 简介 → 2.2 Seebug 漏洞库 → 2.3 2021 年 OWASP Top 10」的顺序整理，便于对照速查。
+
 ## 一、渗透工作流程说明
 
 ![渗透工作流程](/assets/images/webbug-introduction/image.png)

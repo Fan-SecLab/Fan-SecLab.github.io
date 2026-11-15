@@ -241,11 +241,13 @@ http的起始索引数字是5
 **核心难点：**
 
 ```
+
  $_POST['abc'] 这个变量本身不能含有hello123，但是 file_get_contents($_POST['abc']) 读出来的内容必须是hello123。
 
  所以 abc 的值要填伪协议/文件路径，这个伪协议读取出来的内容是hello123。
 
  可以利用 data://为协议，因为他后面不是可以执行php代码吗，我们就把hello1234，可以经过一系列的加工，反正最后解码结果是这个就可以
+
  ```
 
 **payload**
@@ -326,7 +328,7 @@ file=php://filter/read=convert.base64-encode/resource=1.php
 
    ```
    %252e%252e%252f
-   
+
    ```
 
 #### ..\ 绕过
@@ -342,7 +344,7 @@ file=php://filter/read=convert.base64-encode/resource=1.php
 
    ```
    %252e%252e%255c
-   
+
    ```
 
 #### UTF-8超长编码绕过（Overlong Encoding / 非最短编码,部分浏览器支持）

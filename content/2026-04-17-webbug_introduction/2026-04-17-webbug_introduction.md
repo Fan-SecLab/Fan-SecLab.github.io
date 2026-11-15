@@ -1,11 +1,14 @@
 ---
 layout: post
-title: 漏洞介绍
+title: "漏洞介绍"
 date: 2026-04-17
-tags: [漏洞介绍, OWASP, Web安全]
+tags: 漏洞介绍 OWASP Web安全
+description: OWASP（开放式 Web 应用程序安全项目）是一个开放的社区，由非营利组织 OWASP 基金会支持。对所有致力于改进应用程序安全的人士开放，旨在提高对应用程序安全性的认识。
 ---
 
 # 漏洞介绍
+
+> 🎯 本文按「一、渗透工作流程说明 → 二、Web 十大漏洞（OWASP Top 10） → 2.1 OWASP 简介 → 2.2 Seebug 漏洞库 → 2.3 2021 年 OWASP Top 10」的顺序整理，便于对照速查。
 
 ## 一、渗透工作流程说明
 

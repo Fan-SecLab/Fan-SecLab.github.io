@@ -11,6 +11,8 @@ outline: [2, 3]
 
 # 🔍 信息收集
 
+> 🎯 本文按「一、收集域名信息 → 1.1 域名注册信息 → 1.2 SEO 信息收集 → 1.3 子域名收集 → 1.4 域名备案信息查询 → 1.5 SSL 证书查询 → 1.6 综合信息收集工具 → 二、收集真实 IP」的顺序整理，便于对照速查。
+
 > 信息收集是渗透测试的第一步，也是最关键的一步。本文系统整理了域名信息、真实IP、端口服务、网站指纹、敏感信息等全方位收集方法与工具。
 
 ---
@@ -21,8 +23,8 @@ outline: [2, 3]
 
 > 查询域名注册人、联系方式、服务器位置等 WHOIS 信息
 
-| 平台 | 地址 |
-|------|------|
+| 平台     | 地址                        |
+|----------|-----------------------------|
 | 站长之家 | <https://whois.chinaz.com/> |
 
 **Kali 指令：**
@@ -51,12 +53,12 @@ whois baidu.com
 
 #### 工具推荐
 
-| 工具 | 说明 | 用法 |
-|------|------|------|
-| **JSFinder** | 爬取单页面所有 JS 链接，从中发现 URL 和子域名 | `python3 JSFinder.py -u http://www.mi.com` |
-| **subDomainsBrute** | 高并发 DNS 暴力枚举工具 | `python3 subDomainsBrute.py mi.com` |
-| **subfinder** | 通过被动在线资源发现有效子域 | `./subfinder -d "mi.com"` |
-| **OneForAll** | 执行时间长，搜索到的子域名多 | `python3 oneforall.py --target mi.com run` |
+| 工具                | 说明                                          | 用法                                       |
+|---------------------|-----------------------------------------------|--------------------------------------------|
+| **JSFinder**        | 爬取单页面所有 JS 链接，从中发现 URL 和子域名 | `python3 JSFinder.py -u http://www.mi.com` |
+| **subDomainsBrute** | 高并发 DNS 暴力枚举工具                       | `python3 subDomainsBrute.py mi.com`        |
+| **subfinder**       | 通过被动在线资源发现有效子域                  | `./subfinder -d "mi.com"`                  |
+| **OneForAll**       | 执行时间长，搜索到的子域名多                  | `python3 oneforall.py --target mi.com run` |
 
 ---
 
@@ -66,12 +68,12 @@ whois baidu.com
 
 **ICP 备案号查询（通过备案号反查公司其他子域名）：**
 
-| 平台 | 地址 |
-|------|------|
-| 工信部 | <https://beian.miit.gov.cn/#/Integrated/recordQuery> |
-| 站长之家 | <https://icp.chinaz.com/> |
-| 爱企查 | <https://aiqicha.baidu.com/> |
-| 网站首页底部 | — |
+| 平台         | 地址                                                 |
+|--------------|------------------------------------------------------|
+| 工信部       | <https://beian.miit.gov.cn/#/Integrated/recordQuery> |
+| 站长之家     | <https://icp.chinaz.com/>                            |
+| 爱企查       | <https://aiqicha.baidu.com/>                         |
+| 网站首页底部 | —                                                   |
 
 ---
 
@@ -79,19 +81,19 @@ whois baidu.com
 
 > HTTPS 网站需要注册 SSL 证书，申请时需提供公司信息和域名信息，因此可以通过 SSL 证书获取额外信息
 
-| 平台 | 地址 |
-|------|------|
-| MySSL | <https://myssl.com/ssl.html> |
+| 平台     | 地址                                                 |
+|----------|------------------------------------------------------|
+| MySSL    | <https://myssl.com/ssl.html>                         |
 | Chinassl | <https://www.chinassl.net/ssltools/ssl-checker.html> |
 
 ---
 
 ### 1.6 综合信息收集工具
 
-| 工具 | 说明 |
-|------|------|
-| **[ENScan GO](https://github.com/wgpsec/ENScan_GO)** | 默认收集公司信息（备案、微博、微信公众号、App） |
-| **[superSearchPlus](https://github.com/dark-kingA/superSearchPlus)** | 谷歌浏览器插件 |
+| 工具                                                         | 说明                                            |
+|--------------------------------------------------------------|-------------------------------------------------|
+| **[ENScan GO](https://github.com/wgpsec/ENScan_GO)**         | 默认收集公司信息（备案、微博、微信公众号、App） |
+| **[superSearchPlus](https://github.com/dark-kingA/superSearchPlus)** | 谷歌浏览器插件                                  |
 
 **ENScan 用法：**
 
@@ -125,11 +127,11 @@ whois baidu.com
 
 多地 Ping 同一网址，所有地方指向同一 IP 则可能为真实 IP，从国外 Ping 找到的几率更大。
 
-| 平台 | 地址 |
-|------|------|
-| PingLoc | <https://www.pingloc.com/> |
-| 站长之家 Ping | <https://Ping.chinaz.com> |
-| 17CE | <https://www.17ce.com/> |
+| 平台          | 地址                       |
+|---------------|----------------------------|
+| PingLoc       | <https://www.pingloc.com/> |
+| 站长之家 Ping | <https://Ping.chinaz.com>  |
+| 17CE          | <https://www.17ce.com/>    |
 
 ---
 
@@ -160,11 +162,11 @@ dig www.baidu.com
 
 ### 2.6 方法六：CDN 绕过工具
 
-| 工具 | 语言 | 地址 |
-|------|------|------|
-| **fuckcdn** | 易语言 | <https://github.com/Tai7sy/fuckcdn> |
-| **w8fuckcdn** | Python 2.7 | <https://github.com/boy-hack/w8fuckcdn> |
-| **Bypass_cdn** | Python 3 | <https://github.com/Pluto-123/Bypass_cdn> |
+| 工具           | 语言       | 地址                                      |
+|----------------|------------|-------------------------------------------|
+| **fuckcdn**    | 易语言     | <https://github.com/Tai7sy/fuckcdn>       |
+| **w8fuckcdn**  | Python 2.7 | <https://github.com/boy-hack/w8fuckcdn>   |
+| **Bypass_cdn** | Python 3   | <https://github.com/Pluto-123/Bypass_cdn> |
 
 ```bash
 # Bypass_cdn 使用示例
@@ -177,14 +179,14 @@ python3 scan.py https://www.mi.com
 
 > 查询历史 DNS 记录，可能找到目标未使用 CDN 前的真实 IP
 
-| 平台 | 地址 |
-|------|------|
-| 微步在线 | <https://x.threatbook.cn/> |
-| DNSDB | <https://dnsdb.io/zh-cn/> |
-| Netcraft | <http://toolbar.netcraft.com/site_report?url=www.wulaoban.top> |
-| ViewDNS | <http://viewdns.info/> |
-| IPIP CDN查询 | <https://tools.ipip.net/cdn.php> |
-| SecurityTrails | <https://securitytrails.com/domain/wulaoban.top/dns> |
+| 平台           | 地址                                                         |
+|----------------|--------------------------------------------------------------|
+| 微步在线       | <https://x.threatbook.cn/>                                   |
+| DNSDB          | <https://dnsdb.io/zh-cn/>                                    |
+| Netcraft       | <http://toolbar.netcraft.com/site_report?url=www.wulaoban.top> |
+| ViewDNS        | <http://viewdns.info/>                                       |
+| IPIP CDN查询   | <https://tools.ipip.net/cdn.php>                             |
+| SecurityTrails | <https://securitytrails.com/domain/wulaoban.top/dns>         |
 
 ---
 
@@ -226,27 +228,27 @@ python3 scan.py https://www.mi.com
 
 ## 四、常用端口速查
 
-| 端口 | 协议 / 服务 | 说明 |
-|------|-------------|------|
-| 20 / 21 | FTP | 文件传输协议 |
-| 22 | SSH / SFTP | 安全远程登录与文件传输 |
-| 23 | Telnet | 远程主机管理（交换机、路由器常用） |
-| 25 | SMTP | 发邮件 |
-| 53 | DNS | 域名解析 |
-| 80 | HTTP | Web 服务 |
-| 110 | POP3 | 收邮件 |
-| 139 / 445 | SMB | Windows 文件共享 |
-| 443 | HTTPS | 加密 Web 服务 |
-| 1433 | MSSQL | 微软数据库 |
-| 1521 | Oracle | Oracle 数据库 |
-| 3306 | MySQL / MariaDB | 数据库 |
-| 5432 | PostgreSQL | 数据库 |
-| 6379 | Redis | 非关系型数据库，可反弹 Shell |
-| 8080 | Tomcat / JBoss | Web 应用服务器 |
-| 7001 | WebLogic | Web 应用服务器 |
-| 27017 | MongoDB | 非关系型数据库 |
-| 3389 | RDP | Windows 远程桌面（内网穿透常用） |
-| 5900 | VNC | 远程控制工具 |
+| 端口      | 协议 / 服务     | 说明                               |
+|-----------|-----------------|------------------------------------|
+| 20 / 21   | FTP             | 文件传输协议                       |
+| 22        | SSH / SFTP      | 安全远程登录与文件传输             |
+| 23        | Telnet          | 远程主机管理（交换机、路由器常用） |
+| 25        | SMTP            | 发邮件                             |
+| 53        | DNS             | 域名解析                           |
+| 80        | HTTP            | Web 服务                           |
+| 110       | POP3            | 收邮件                             |
+| 139 / 445 | SMB             | Windows 文件共享                   |
+| 443       | HTTPS           | 加密 Web 服务                      |
+| 1433      | MSSQL           | 微软数据库                         |
+| 1521      | Oracle          | Oracle 数据库                      |
+| 3306      | MySQL / MariaDB | 数据库                             |
+| 5432      | PostgreSQL      | 数据库                             |
+| 6379      | Redis           | 非关系型数据库，可反弹 Shell       |
+| 8080      | Tomcat / JBoss  | Web 应用服务器                     |
+| 7001      | WebLogic        | Web 应用服务器                     |
+| 27017     | MongoDB         | 非关系型数据库                     |
+| 3389      | RDP             | Windows 远程桌面（内网穿透常用）   |
+| 5900      | VNC             | 远程控制工具                       |
 
 > 💡 **端口即攻击面。扫描结果出来后，每个开放端口都可以对照这个表找到对应的攻击方向。**
 
@@ -277,21 +279,21 @@ python3 scan.py https://www.mi.com
 
 #### 常用参数
 
-| 参数 | 说明 | 示例 |
-|------|------|------|
-| `-sL` | 列表扫描，仅列举目标 IP，不进行主机发现 | `nmap -sL 192.168.1.0/24` |
-| `-sn` | 只进行主机发现，不进行端口扫描 | `nmap -sn 192.168.1.0/24` |
-| `-Pn` | 跳过主机发现，将所有目标视为在线 | `nmap -Pn 192.168.1.1` |
-| `-PS` | TCP SYN 探测（半开扫描，不易被记录） | `nmap -PS21,22,80,443 -sn 192.168.1.0/24` |
-| `-PA` | TCP ACK 探测（可穿透简单防火墙） | `nmap -PA80 -sn 192.168.1.0/24` |
-| `-PU` | UDP 探测（回复 ICMP port unreachable 则在线） | `nmap -PU53 -sn 192.168.1.0/24` |
-| `-PE` | ICMP Echo（普通 Ping） | `nmap -PE -sn 192.168.1.0/24` |
-| `-PP` | ICMP Timestamp（可绕过禁 Ping） | `nmap -PP -sn 192.168.1.0/24` |
-| `-PM` | ICMP Netmask 子网掩码探测 | `nmap -PM -sn 192.168.1.0/24` |
-| `-PO` | IP 协议包探测（适用于极严格防火墙） | `nmap -PO1,2,6 -sn 192.168.1.1` |
-| `-n` | 不进行 DNS 解析（加速扫描） | `nmap -sn -n 192.168.1.0/24` |
-| `--traceroute` | 追踪路由节点 | `nmap -sn --traceroute 192.168.1.1` |
-| `--dns-servers` | 指定 DNS 服务器 | `nmap --dns-servers 8.8.8.8,1.1.1.1 baidu.com` |
+| 参数            | 说明                                          | 示例                                           |
+|-----------------|-----------------------------------------------|------------------------------------------------|
+| `-sL`           | 列表扫描，仅列举目标 IP，不进行主机发现       | `nmap -sL 192.168.1.0/24`                      |
+| `-sn`           | 只进行主机发现，不进行端口扫描                | `nmap -sn 192.168.1.0/24`                      |
+| `-Pn`           | 跳过主机发现，将所有目标视为在线              | `nmap -Pn 192.168.1.1`                         |
+| `-PS`           | TCP SYN 探测（半开扫描，不易被记录）          | `nmap -PS21,22,80,443 -sn 192.168.1.0/24`      |
+| `-PA`           | TCP ACK 探测（可穿透简单防火墙）              | `nmap -PA80 -sn 192.168.1.0/24`                |
+| `-PU`           | UDP 探测（回复 ICMP port unreachable 则在线） | `nmap -PU53 -sn 192.168.1.0/24`                |
+| `-PE`           | ICMP Echo（普通 Ping）                        | `nmap -PE -sn 192.168.1.0/24`                  |
+| `-PP`           | ICMP Timestamp（可绕过禁 Ping）               | `nmap -PP -sn 192.168.1.0/24`                  |
+| `-PM`           | ICMP Netmask 子网掩码探测                     | `nmap -PM -sn 192.168.1.0/24`                  |
+| `-PO`           | IP 协议包探测（适用于极严格防火墙）           | `nmap -PO1,2,6 -sn 192.168.1.1`                |
+| `-n`            | 不进行 DNS 解析（加速扫描）                   | `nmap -sn -n 192.168.1.0/24`                   |
+| `--traceroute`  | 追踪路由节点                                  | `nmap -sn --traceroute 192.168.1.1`            |
+| `--dns-servers` | 指定 DNS 服务器                               | `nmap --dns-servers 8.8.8.8,1.1.1.1 baidu.com` |
 
 > 💡 **实战小技巧：内网扫描时加 `-n` 跳过 DNS 解析可以大幅提速；不确定目标是否在线时用 `-Pn` 跳过主机发现直接扫端口。**
 
@@ -303,42 +305,42 @@ python3 scan.py https://www.mi.com
 
 **端口状态分类：**
 
-| 状态 | 含义 |
-|------|------|
-| `open` | 端口开放 |
-| `closed` | 端口关闭 |
-| `filtered` | 被防火墙/IDS 屏蔽 |
-| `unfiltered` | 未被屏蔽，但开放状态需进一步确定 |
-| `open\|filtered` | 开放或被屏蔽 |
-| `closed\|filtered` | 关闭或被屏蔽 |
+| 状态               | 含义                             |
+|--------------------|----------------------------------|
+| `open`             | 端口开放                         |
+| `closed`           | 端口关闭                         |
+| `filtered`         | 被防火墙/IDS 屏蔽                |
+| `unfiltered`       | 未被屏蔽，但开放状态需进一步确定 |
+| `open\|filtered`   | 开放或被屏蔽                     |
+| `closed\|filtered` | 关闭或被屏蔽                     |
 
 **扫描方式分类：**
 
-| 类型 | 特点 | 代表 |
-|------|------|------|
-| 🔓 **开放扫描** | 可靠性高，但易被日志记录 | TCP Connect (`-sT`) |
-| 🕵️ **隐蔽扫描** | 避免 IDS 检测，但数据包可能被丢弃 | TCP FIN (`-sF`) |
-| ⚡ **半开放扫描** | 隐蔽性与可靠性兼顾 | TCP SYN (`-sS`) |
+| 类型              | 特点                              | 代表                |
+|-------------------|-----------------------------------|---------------------|
+| 🔓 **开放扫描**   | 可靠性高，但易被日志记录          | TCP Connect (`-sT`) |
+| 🕵️ **隐蔽扫描**  | 避免 IDS 检测，但数据包可能被丢弃 | TCP FIN (`-sF`)     |
+| ⚡ **半开放扫描** | 隐蔽性与可靠性兼顾                | TCP SYN (`-sS`)     |
 
 #### 扫描方式详解
 
-| 参数 | 方式 | 原理 | 示例 |
-|------|------|------|------|
-| ⭐ `-sS` | TCP SYN 半开扫描 | 发 SYN 包，收到 SYN+ACK 则开放，不建完整连接 | `nmap -sS 192.168.1.1` |
-| `-sT` | TCP Connect 全连接 | 调用系统 connect() 完成三次握手 | `nmap -sT 192.168.1.1` |
-| `-sA` | TCP ACK 扫描 | 发纯 ACK 包，判断端口是否被防火墙过滤 | `nmap -sA 192.168.1.1` |
-| `-sW` | TCP 窗口扫描 | 基于 ACK 包，通过窗口大小判断端口状态 | `nmap -sW 192.168.1.1` |
-| `-sM` | Maimon 扫描 | 发送 FIN+ACK 包 | `nmap -sM 192.168.1.1` |
-| ⭐ `-sU` | UDP 端口扫描 | 适用于 DNS、SNMP、DHCP 等 UDP 服务 | `nmap -sU -p 53,161 192.168.1.1` |
-| `-sN` | TCP Null 秘密扫描 | 不带任何标志位，对 Windows 无效 | `nmap -sN 192.168.1.1` |
-| ⭐ `-sF` | TCP FIN 秘密扫描 | 仅设置 FIN 标志位，绕过简单 IDS | `nmap -sF 192.168.1.1` |
-| `-sX` | TCP Xmas 圣诞树扫描 | 设置 FIN+URG+PSH 三标志位 | `nmap -sX 192.168.1.1` |
-| `--scanflags` | 自定义 TCP 标志位 | 手动指定标志位组合 | `nmap --scanflags SYNFIN 192.168.1.1` |
-| `-sI` | 空闲扫描（僵尸扫描） | 利用第三方僵尸主机，极度隐蔽 | `nmap -sI 192.168.1.100 192.168.1.1` |
-| `-sY` | SCTP INIT 扫描 | 探测 SCTP 协议端口（电信/5G 设备） | `nmap -sY 192.168.1.1` |
-| `-sZ` | SCTP COOKIE-ECHO | 基于 SCTP COOKIE 机制 | `nmap -sZ 192.168.1.1` |
-| `-sO` | IP 协议扫描 | 探测支持的 IP 协议类型 | `nmap -sO 192.168.1.1` |
-| `-b` | FTP 反弹扫描 | 利用旧版 FTP 漏洞代理扫描（已基本失效） | `nmap -b ftp.test.com 192.168.1.1` |
+| 参数          | 方式                 | 原理                                         | 示例                                  |
+|---------------|----------------------|----------------------------------------------|---------------------------------------|
+| ⭐ `-sS`      | TCP SYN 半开扫描     | 发 SYN 包，收到 SYN+ACK 则开放，不建完整连接 | `nmap -sS 192.168.1.1`                |
+| `-sT`         | TCP Connect 全连接   | 调用系统 connect() 完成三次握手              | `nmap -sT 192.168.1.1`                |
+| `-sA`         | TCP ACK 扫描         | 发纯 ACK 包，判断端口是否被防火墙过滤        | `nmap -sA 192.168.1.1`                |
+| `-sW`         | TCP 窗口扫描         | 基于 ACK 包，通过窗口大小判断端口状态        | `nmap -sW 192.168.1.1`                |
+| `-sM`         | Maimon 扫描          | 发送 FIN+ACK 包                              | `nmap -sM 192.168.1.1`                |
+| ⭐ `-sU`      | UDP 端口扫描         | 适用于 DNS、SNMP、DHCP 等 UDP 服务           | `nmap -sU -p 53,161 192.168.1.1`      |
+| `-sN`         | TCP Null 秘密扫描    | 不带任何标志位，对 Windows 无效              | `nmap -sN 192.168.1.1`                |
+| ⭐ `-sF`      | TCP FIN 秘密扫描     | 仅设置 FIN 标志位，绕过简单 IDS              | `nmap -sF 192.168.1.1`                |
+| `-sX`         | TCP Xmas 圣诞树扫描  | 设置 FIN+URG+PSH 三标志位                    | `nmap -sX 192.168.1.1`                |
+| `--scanflags` | 自定义 TCP 标志位    | 手动指定标志位组合                           | `nmap --scanflags SYNFIN 192.168.1.1` |
+| `-sI`         | 空闲扫描（僵尸扫描） | 利用第三方僵尸主机，极度隐蔽                 | `nmap -sI 192.168.1.100 192.168.1.1`  |
+| `-sY`         | SCTP INIT 扫描       | 探测 SCTP 协议端口（电信/5G 设备）           | `nmap -sY 192.168.1.1`                |
+| `-sZ`         | SCTP COOKIE-ECHO     | 基于 SCTP COOKIE 机制                        | `nmap -sZ 192.168.1.1`                |
+| `-sO`         | IP 协议扫描          | 探测支持的 IP 协议类型                       | `nmap -sO 192.168.1.1`                |
+| `-b`          | FTP 反弹扫描         | 利用旧版 FTP 漏洞代理扫描（已基本失效）      | `nmap -b ftp.test.com 192.168.1.1`    |
 
 #### 其他端口参数
 
@@ -366,14 +368,14 @@ nmap -sS -sU -T4 --top-ports 300 152.136.221.160
 
 #### -T 时间模板
 
-| 级别 | 名称 | 说明 |
-|------|------|------|
-| `-T0` | Paranoid | IDS 躲避，极慢 |
-| `-T1` | Sneaky | IDS 躲避，慢 |
-| `-T2` | Polite | 降低速度，减少带宽占用 |
-| `-T3` | Normal | ⭐ 默认模式，无优化 |
+| 级别  | 名称       | 说明                      |
+|-------|------------|---------------------------|
+| `-T0` | Paranoid   | IDS 躲避，极慢            |
+| `-T1` | Sneaky     | IDS 躲避，慢              |
+| `-T2` | Polite     | 降低速度，减少带宽占用    |
+| `-T3` | Normal     | ⭐ 默认模式，无优化       |
 | `-T4` | Aggressive | ⭐ 假设网络可靠，加速扫描 |
-| `-T5` | Insane | 极速，牺牲准确性 |
+| `-T5` | Insane     | 极速，牺牲准确性          |
 
 > 💡 **大多数情况 `-T4` 就够用。`-T5` 太快容易丢包漏端口，`-T2` 以下慢得折磨人。**
 
@@ -391,13 +393,13 @@ nmap -sS -sU -T4 --top-ports 300 152.136.221.160
 5. 如检测到 SSL，调用 OpenSSL 进一步侦查
 6. 如检测到 SunRPC，调用 brute-force RPC grinder
 
-| 参数 | 说明 |
-|------|------|
-| `-sV` | 启用版本侦测 |
+| 参数                        | 说明                             |
+|-----------------------------|----------------------------------|
+| `-sV`                       | 启用版本侦测                     |
 | `--version-intensity <0-9>` | 侦测强度，默认 7，越高越准但越慢 |
-| `--version-light` | 轻量侦测（intensity 2） |
-| `--version-all` | 使用所有 probes（intensity 9） |
-| `--version-trace` | 显示详细侦测过程 |
+| `--version-light`           | 轻量侦测（intensity 2）          |
+| `--version-all`             | 使用所有 probes（intensity 9）   |
+| `--version-trace`           | 显示详细侦测过程                 |
 
 ```bash
 # 版本侦测示例
@@ -410,11 +412,11 @@ nmap -sV 192.168.111.131
 
 > 利用 TCP/IP 协议栈指纹识别操作系统，Nmap 内置 **2600+** 已知系统指纹（`nmap-os-db`）
 
-| 参数 | 说明 |
-|------|------|
-| `-O` | 启用 OS 侦测 |
+| 参数             | 说明                                     |
+|------------------|------------------------------------------|
+| `-O`             | 启用 OS 侦测                             |
 | `--osscan-limit` | 仅对确认有 open 和 closed 端口的主机探测 |
-| `--osscan-guess` | 大胆猜测，降低准确性但提供更多候选 |
+| `--osscan-guess` | 大胆猜测，降低准确性但提供更多候选       |
 
 ```bash
 # OS 侦测示例
@@ -467,9 +469,9 @@ nmap -D RND:5 192.168.188.111
 
 ### 6.1 在线指纹识别
 
-| 平台 | 地址 |
-|------|------|
-| 云悉 | <https://www.yunsee.cn/> |
+| 平台 | 地址                         |
+|------|------------------------------|
+| 云悉 | <https://www.yunsee.cn/>     |
 | 潮汐 | <http://finger.tidesec.com/> |
 
 ---
@@ -478,21 +480,21 @@ nmap -D RND:5 192.168.188.111
 
 > **CMS（内容管理系统）** 是现成的建站程序，具有独特的结构命名规则，可用于识别具体软件和版本。
 
-| 类型 | 常见 CMS |
-|------|----------|
-| PHP | DedeCMS、帝国 CMS、Discuz、phpWind、phpCMS |
-| ASP | Zblog、KingCMS |
-| .NET | EoyooCMS |
-| 国外 | Joomla、WordPress、Magento、Drupal、Mambo |
+| 类型 | 常见 CMS                                   |
+|------|--------------------------------------------|
+| PHP  | DedeCMS、帝国 CMS、Discuz、phpWind、phpCMS |
+| ASP  | Zblog、KingCMS                             |
+| .NET | EoyooCMS                                   |
+| 国外 | Joomla、WordPress、Magento、Drupal、Mambo  |
 
 ---
 
 ### 6.3 工具
 
-| 工具 | 说明 |
-|------|------|
+| 工具                                          | 说明                                                         |
+|-----------------------------------------------|--------------------------------------------------------------|
 | **[Wappalyzer](https://www.wappalyzer.com/)** | 浏览器插件，一键分析网站技术栈（架构、语言、框架、服务器等） |
-| **御剑 WEB 指纹识别** | 指纹识别工具（vstart50 内置） |
+| **御剑 WEB 指纹识别**                         | 指纹识别工具（vstart50 内置）                                |
 
 > 💡 发现 Web 应用技术版本后，可搜索对应历史漏洞进行攻击。
 
@@ -531,10 +533,10 @@ EHole_windows_amd64.exe finger -l 1.txt -o 1.xls
 
 #### 工具
 
-| 工具 | 说明 | 用法 |
-|------|------|------|
-| **7kbscan** | 目录扫描（vstart50 内置） | 图形界面操作 |
-| **dirsearch** | Python 目录扫描工具 | `python3 dirsearch.py -u http://192.168.188.129:80` |
+| 工具          | 说明                      | 用法                                                |
+|---------------|---------------------------|-----------------------------------------------------|
+| **7kbscan**   | 目录扫描（vstart50 内置） | 图形界面操作                                        |
+| **dirsearch** | Python 目录扫描工具       | `python3 dirsearch.py -u http://192.168.188.129:80` |
 
 ```bash
 # dirsearch 安装依赖（使用清华镜像加速）
@@ -547,12 +549,12 @@ pip3 install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 
 #### Git vs SVN 对比
 
-| 特性 | **Git**（分布式） | **SVN**（集中式） |
-|------|-----------------|------------------|
-| 架构 | 每个开发者本地有完整仓库 | 所有开发者依赖中央服务器 |
-| 分支 | 分支管理强大，支持并行开发 | 分支功能较弱 |
-| 适用 | 分布式团队、大型项目、开源项目 | 传统团队、集中式开发、简单项目 |
-| 国产平台 | Gitee | — |
+| 特性     | **Git**（分布式）              | **SVN**（集中式）              |
+|----------|--------------------------------|--------------------------------|
+| 架构     | 每个开发者本地有完整仓库       | 所有开发者依赖中央服务器       |
+| 分支     | 分支管理强大，支持并行开发     | 分支功能较弱                   |
+| 适用     | 分布式团队、大型项目、开源项目 | 传统团队、集中式开发、简单项目 |
+| 国产平台 | Gitee                          | —                             |
 
 ---
 
@@ -636,12 +638,12 @@ python3 ds_store_exp.py http://192.168.111.131/pikachu/.DS_Store
 
 **泄露不止 GitHub：**
 
-| 类型 | 平台 |
-|------|------|
-| 代码托管 | GitHub、GitLab、Coding、Gitee、Gitea |
-| 包管理 | npm、PyPI、RubyGems |
-| 网盘 | 百度网盘、蓝奏云 |
-| 社交/工作 | QQ 群、企业微信、钉钉群文件 |
+| 类型      | 平台                                 |
+|-----------|--------------------------------------|
+| 代码托管  | GitHub、GitLab、Coding、Gitee、Gitea |
+| 包管理    | npm、PyPI、RubyGems                  |
+| 网盘      | 百度网盘、蓝奏云                     |
+| 社交/工作 | QQ 群、企业微信、钉钉群文件          |
 
 > 💡 **很多时候漏洞不需要「挖」，只是有人把钥匙扔在了大街上。**
 

@@ -1,10 +1,14 @@
 ---
 layout: post
-title: 移动端信息收集 + 溯源信息收集
-tags: [信息收集, 移动端安全, 溯源]
+title: "移动端信息收集 + 溯源信息收集"
+date: 2026-04-17
+tags: 信息收集 移动端安全 溯源
+description: 一款 APP（抖音、快手之类的）或者一个电脑软件，都是由开发语言编写出来的。开发完成之后，想要做成可供用户下载安装的软件，需要对程序代码和运行环境等进行编译和打包。而我们下载安装 APP 到手机或电脑上的过程，其实就是解包——软件的代码程序就解压到了你的设备上。
 ---
 
 # 移动端信息收集（入门向）
+
+> 🎯 本文按「一、APP 逆向工程 → 1.1 起源 → 1.2 安卓正向开发流程 → 1.3 逆向的三大方向 → 1.4 安全测试中的应用 → 二、微信公众号和小程序抓包 → 2.1 基本介绍 → 2.2 所需工具」的顺序整理，便于对照速查。
 
 ## 一、APP 逆向工程
 
@@ -113,30 +117,30 @@ Proxifier 是一款功能强大的代理客户端，它能够让不支持代理�
 
 **溯源需要收集的信息**：
 
-| 信息项 | 说明 |
-|:---|:---|
-| 类型 | 攻击类型分类 |
-| 恶意文件 | 攻击使用的恶意样本 |
-| 受攻击域名 / IP | 被攻击的目标 |
-| 攻击时间 | 攻击发生的时间节点 |
-| 攻击 IP | 攻击来源 IP |
-| 预警平台 | 发现攻击的监测平台 |
+| 信息项          | 说明               |
+|-----------------|--------------------|
+| 类型            | 攻击类型分类       |
+| 恶意文件        | 攻击使用的恶意样本 |
+| 受攻击域名 / IP | 被攻击的目标       |
+| 攻击时间        | 攻击发生的时间节点 |
+| 攻击 IP         | 攻击来源 IP        |
+| 预警平台        | 发现攻击的监测平台 |
 
 ### 3.2 情报分析平台
 
-| 平台名称 | 地址 |
-|:---|:---|
-| 微步在线 | <https://x.threatbook.com/> |
-| 360 威胁情报 | <https://ti.360.cn/> |
-| 腾讯威胁情报中心 | <https://tix.qq.com/> |
-| 奇安信威胁情报 | <https://ti.qianxin.com/> |
-| 绿盟威胁情报 | <https://ti.nsfocus.com/> |
-| 安天威胁情报 | <https://www.antiycloud.com/> |
-| 深信服威胁情报 | <https://ti.sangfor.com.cn/> |
-| 安恒威胁情报 | <https://ti.dbappsecurity.com.cn/> |
-| IBM X-Force | <https://exchange.xforce.ibmcloud.com/> |
-| VirusTotal | <https://www.virustotal.com/> |
-| VenusEye | <https://www.venuseye.com.cn/> |
+| 平台名称         | 地址                                    |
+|------------------|-----------------------------------------|
+| 微步在线         | <https://x.threatbook.com/>             |
+| 360 威胁情报     | <https://ti.360.cn/>                    |
+| 腾讯威胁情报中心 | <https://tix.qq.com/>                   |
+| 奇安信威胁情报   | <https://ti.qianxin.com/>               |
+| 绿盟威胁情报     | <https://ti.nsfocus.com/>               |
+| 安天威胁情报     | <https://www.antiycloud.com/>           |
+| 深信服威胁情报   | <https://ti.sangfor.com.cn/>            |
+| 安恒威胁情报     | <https://ti.dbappsecurity.com.cn/>      |
+| IBM X-Force      | <https://exchange.xforce.ibmcloud.com/> |
+| VirusTotal       | <https://www.virustotal.com/>           |
+| VenusEye         | <https://www.venuseye.com.cn/>          |
 
 ### 3.3 溯源流程
 

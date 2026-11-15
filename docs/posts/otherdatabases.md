@@ -9,6 +9,8 @@ aside: right
 outline: [2, 3]
 ---
 
+> 🎯 本文按「一、Access 数据库 → 1.1 寻找注入点 → 1.2 暴力猜解法 → 1.3 UNION 联合查询法（更高效） → 1.4 工具推荐 → 二、MSSQL 数据库（SQL Server） → 2.1 介绍 → 2.2 权限体系」的顺序整理，便于对照速查。
+
 ## 一、Access 数据库
 
 Access 数据库采用**单文件管理单数据库**的架构，类似于 Excel 的工作簿。一个 `.mdb` 文件就是一个数据库，这一点与 MySQL 可以同时管理多个数据库截然不同。
@@ -104,10 +106,10 @@ and (select top 1 len(user_name) from administrator) > 5  -- 报错
 
 **核心函数：**
 
-| 函数 | 说明 |
-|------|------|
-| `mid(字符串, 起始位, 截取位数)` | 从中间位置取子串，类似 MySQL 的 `substr()` |
-| `asc(字符)` | 查看字符的 ASCII 码值，类似 MySQL 的 `ascii()` |
+| 函数                            | 说明                                           |
+|---------------------------------|------------------------------------------------|
+| `mid(字符串, 起始位, 截取位数)` | 从中间位置取子串，类似 MySQL 的 `substr()`     |
+| `asc(字符)`                     | 查看字符的 ASCII 码值，类似 MySQL 的 `ascii()` |
 
 > 💡 ASCII 值大于 0 → 字母；小于 0 → 汉字（ASCII 码表中没有汉字，返回负数）。
 
@@ -190,11 +192,11 @@ union select 1,2,3,4,5,6,7 from administrator
 
 MSSQL（Microsoft SQL Server）与 MySQL 大同小异，主要是语法和函数的写法不同。
 
-| 数据库 | 默认端口 | 说明 |
-|--------|----------|------|
-| MSSQL | **1433** | 默认允许远程连接 |
-| MySQL | 3306 | 需要授权才能远程连接 |
-| Oracle | 1521 | — |
+| 数据库 | 默认端口 | 说明                 |
+|--------|----------|----------------------|
+| MSSQL  | **1433** | 默认允许远程连接     |
+| MySQL  | 3306     | 需要授权才能远程连接 |
+| Oracle | 1521     | —                   |
 
 > 在 Windows 下通过 `netstat -an -p tcp -o` 指令可查看端口占用，并通过任务管理器中的 PID 对应到具体进程。
 
@@ -206,11 +208,11 @@ MSSQL（Microsoft SQL Server）与 MySQL 大同小异，主要是语法和函数
 
 MSSQL 的三大权限级别：
 
-| 权限 | 说明 |
-|------|------|
-| **sa** | 最高权限（类似 Windows 的 SYSTEM、Linux 的 root） |
-| **db_owner** | 数据库所有者权限 |
-| **public** | 最低权限 |
+| 权限         | 说明                                              |
+|--------------|---------------------------------------------------|
+| **sa**       | 最高权限（类似 Windows 的 SYSTEM、Linux 的 root） |
+| **db_owner** | 数据库所有者权限                                  |
+| **public**   | 最低权限                                          |
 
 查看用户属性：
 
@@ -417,10 +419,10 @@ and 1=(select db_name(2))--+
 
 ```sql
 -- 通过修改 TOP 后的数字和 NOT IN 中的数字来翻页枚举
-and (select top 1 name from testdb.sys.all_objects 
-    where type='U' AND is_ms_shipped=0 
+and (select top 1 name from testdb.sys.all_objects
+    where type='U' AND is_ms_shipped=0
     and name not in (
-        select top 0 name from testdb.sys.all_objects 
+        select top 0 name from testdb.sys.all_objects
         where type='U' AND is_ms_shipped=0
     )) > 0--
 ```
@@ -484,19 +486,19 @@ group by admin.id,admin.name having 1=1--
 
 ### 2.9 MySQL 版本区别
 
-| 特性 | MySQL < 5.0 | MySQL ≥ 5.0 |
-|------|-------------|-------------|
-| `information_schema` | ❌ 无 | ✅ 有（`schemata`、`tables`、`columns`） |
-| 注入方式 | 只能暴力猜解 | 可查询系统表 |
-| 操作模式 | 多用户单操作 | 多用户多操作 |
+| 特性                 | MySQL < 5.0  | MySQL ≥ 5.0                             |
+|----------------------|--------------|------------------------------------------|
+| `information_schema` | ❌ 无        | ✅ 有（`schemata`、`tables`、`columns`） |
+| 注入方式             | 只能暴力猜解 | 可查询系统表                             |
+| 操作模式             | 多用户单操作 | 多用户多操作                             |
 
 `information_schema` 中的关键表和字段：
 
-| 表名 | 关键字段 | 存放内容 |
-|------|----------|----------|
-| `schemata` | `schema_name` | 所有库名 |
-| `tables` | `table_schema`, `table_name` | 库名 + 表名 |
-| `columns` | `table_schema`, `table_name`, `column_name` | 库名 + 表名 + 字段名 |
+| 表名       | 关键字段                                    | 存放内容             |
+|------------|---------------------------------------------|----------------------|
+| `schemata` | `schema_name`                               | 所有库名             |
+| `tables`   | `table_schema`, `table_name`                | 库名 + 表名          |
+| `columns`  | `table_schema`, `table_name`, `column_name` | 库名 + 表名 + 字段名 |
 
 ![information_schema 结构](/assets/images/otherdatabases/image-36.png)
 
@@ -529,9 +531,9 @@ SELECT * FROM user UNION SELECT 2, 3;
 
 ## 三、SQL 注入防护
 
-测试环境：DVWA（部署在 PHP 虚拟机中）
+**测试环境**：DVWA（部署在 PHP 虚拟机中）
 
-防护的核心思想：**对用户提交的数据做严格过滤**。
+**防护的核心思想**：**对用户提交的数据做严格过滤**。
 
 ### 防护手段一览
 
@@ -638,10 +640,10 @@ $stmt->execute();
 
 ### 总结
 
-| 原则 | 说明 |
-|------|------|
-| 🚫 **永远不要信任用户输入** | 正则校验、长度限制、特殊字符转义 |
-| 🚫 **永远不要动态拼装 SQL** | 使用参数化查询或存储过程 |
-| 🚫 **永远不要用高权限连接数据库** | 每个应用使用独立的最小权限账号 |
-| 🔒 **敏感信息加密存储** | 密码等必须 hash 或加密 |
-| 🤫 **最小化错误提示** | 自定义错误信息，原始异常存入日志表 |
+| 原则                              | 说明                               |
+|-----------------------------------|------------------------------------|
+| 🚫 **永远不要信任用户输入**       | 正则校验、长度限制、特殊字符转义   |
+| 🚫 **永远不要动态拼装 SQL**       | 使用参数化查询或存储过程           |
+| 🚫 **永远不要用高权限连接数据库** | 每个应用使用独立的最小权限账号     |
+| 🔒 **敏感信息加密存储**           | 密码等必须 hash 或加密             |
+| 🤫 **最小化错误提示**             | 自定义错误信息，原始异常存入日志表 |
