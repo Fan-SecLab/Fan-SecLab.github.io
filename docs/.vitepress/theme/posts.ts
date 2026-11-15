@@ -24,17 +24,43 @@ export interface Category {
 
 export const posts: Post[] = [
   {
+    "url": "/posts/rce",
+    "slug": "rce",
+    "title": "命令执行ctf解题思路",
+    "date": "2026-11-02",
+    "categories": [
+      "ctf",
+      "RCE"
+    ],
+    "categoryColors": [
+      "#b45309",
+      "#475569"
+    ],
+    "tags": [
+      "RCE",
+      "命令执行",
+      "无参数RCE",
+      "CTF"
+    ],
+    "description": "整理命令执行类 CTF 题目的常见套路：PHP 里的文件读取与命令执行函数、远程代码执行、无字母数字 RCE、无参数 RCE、临时文件与 create_function 利用，以及空格过滤、关键字过滤、cat 绕过、无回显与时间盲注的应对手法。",
+    "author": "Fan-SecLab",
+    "words": 3204,
+    "cjk": 2035,
+    "source": "2026-11-02-rce",
+    "images": 37
+  },
+  {
     "url": "/posts/file-include",
     "slug": "file-include",
     "title": "ctf文件包含",
     "date": "2026-10-18",
     "categories": [
-      "文件包含",
-      "ctf"
+      "文件类漏洞",
+      "CTF 实战"
     ],
     "categoryColors": [
-      "#a16207",
-      "#b45309"
+      "#0f766e",
+      "#be123c"
     ],
     "tags": [
       "文件包含",
@@ -48,15 +74,42 @@ export const posts: Post[] = [
     "images": 25
   },
   {
+    "url": "/posts/msf",
+    "slug": "msf",
+    "title": "MSF",
+    "date": "2026-10-10",
+    "categories": [
+      "MSF",
+      "Windows系统漏洞",
+      "Linux系统漏洞"
+    ],
+    "categoryColors": [
+      "#7c3aed",
+      "#1d4ed8",
+      "#0e7490"
+    ],
+    "tags": [
+      "MSF",
+      "Windows系统漏洞",
+      "Linux系统漏洞"
+    ],
+    "description": "Metasploit就是一个漏洞框架。它的全称叫做The Metasploit Framework，简称MSF。是一个免费、可下载的框架，通过它可以很容易地获取、开发并对计算机软件漏洞实施攻击。它本身附带数2000多个已知软件漏洞的专业级漏洞攻击工具，在kali系统中已经集成好了…",
+    "author": "Fan-SecLab",
+    "words": 12663,
+    "cjk": 11002,
+    "source": "2026-10-10-MSF",
+    "images": 79
+  },
+  {
     "url": "/posts/linux",
     "slug": "linux",
     "title": "linux",
     "date": "2026-10-01",
     "categories": [
-      "linux"
+      "环境与运维"
     ],
     "categoryColors": [
-      "#c2410c"
+      "#475569"
     ],
     "tags": [
       "linux"
@@ -620,16 +673,46 @@ export const posts: Post[] = [
 
 export const categories: Category[] = [
   {
+    "name": "文件类漏洞",
+    "color": "#0f766e",
+    "desc": "文件上传、文件包含、任意文件下载、解析漏洞",
+    "count": 1
+  },
+  {
+    "name": "MSF",
+    "color": "#7c3aed",
+    "desc": "Metasploit 框架：专业术语、模块结构、基本指令、漏洞利用实例",
+    "count": 1
+  },
+  {
+    "name": "Windows系统漏洞",
+    "color": "#1d4ed8",
+    "desc": "Windows 环境下的漏洞利用与提权思路",
+    "count": 1
+  },
+  {
+    "name": "Linux系统漏洞",
+    "color": "#0e7490",
+    "desc": "Linux 环境下的漏洞利用与提权思路",
+    "count": 1
+  },
+  {
+    "name": "CTF 实战",
+    "color": "#be123c",
+    "desc": "靶场与 CTF 题目的解题记录",
+    "count": 1
+  },
+  {
+    "name": "环境与运维",
+    "color": "#475569",
+    "desc": "Docker、Linux 与实验环境搭建",
+    "count": 1
+  },
+  {
     "name": "未分类",
     "color": "#94a3b8",
     "desc": "还没有分类的文章",
     "count": 24
-  },
-  {
-    "name": "文件包含",
-    "color": "#a16207",
-    "desc": "",
-    "count": 1
   },
   {
     "name": "ctf",
@@ -638,8 +721,8 @@ export const categories: Category[] = [
     "count": 1
   },
   {
-    "name": "linux",
-    "color": "#c2410c",
+    "name": "RCE",
+    "color": "#475569",
     "desc": "",
     "count": 1
   }

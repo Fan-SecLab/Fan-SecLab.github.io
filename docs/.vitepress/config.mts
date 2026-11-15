@@ -13,8 +13,13 @@ const SITE = {
  * Vite 默认会把这些 /assets/images/... 当模块去解析，找不到就直接构建失败。
  * 这里把「不存在的 public 资源」拦下来，返回原 URL 字符串：
  * 构建照常完成，运行时 404 → 由主题里的 JS 渲染成「图片暂缺」占位框。
+ *
+ * 2026-11 补充：不止 /assets/，**任何以 / 开头的图片路径**都拦一次。
+ * 有些文章会误写成 /image-xxx.png（少了 assets/images 前缀），
+ * 这种路径同样会让 Rollup 报 `failed to resolve import`，把整站构建搞挂。
  */
 let publicDir = ''
+const IMAGE_EXT_RE = /\.(png|jpe?g|gif|webp|svg|ico|bmp|avif)$/i
 const missingPublicAsset = {
   name: 'vp-missing-public-asset',
   enforce: 'pre' as const,
@@ -22,8 +27,11 @@ const missingPublicAsset = {
     publicDir = cfg.publicDir
   },
   resolveId(id: string) {
-    if (!publicDir || !id.startsWith('/assets/')) return
-    if (fs.existsSync(path.join(publicDir, id))) return
+    if (!publicDir) return
+    if (!id.startsWith('/') || id.startsWith('//')) return
+    // 只拦「看起来是图片」的根路径，别去糟蹋 Vite 自己的 /@fs/、/@id/ 等内部路径
+    if (!id.startsWith('/assets/') && !IMAGE_EXT_RE.test(id.split('?')[0])) return
+    if (fs.existsSync(path.join(publicDir, id.split('?')[0]))) return
     return '\0missing-asset:' + id
   },
   load(id: string) {

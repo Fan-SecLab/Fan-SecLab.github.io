@@ -3,7 +3,7 @@ layout: post
 title: "ctf文件包含"
 date: 2026-10-18
 tags: 文件包含 CTF
-categories: [文件包含, ctf]
+categories: [文件类漏洞, CTF 实战]
 ---
 
 # 文件包含解题思路

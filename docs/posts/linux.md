@@ -1,7 +1,7 @@
 ---
 title: "linux"
 date: "2026-10-01"
-categories: ["linux"]
+categories: ["环境与运维"]
 tags: ["linux"]
 description: "了解就行不用理解"
 author: "Fan-SecLab"
