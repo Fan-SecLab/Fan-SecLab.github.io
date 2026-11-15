@@ -380,7 +380,13 @@ for (const src of sources) {
   const moved = []
 
   const rewrite = (href) => {
-    const h = String(href).trim()
+    let h = String(href).trim()
+    // 本机绝对路径（Windows 盘符 C:\... 或 file:///D:/...）不是站点资源。
+    // Typora / Word 导入经常把这种路径写进正文，直接剥成文件名，
+    // 后面「按 basename 落到 /assets/images/<slug>/」的逻辑才能接住它。
+    if (/^file:/i.test(h) || /^[a-z]:[\\/]/i.test(h)) {
+      h = h.replace(/^file:/i, '').split(/[\\/]/).pop() || h
+    }
     if (/^([a-z]+:|\/\/|\/)/i.test(h)) {
       if (h.startsWith('/assets/images/')) used.push(h.slice('/assets/images/'.length))
       return h
