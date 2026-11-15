@@ -1,7 +1,7 @@
 ---
 title: "ctf文件包含"
 date: "2026-10-18"
-categories: ["文件类漏洞","CTF 实战"]
+categories: ["文件包含","CTF"]
 tags: ["文件包含","CTF"]
 description: "LFI:本地文件包含漏洞(Local File Inclusion)"
 author: "Fan-SecLab"

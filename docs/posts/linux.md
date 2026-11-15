@@ -1,7 +1,7 @@
 ---
 title: "linux"
 date: "2026-10-01"
-categories: ["环境与运维"]
+categories: ["linux"]
 tags: ["linux"]
 description: "Unix，现在的操作系统的鼻祖，windows、mac、linux都是由它发展而来，1969年诞生于贝尔实验室，作者主要有两个，其中一个大佬叫肯尼斯·蓝·汤普森，当初为了玩游戏发明了Unix操作系统，1970年正式发布，所以1970年称为操作系统元年，所有操作系统都以这个时间来计时…"
 author: "Fan-SecLab"

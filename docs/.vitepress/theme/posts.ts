@@ -55,12 +55,12 @@ export const posts: Post[] = [
     "title": "ctf文件包含",
     "date": "2026-10-18",
     "categories": [
-      "文件类漏洞",
-      "CTF 实战"
+      "文件包含",
+      "CTF"
     ],
     "categoryColors": [
-      "#0f766e",
-      "#be123c"
+      "#a16207",
+      "#b45309"
     ],
     "tags": [
       "文件包含",
@@ -106,10 +106,10 @@ export const posts: Post[] = [
     "title": "linux",
     "date": "2026-10-01",
     "categories": [
-      "环境与运维"
+      "linux"
     ],
     "categoryColors": [
-      "#475569"
+      "#c2410c"
     ],
     "tags": [
       "linux"
@@ -684,12 +684,6 @@ export const posts: Post[] = [
 
 export const categories: Category[] = [
   {
-    "name": "文件类漏洞",
-    "color": "#0f766e",
-    "desc": "文件上传、文件包含、任意文件下载、解析漏洞",
-    "count": 1
-  },
-  {
     "name": "MSF",
     "color": "#7c3aed",
     "desc": "Metasploit 框架：专业术语、模块结构、基本指令、漏洞利用实例",
@@ -708,26 +702,32 @@ export const categories: Category[] = [
     "count": 1
   },
   {
-    "name": "CTF 实战",
-    "color": "#be123c",
-    "desc": "靶场与 CTF 题目的解题记录",
-    "count": 1
-  },
-  {
-    "name": "环境与运维",
-    "color": "#475569",
-    "desc": "Docker、Linux 与实验环境搭建",
-    "count": 1
-  },
-  {
     "name": "未分类",
     "color": "#94a3b8",
     "desc": "还没有分类的文章",
     "count": 24
   },
   {
+    "name": "文件包含",
+    "color": "#a16207",
+    "desc": "",
+    "count": 1
+  },
+  {
     "name": "ctf",
     "color": "#b45309",
+    "desc": "",
+    "count": 1
+  },
+  {
+    "name": "CTF",
+    "color": "#b45309",
+    "desc": "",
+    "count": 1
+  },
+  {
+    "name": "linux",
+    "color": "#c2410c",
     "desc": "",
     "count": 1
   },
